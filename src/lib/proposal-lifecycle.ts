@@ -3,6 +3,7 @@ export const proposalWorkflowStatuses = [
   "SENT",
   "VIEWED",
   "ACCEPTED",
+  "REJECTED",
   "CANCELLED",
   "EXPIRED"
 ] as const;
@@ -14,6 +15,7 @@ export const proposalWorkflowEventTypes = [
   "SENT",
   "FIRST_VIEWED",
   "ACCEPTED",
+  "REJECTED",
   "CANCELLED",
   "EXPIRED"
 ] as const;
@@ -44,9 +46,11 @@ export interface ProposalWorkflowResolution {
   sentAt: string | null;
   firstViewedAt: string | null;
   acceptedAt: string | null;
+  rejectedAt: string | null;
   cancelledAt: string | null;
   expiredAt: string | null;
   canAccept: boolean;
+  canReject: boolean;
   isEditable: boolean;
   lockReason: string | null;
   eventLog: ProposalWorkflowEvent[];
@@ -60,6 +64,7 @@ interface ProposalWorkflowInput {
   sentAt?: string | null;
   firstViewedAt?: string | null;
   acceptedAt?: string | null;
+  rejectedAt?: string | null;
   cancelledAt?: string | null;
   expiresAt?: string | null;
 }
@@ -69,10 +74,11 @@ export function resolveProposalWorkflow(input: ProposalWorkflowInput): ProposalW
   const sentAt = normalizeTimestamp(input.sentAt);
   const firstViewedAt = normalizeTimestamp(input.firstViewedAt);
   const acceptedAt = normalizeTimestamp(input.acceptedAt);
+  const rejectedAt = normalizeTimestamp(input.rejectedAt);
   const cancelledAt = normalizeTimestamp(input.cancelledAt);
   const expiresAt = normalizeTimestamp(input.expiresAt);
   const expiredAt =
-    !acceptedAt && !cancelledAt && (input.baseStatus === "EXPIRED" || isTimestampInPast(expiresAt))
+    !acceptedAt && !rejectedAt && !cancelledAt && (input.baseStatus === "EXPIRED" || isTimestampInPast(expiresAt))
       ? expiresAt ?? sentAt ?? draftedAt ?? new Date().toISOString()
       : null;
 
@@ -81,6 +87,7 @@ export function resolveProposalWorkflow(input: ProposalWorkflowInput): ProposalW
     sentAt,
     firstViewedAt,
     acceptedAt,
+    rejectedAt,
     cancelledAt,
     expiredAt
   });
@@ -91,9 +98,11 @@ export function resolveProposalWorkflow(input: ProposalWorkflowInput): ProposalW
     sentAt,
     firstViewedAt,
     acceptedAt,
+    rejectedAt,
     cancelledAt,
     expiredAt,
     canAccept: canTransitionProposalStatus(status, "ACCEPTED"),
+    canReject: canTransitionProposalStatus(status, "REJECTED"),
     isEditable: isProposalEditable(status),
     lockReason: getProposalLockReason(status),
     eventLog: buildProposalEventLog({
@@ -102,6 +111,7 @@ export function resolveProposalWorkflow(input: ProposalWorkflowInput): ProposalW
       sentAt,
       firstViewedAt,
       acceptedAt,
+      rejectedAt,
       cancelledAt,
       expiredAt
     }),
@@ -124,9 +134,10 @@ export function canTransitionProposalStatus(
 ): boolean {
   const allowedTransitions: Record<ProposalWorkflowStatus, ProposalWorkflowStatus[]> = {
     DRAFT: ["SENT", "CANCELLED"],
-    SENT: ["VIEWED", "ACCEPTED", "CANCELLED", "EXPIRED"],
-    VIEWED: ["ACCEPTED", "CANCELLED", "EXPIRED"],
+    SENT: ["VIEWED", "ACCEPTED", "REJECTED", "CANCELLED", "EXPIRED"],
+    VIEWED: ["ACCEPTED", "REJECTED", "CANCELLED", "EXPIRED"],
     ACCEPTED: [],
+    REJECTED: [],
     CANCELLED: [],
     EXPIRED: []
   };
@@ -135,7 +146,7 @@ export function canTransitionProposalStatus(
 }
 
 export function isProposalEditable(status: ProposalWorkflowStatus): boolean {
-  return !["ACCEPTED", "CANCELLED", "EXPIRED"].includes(status);
+  return !["ACCEPTED", "REJECTED", "CANCELLED", "EXPIRED"].includes(status);
 }
 
 export function formatProposalWorkflowStatus(status: ProposalWorkflowStatus): string {
@@ -148,6 +159,8 @@ export function formatProposalWorkflowStatus(status: ProposalWorkflowStatus): st
       return "Visualizada";
     case "ACCEPTED":
       return "Aceita";
+    case "REJECTED":
+      return "Recusada";
     case "CANCELLED":
       return "Cancelada";
     case "EXPIRED":
@@ -160,11 +173,16 @@ function resolveWorkflowStatus(args: {
   sentAt: string | null;
   firstViewedAt: string | null;
   acceptedAt: string | null;
+  rejectedAt: string | null;
   cancelledAt: string | null;
   expiredAt: string | null;
 }): ProposalWorkflowStatus {
   if (args.acceptedAt || args.baseStatus === "ACCEPTED") {
     return "ACCEPTED";
+  }
+
+  if (args.rejectedAt || args.baseStatus === "REJECTED") {
+    return "REJECTED";
   }
 
   if (args.cancelledAt || args.baseStatus === "CANCELLED") {
@@ -192,6 +210,7 @@ function buildProposalEventLog(args: {
   sentAt: string | null;
   firstViewedAt: string | null;
   acceptedAt: string | null;
+  rejectedAt: string | null;
   cancelledAt: string | null;
   expiredAt: string | null;
 }): ProposalWorkflowEvent[] {
@@ -244,6 +263,17 @@ function buildProposalEventLog(args: {
     });
   }
 
+  if (args.rejectedAt) {
+    events.push({
+      id: `${args.proposalNumber}-rejected`,
+      type: "REJECTED",
+      status: "REJECTED",
+      occurredAt: args.rejectedAt,
+      title: "Proposta recusada",
+      description: "O cliente recusou a proposta pelo fluxo público."
+    });
+  }
+
   if (args.cancelledAt) {
     events.push({
       id: `${args.proposalNumber}-cancelled`,
@@ -275,6 +305,8 @@ function getProposalLockReason(status: ProposalWorkflowStatus): string | null {
   switch (status) {
     case "ACCEPTED":
       return "Propostas aceitas ficam bloqueadas para que o snapshot comercial não seja reescrito após a aprovação do cliente.";
+    case "REJECTED":
+      return "Propostas recusadas ficam bloqueadas para preservar o registro da decisão do cliente.";
     case "CANCELLED":
       return "Propostas canceladas ficam bloqueadas para preservar o registro final do fluxo.";
     case "EXPIRED":

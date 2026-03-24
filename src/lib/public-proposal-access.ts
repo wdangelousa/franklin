@@ -48,6 +48,7 @@ export async function getResolvedPublicProposalByToken(
       sentAt: snapshot.sentAt,
       expiresAt: snapshot.expiresAt,
       acceptedAt: snapshot.acceptedAt,
+      rejectedAt: snapshot.rejectedAt,
       cancelledAt: snapshot.cancelledAt,
       onebridgeInstitutionalPresentation: snapshot.content.onebridgeInstitutionalPresentation,
       proposalIntroduction: snapshot.content.proposalIntroduction,

@@ -13,6 +13,8 @@ interface PublicTokenProposalPageProps {
   }>;
   searchParams?: Promise<{
     acceptError?: string;
+    rejectError?: string;
+    rejected?: string;
   }>;
 }
 
@@ -58,7 +60,9 @@ export default async function PublicTokenProposalPage({
     <PublicProposalPage
       proposal={proposal}
       feedback={{
-        acceptError: query?.acceptError
+        acceptError: query?.acceptError,
+        rejectError: query?.rejectError,
+        rejected: query?.rejected
       }}
     />
   );

@@ -852,7 +852,14 @@ export async function cancelProposal(args: {
   });
 }
 
-export async function acceptProposalByToken(token: string): Promise<void> {
+export async function acceptProposalByToken(
+  token: string,
+  meta?: {
+    acceptedByName?: string;
+    acceptedByIp?: string;
+    acceptedByUserAgent?: string;
+  }
+): Promise<void> {
   const tokenHash = hashProposalToken(token);
 
   await prisma.$transaction(async (tx) => {
@@ -936,6 +943,9 @@ export async function acceptProposalByToken(token: string): Promise<void> {
         status: "ACCEPTED",
         viewedAt: proposal.viewedAt ?? acceptedAt,
         acceptedAt,
+        acceptedByName: meta?.acceptedByName ?? null,
+        acceptedByIp: meta?.acceptedByIp ?? null,
+        acceptedByUserAgent: meta?.acceptedByUserAgent ?? null,
         lastEventAt: acceptedAt,
         pdfGenerationQueuedAt: proposal.pdfGenerationQueuedAt ?? acceptedAt,
         events: {
@@ -950,6 +960,93 @@ export async function acceptProposalByToken(token: string): Promise<void> {
       },
       data: {
         lastUsedAt: acceptedAt
+      }
+    });
+  });
+}
+
+export async function rejectProposalByToken(
+  token: string,
+  meta?: {
+    rejectedReason?: string;
+  }
+): Promise<void> {
+  const tokenHash = hashProposalToken(token);
+
+  await prisma.$transaction(async (tx) => {
+    const tokenRecord = await tx.proposalPublicToken.findUnique({
+      where: {
+        tokenHash
+      },
+      include: {
+        proposal: true
+      }
+    });
+
+    if (!tokenRecord || tokenRecord.revokedAt) {
+      throw new Error("Token da proposta não encontrado.");
+    }
+
+    const proposal = await syncExpiredProposalStatusInTransaction(
+      tx,
+      tokenRecord.proposalId,
+      tokenRecord.proposal.organizationId
+    );
+
+    if (!proposal) {
+      throw new Error("A proposta não pode ser recusada.");
+    }
+
+    if (!["SENT", "VIEWED"].includes(proposal.status)) {
+      throw new Error("A proposta não pode ser recusada.");
+    }
+
+    const rejectedAt = new Date();
+    const viewNeedsCapture = !proposal.viewedAt;
+    const events: Array<{
+      actorUserId?: string;
+      type: ProposalEventType;
+      description: string;
+      occurredAt: Date;
+      metadata?: Record<string, string>;
+    }> = [];
+
+    if (viewNeedsCapture) {
+      events.push({
+        type: "VIEWED",
+        description: formatProposalEventDescription("VIEWED"),
+        occurredAt: rejectedAt
+      });
+    }
+
+    events.push({
+      type: "REJECTED",
+      description: formatProposalEventDescription("REJECTED"),
+      occurredAt: rejectedAt
+    });
+
+    await tx.proposal.update({
+      where: {
+        id: proposal.id
+      },
+      data: {
+        status: "REJECTED",
+        viewedAt: proposal.viewedAt ?? rejectedAt,
+        rejectedAt,
+        rejectedReason: meta?.rejectedReason?.trim() || null,
+        lastEventAt: rejectedAt,
+        events: {
+          create: events
+        }
+      }
+    });
+
+    await tx.proposalPublicToken.update({
+      where: {
+        id: tokenRecord.id
+      },
+      data: {
+        lastUsedAt: rejectedAt
       }
     });
   });
@@ -970,6 +1067,7 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
   sentAt: string;
   expiresAt: string;
   acceptedAt: string | null;
+  rejectedAt: string | null;
   cancelledAt: string | null;
   selectedServices: Array<{
     internalCode: string;
@@ -1032,6 +1130,7 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
     sentAt: proposal.sentAt?.toISOString() ?? proposal.createdAt.toISOString(),
     expiresAt: proposal.expiresAt?.toISOString() ?? addDays(proposal.createdAt, 14).toISOString(),
     acceptedAt: proposal.acceptedAt?.toISOString() ?? null,
+    rejectedAt: proposal.rejectedAt?.toISOString() ?? null,
     cancelledAt: proposal.cancelledAt?.toISOString() ?? null,
     selectedServices,
     content,
@@ -1559,6 +1658,8 @@ function formatProposalEventDescription(type: ProposalEventType): string {
       return "A primeira visualização pública da proposta foi registrada.";
     case "ACCEPTED":
       return "A proposta foi aceita pelo fluxo seguro de clique para aceitar.";
+    case "REJECTED":
+      return "A proposta foi recusada pelo cliente no fluxo público.";
     case "CANCELLED":
       return "A proposta foi cancelada e bloqueada para edições livres.";
     case "EXPIRED":

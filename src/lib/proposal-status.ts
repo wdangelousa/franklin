@@ -7,6 +7,7 @@ export const proposalDisplayStatuses = [
   "Visualizada",
   "Enviada",
   "Rascunho",
+  "Recusada",
   "Cancelada",
   "Expirada"
 ] as const;
@@ -22,6 +23,7 @@ export function getProposalStatusTone(status: ProposalDisplayStatus): StatusTone
       return "accent";
     case "Rascunho":
       return "warning";
+    case "Recusada":
     case "Cancelada":
     case "Expirada":
       return "neutral";
@@ -33,7 +35,7 @@ export function getProposalStatusSortOrder(status: ProposalDisplayStatus): numbe
 }
 
 export function isProposalStatusLocked(status: ProposalDisplayStatus): boolean {
-  return ["Aceita", "Cancelada", "Expirada"].includes(status);
+  return ["Aceita", "Recusada", "Cancelada", "Expirada"].includes(status);
 }
 
 export function mapDatabaseProposalStatus(status: ProposalStatus): ProposalDisplayStatus {
@@ -44,6 +46,8 @@ export function mapDatabaseProposalStatus(status: ProposalStatus): ProposalDispl
       return "Visualizada";
     case "SENT":
       return "Enviada";
+    case "REJECTED":
+      return "Recusada";
     case "CANCELLED":
       return "Cancelada";
     case "EXPIRED":
@@ -62,6 +66,8 @@ export function mapDisplayProposalStatusToDatabase(status: ProposalDisplayStatus
       return "VIEWED";
     case "Enviada":
       return "SENT";
+    case "Recusada":
+      return "REJECTED";
     case "Cancelada":
       return "CANCELLED";
     case "Expirada":

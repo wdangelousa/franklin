@@ -50,6 +50,7 @@ enum ProposalStatus {
   SENT
   VIEWED
   ACCEPTED
+  REJECTED
   CANCELLED
   EXPIRED
 }
@@ -63,6 +64,7 @@ enum ProposalEventType {
   SENT
   VIEWED
   ACCEPTED
+  REJECTED
   CANCELLED
   EXPIRED
   PDF_GENERATION_QUEUED
@@ -209,7 +211,12 @@ model Proposal {
   expiresAt          DateTime?
   sentAt             DateTime?
   viewedAt           DateTime?
-  acceptedAt         DateTime?
+  acceptedAt            DateTime?
+  acceptedByName        String?
+  acceptedByIp          String?
+  acceptedByUserAgent   String?
+  rejectedAt            DateTime?
+  rejectedReason        String?               @db.Text
   cancelledAt        DateTime?
   publishedAt        DateTime?
   lastEventAt        DateTime?

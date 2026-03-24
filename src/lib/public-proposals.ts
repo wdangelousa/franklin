@@ -45,6 +45,7 @@ export interface PublicProposalSnapshot {
   sentAt: string;
   expiresAt: string;
   acceptedAt?: string | null;
+  rejectedAt?: string | null;
   cancelledAt?: string | null;
   onebridgeInstitutionalPresentation: string[];
   proposalIntroduction: string[];
@@ -108,6 +109,7 @@ export async function getPublicProposalSnapshotByToken(
     sentAt: mapped.sentAt,
     expiresAt: mapped.expiresAt,
     acceptedAt: mapped.acceptedAt,
+    rejectedAt: mapped.rejectedAt,
     cancelledAt: mapped.cancelledAt,
     onebridgeInstitutionalPresentation: mapped.content.onebridgeInstitutionalPresentation,
     proposalIntroduction: mapped.content.proposalIntroduction,
@@ -148,6 +150,7 @@ export function resolvePublicProposal(
     sentAt: snapshot.sentAt,
     firstViewedAt: getFirstViewedAt(eventLog),
     acceptedAt: snapshot.acceptedAt ?? null,
+    rejectedAt: snapshot.rejectedAt ?? null,
     cancelledAt: snapshot.cancelledAt ?? null,
     expiresAt: snapshot.expiresAt
   });
@@ -218,6 +221,8 @@ function mapProposalStatus(status: ProposalStatus): ProposalWorkflowStatus {
       return "VIEWED";
     case "SENT":
       return "SENT";
+    case "REJECTED":
+      return "REJECTED";
     case "CANCELLED":
       return "CANCELLED";
     case "EXPIRED":
@@ -232,6 +237,8 @@ function getPublicProposalStatusTitle(status: ProposalWorkflowStatus): string {
   switch (status) {
     case "ACCEPTED":
       return "Proposta aceita";
+    case "REJECTED":
+      return "Proposta recusada";
     case "CANCELLED":
       return "Proposta cancelada";
     case "EXPIRED":
@@ -256,6 +263,10 @@ function getPublicProposalStatusMessage(
       return lifecycle.acceptedAt
         ? `O aceite foi registrado em ${formatDateTime(lifecycle.acceptedAt)}. Esta página agora funciona como cópia somente leitura do snapshot aceito.`
         : "O aceite já foi registrado para esta proposta. Esta página agora funciona como cópia somente leitura do snapshot aceito.";
+    case "REJECTED":
+      return lifecycle.rejectedAt
+        ? `A proposta foi recusada em ${formatDateTime(lifecycle.rejectedAt)}. Esta página agora funciona como registro somente leitura.`
+        : "A proposta foi recusada pelo cliente.";
     case "CANCELLED":
       return "Esta proposta foi cancelada e agora está bloqueada para edição livre ou aceite.";
     case "EXPIRED":
@@ -310,6 +321,13 @@ function mapEventType(type: ProposalEventType): {
         status: "ACCEPTED",
         title: "Proposta aceita",
         description: "O aceite foi registrado pelo fluxo seguro de clique para aceitar."
+      };
+    case "REJECTED":
+      return {
+        type: "REJECTED",
+        status: "REJECTED",
+        title: "Proposta recusada",
+        description: "O cliente recusou a proposta pelo fluxo público."
       };
     case "CANCELLED":
       return {

@@ -14,6 +14,8 @@
   --accent-soft: rgba(23, 59, 52, 0.08);
   --success: #2f6c55;
   --warning: #916121;
+  --danger: #9b2c2c;
+  --danger-soft: rgba(155, 44, 44, 0.1);
   --shadow: 0 28px 80px rgba(46, 28, 13, 0.12);
   --radius-xl: 32px;
   --radius-lg: 24px;
@@ -2520,4 +2522,221 @@ ul {
     align-items: flex-start;
     padding-top: 15vh;
   }
+}
+
+/* === Signature acceptance form === */
+
+.signature-acceptance-text {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.signature-field {
+  display: grid;
+  gap: 6px;
+}
+
+.signature-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.signature-input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font-family:
+    "Iowan Old Style",
+    "Palatino Linotype",
+    "Book Antiqua",
+    "Times New Roman",
+    serif;
+  font-size: 1.2rem;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.signature-input::placeholder {
+  color: var(--muted);
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.signature-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(23, 59, 52, 0.1);
+}
+
+.signature-checkbox-label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.signature-checkbox {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.signature-reject-link {
+  display: block;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  transition: color 180ms ease;
+}
+
+.signature-reject-link:hover {
+  color: var(--text);
+}
+
+/* === Reject proposal section === */
+
+.reject-section {
+  scroll-margin-top: 24px;
+}
+
+.reject-section-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms ease;
+}
+
+.reject-section.is-expanded .reject-section-body {
+  grid-template-rows: 1fr;
+}
+
+.reject-section-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.reject-section:not(.is-expanded) .reject-section-inner {
+  pointer-events: none;
+  user-select: none;
+}
+
+.reject-section.is-expanded .reject-section-inner {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.reject-section-heading {
+  font-family:
+    "Iowan Old Style",
+    "Palatino Linotype",
+    "Book Antiqua",
+    "Times New Roman",
+    serif;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.reject-section-hint {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.reject-section-form {
+  display: grid;
+  gap: 14px;
+}
+
+.reject-section-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.reject-section-textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.reject-section-textarea:focus {
+  outline: none;
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.reject-section-confirm {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.75rem 1.15rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--danger);
+  background: transparent;
+  color: var(--danger);
+  font-weight: 600;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.reject-section-confirm:hover {
+  background: var(--danger-soft);
+}
+
+.reject-section-confirm:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+.reject-section-back {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.88rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.reject-section-back:hover {
+  color: var(--text);
 }

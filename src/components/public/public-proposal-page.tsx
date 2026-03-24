@@ -1,10 +1,11 @@
 import Link from "next/link";
 
+import { AcceptProposalForm } from "@/components/public/accept-proposal-form";
 import { PublicProposalSections } from "@/components/public/public-proposal-sections";
+import { RejectProposalSection } from "@/components/public/reject-proposal-section";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
-import { acceptPublicProposal } from "@/lib/public-proposal-actions";
 import { getProposalPdfPlan } from "@/lib/proposal-pdf";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
 import { formatCurrencyFromCents, formatDate, formatDateTime } from "@/lib/utils";
@@ -13,6 +14,8 @@ interface PublicProposalPageProps {
   proposal: ResolvedPublicProposal;
   feedback?: {
     acceptError?: string;
+    rejectError?: string;
+    rejected?: string;
   };
 }
 
@@ -20,6 +23,9 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
   const { snapshot } = proposal;
   const pdfPlan = getProposalPdfPlan(proposal);
   const acceptErrorMessage = mapAcceptErrorMessage(feedback?.acceptError);
+  const rejectErrorMessage = mapRejectErrorMessage(feedback?.rejectError);
+  const isRejectedFeedback = feedback?.rejected === "1";
+  const showForms = proposal.lifecycle.canAccept && !isRejectedFeedback;
 
   return (
     <main className="proposal-shell public-proposal-shell">
@@ -34,10 +40,24 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
         </div>
       </header>
 
+      {isRejectedFeedback ? (
+        <article className="surface-card notice-panel">
+          <strong>Proposta recusada.</strong>
+          <p className="section-copy">A recusa foi registrada. Esta página agora funciona como registro somente leitura.</p>
+        </article>
+      ) : null}
+
       {acceptErrorMessage ? (
         <article className="surface-card notice-panel">
           <strong>Não foi possível registrar o aceite.</strong>
           <p className="section-copy">{acceptErrorMessage}</p>
+        </article>
+      ) : null}
+
+      {rejectErrorMessage ? (
+        <article className="surface-card notice-panel">
+          <strong>Não foi possível registrar a recusa.</strong>
+          <p className="section-copy">{rejectErrorMessage}</p>
         </article>
       ) : null}
 
@@ -101,7 +121,21 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
             </div>
           </div>
 
-          <AcceptProposalForm proposal={proposal} />
+          {showForms ? (
+            <AcceptProposalForm
+              canAccept={proposal.lifecycle.canAccept}
+              status={proposal.lifecycle.status}
+              statusMessage={proposal.statusMessage}
+              token={proposal.snapshot.token}
+            />
+          ) : !isRejectedFeedback ? (
+            <AcceptProposalForm
+              canAccept={false}
+              status={proposal.lifecycle.status}
+              statusMessage={proposal.statusMessage}
+              token={proposal.snapshot.token}
+            />
+          ) : null}
           {proposal.lifecycle.status === "ACCEPTED" ? (
             <div className="public-proposal-actions">
               <Link className="button-secondary public-checklist-link" href={`/p/${snapshot.token}/checklist`}>
@@ -170,8 +204,21 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
               <h2>Confirmação formal</h2>
             </div>
             <p className="section-copy">{snapshot.acceptanceText}</p>
-            <AcceptProposalForm proposal={proposal} compact />
+            {showForms ? (
+              <AcceptProposalForm
+                acceptanceText={snapshot.acceptanceText}
+                canAccept={proposal.lifecycle.canAccept}
+                compact
+                status={proposal.lifecycle.status}
+                statusMessage={proposal.statusMessage}
+                token={snapshot.token}
+              />
+            ) : null}
           </article>
+
+          {showForms ? (
+            <RejectProposalSection token={snapshot.token} />
+          ) : null}
         </>
       ) : (
         <article className="surface-card">
@@ -194,43 +241,6 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
   );
 }
 
-function AcceptProposalForm({
-  proposal,
-  compact = false
-}: {
-  proposal: ResolvedPublicProposal;
-  compact?: boolean;
-}) {
-  const buttonLabel = proposal.lifecycle.canAccept
-    ? "Aceitar proposta"
-    : getDisabledLabel(proposal.lifecycle.status);
-  const formClassName = [
-    "public-accept-form",
-    compact ? "compact" : "",
-    compact ? "" : "is-primary-flow"
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    <form action={acceptPublicProposal} className={formClassName}>
-      <input name="token" type="hidden" value={proposal.snapshot.token} />
-      <button
-        className="button-primary public-accept-button"
-        disabled={!proposal.lifecycle.canAccept}
-        type="submit"
-      >
-        {buttonLabel}
-      </button>
-      <p className="builder-actions-note">
-        {proposal.lifecycle.canAccept
-          ? "O aceite é registrado contra este token seguro e o Franklin abre o checklist pós-aceite na sequência."
-          : proposal.statusMessage}
-      </p>
-    </form>
-  );
-}
-
 function getStatusTone(
   status: ResolvedPublicProposal["lifecycle"]["status"]
 ): "accent" | "success" | "warning" | "neutral" {
@@ -239,6 +249,7 @@ function getStatusTone(
       return "success";
     case "EXPIRED":
       return "warning";
+    case "REJECTED":
     case "CANCELLED":
     case "DRAFT":
       return "neutral";
@@ -246,23 +257,6 @@ function getStatusTone(
     case "VIEWED":
     default:
       return "accent";
-  }
-}
-
-function getDisabledLabel(status: ResolvedPublicProposal["lifecycle"]["status"]): string {
-  switch (status) {
-    case "ACCEPTED":
-      return "Proposta aceita";
-    case "CANCELLED":
-      return "Proposta cancelada";
-    case "EXPIRED":
-      return "Proposta expirada";
-    case "DRAFT":
-      return "Proposta indisponível";
-    case "SENT":
-    case "VIEWED":
-    default:
-      return "Aceitar proposta";
   }
 }
 
@@ -281,6 +275,22 @@ function mapAcceptErrorMessage(errorCode?: string): string | null {
     case "not_available":
       return "Esta proposta não está em um estado elegível para aceite no momento.";
     case "accept_failed":
+    default:
+      return "Tente novamente em instantes. Se o problema persistir, fale com a equipe responsável.";
+  }
+}
+
+function mapRejectErrorMessage(errorCode?: string): string | null {
+  if (!errorCode) {
+    return null;
+  }
+
+  switch (errorCode) {
+    case "invalid_token":
+      return "Este link privado não é válido ou já foi revogado. Solicite um novo link para a equipe.";
+    case "not_available":
+      return "Esta proposta não está em um estado elegível para recusa no momento.";
+    case "reject_failed":
     default:
       return "Tente novamente em instantes. Se o problema persistir, fale com a equipe responsável.";
   }
