@@ -1,0 +1,295 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  PARTNER
+}
+
+enum LeadStatus {
+  NEW
+  QUALIFIED
+  DISCOVERY
+  PROPOSAL
+  WON
+  LOST
+  ARCHIVED
+}
+
+enum LeadSource {
+  REFERRAL
+  INBOUND
+  OUTBOUND
+  PARTNER
+  EVENT
+  OTHER
+}
+
+enum ServiceStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum BillingType {
+  FIXED_FEE
+  HOURLY
+  ANNUAL
+  PER_CLASS
+  CUSTOM
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
+  VIEWED
+  ACCEPTED
+  CANCELLED
+  EXPIRED
+}
+
+enum ProposalEventType {
+  CREATED
+  STATUS_CHANGED
+  ITEM_ADDED
+  ITEM_UPDATED
+  ITEM_REMOVED
+  SENT
+  VIEWED
+  ACCEPTED
+  CANCELLED
+  EXPIRED
+  PDF_GENERATION_QUEUED
+  PUBLIC_TOKEN_ISSUED
+  PUBLIC_TOKEN_REVOKED
+  NOTE_ADDED
+}
+
+model Organization {
+  id                String            @id @default(cuid())
+  name              String
+  slug              String            @unique
+  users             User[]
+  leads             Lead[]
+  serviceCategories ServiceCategory[]
+  services          Service[]
+  proposals         Proposal[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model User {
+  id                 String                @id @default(cuid())
+  organizationId     String
+  email              String                @unique
+  name               String
+  title              String?
+  role               UserRole              @default(PARTNER)
+  isActive           Boolean               @default(true)
+  organization       Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  ownedLeads         Lead[]                @relation("LeadOwner")
+  ownedProposals     Proposal[]            @relation("ProposalOwner")
+  proposalEvents     ProposalEvent[]       @relation("ProposalEventActor")
+  issuedPublicTokens ProposalPublicToken[] @relation("ProposalTokenIssuer")
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+
+  @@index([organizationId, role])
+}
+
+model Lead {
+  id                  String       @id @default(cuid())
+  organizationId      String
+  ownerUserId         String?
+  status              LeadStatus   @default(NEW)
+  source              LeadSource   @default(OTHER)
+  companyName         String
+  companyWebsite      String?
+  contactName         String
+  contactEmail        String?
+  contactPhone        String?
+  contactTitle        String?
+  title               String?
+  summary             String?      @db.Text
+  notes               String?      @db.Text
+  estimatedValueCents Int?
+  nextStep            String?
+  targetCloseDate     DateTime?
+  lastContactedAt     DateTime?
+  convertedAt         DateTime?
+  organization        Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  owner               User?        @relation("LeadOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+  proposals           Proposal[]
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  @@index([organizationId, status])
+  @@index([ownerUserId])
+}
+
+model ServiceCategory {
+  id             String       @id @default(cuid())
+  organizationId String
+  code           String
+  name           String
+  description    String?      @db.Text
+  sortOrder      Int          @default(0)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  services       Service[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([organizationId, code])
+  @@index([organizationId, sortOrder])
+}
+
+model Service {
+  id                     String           @id @default(cuid())
+  organizationId         String
+  categoryId             String?
+  internalCode           String
+  slug                   String
+  serviceName            String
+  publicName             String
+  longDescription        String?          @db.Text
+  billingType            BillingType
+  unitLabel              String?
+  currency               String           @default("USD")
+  priceCents             Int?
+  defaultQuantity        Int              @default(1)
+  allowsVariableQuantity Boolean          @default(false)
+  specificClause         String?          @db.Text
+  submissionNotes        String?          @db.Text
+  deliverables           Json?
+  isActive               Boolean          @default(true)
+  status                 ServiceStatus    @default(DRAFT)
+  sortOrder              Int              @default(0)
+  organization           Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  category               ServiceCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  proposalItems          ProposalItem[]   @relation("ProposalItemSourceService")
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+  @@unique([organizationId, internalCode])
+  @@unique([organizationId, slug])
+  @@index([organizationId, status, sortOrder])
+  @@index([organizationId, isActive, sortOrder])
+  @@index([categoryId])
+}
+
+model Proposal {
+  id                 String                @id @default(cuid())
+  organizationId     String
+  leadId             String?
+  ownerUserId        String?
+  proposalNumber     String
+  title              String
+  publicSlug         String                @unique
+  status             ProposalStatus        @default(DRAFT)
+  currency           String                @default("USD")
+  clientCompanyName  String
+  clientContactName  String
+  clientContactEmail String?
+  clientContactPhone String?
+  clientContactTitle String?
+  summary            String?               @db.Text
+  scopeOfWork        String?               @db.Text
+  assumptions        String?               @db.Text
+  termsAndConditions String?               @db.Text
+  contentSnapshot    Json?
+  subtotalCents      Int                   @default(0)
+  discountCents      Int                   @default(0)
+  totalCents         Int                   @default(0)
+  expiresAt          DateTime?
+  sentAt             DateTime?
+  viewedAt           DateTime?
+  acceptedAt         DateTime?
+  cancelledAt        DateTime?
+  publishedAt        DateTime?
+  lastEventAt        DateTime?
+  pdfGenerationQueuedAt DateTime?
+  organization       Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lead               Lead?                 @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  owner              User?                 @relation("ProposalOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+  items              ProposalItem[]
+  events             ProposalEvent[]
+  publicTokens       ProposalPublicToken[]
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+
+  @@unique([organizationId, proposalNumber])
+  @@index([organizationId, status])
+  @@index([leadId])
+  @@index([ownerUserId])
+}
+
+model ProposalItem {
+  id                              String      @id @default(cuid())
+  proposalId                      String
+  sourceServiceId                 String?
+  sortOrder                       Int         @default(0)
+  categoryCodeSnapshot            String?
+  categoryNameSnapshot            String?
+  serviceCodeSnapshot             String
+  serviceNameSnapshot             String
+  servicePublicNameSnapshot       String
+  serviceShortDescriptionSnapshot String?
+  serviceDescriptionSnapshot      String?     @db.Text
+  specificClauseSnapshot          String?     @db.Text
+  submissionNotesSnapshot         String?     @db.Text
+  requiredDocumentsSnapshot       Json?
+  billingTypeSnapshot             BillingType
+  unitLabelSnapshot               String?
+  quantity                        Int         @default(1)
+  unitPriceCents                  Int
+  subtotalCents                   Int
+  discountCents                   Int         @default(0)
+  totalCents                      Int
+  configuration                   Json?
+  proposal                        Proposal    @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  sourceService                   Service?    @relation("ProposalItemSourceService", fields: [sourceServiceId], references: [id], onDelete: SetNull)
+  createdAt                       DateTime    @default(now())
+  updatedAt                       DateTime    @updatedAt
+
+  @@index([proposalId, sortOrder])
+  @@index([sourceServiceId])
+}
+
+model ProposalEvent {
+  id          String            @id @default(cuid())
+  proposalId  String
+  actorUserId String?
+  type        ProposalEventType
+  description String
+  metadata    Json?
+  occurredAt  DateTime          @default(now())
+  proposal    Proposal          @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  actor       User?             @relation("ProposalEventActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([proposalId, occurredAt])
+  @@index([actorUserId])
+}
+
+model ProposalPublicToken {
+  id             String    @id @default(cuid())
+  proposalId     String
+  issuedByUserId String?
+  label          String?
+  tokenPrefix    String
+  tokenHash      String    @unique
+  tokenCiphertext String?
+  expiresAt      DateTime?
+  lastUsedAt     DateTime?
+  revokedAt      DateTime?
+  proposal       Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  issuedBy       User?     @relation("ProposalTokenIssuer", fields: [issuedByUserId], references: [id], onDelete: SetNull)
+  createdAt      DateTime  @default(now())
+
+  @@index([proposalId, revokedAt])
+}
