@@ -18,6 +18,7 @@ import {
   isLeadDraftComplete,
   proposalBuilderSteps,
   sortProposalSelectedItems,
+  updateProposalSelectedItemDiscount,
   updateProposalSelectedItemQuantity,
   type ProposalBuilderCatalogItem,
   type ProposalBuilderCatalogSection,
@@ -63,8 +64,10 @@ export function ProposalBuilder({
 
   const activeLead = getActiveLead({ leadMode, selectedLeadId, leadDraft, leads });
   const hasLead = Boolean(activeLead);
+  const grossSubtotalCents = selectedItems.reduce((sum, item) => sum + item.quantity * item.unitPriceCents, 0);
   const subtotalCents = calculateProposalSubtotalCents(selectedItems);
   const totalCents = calculateProposalTotalCents(selectedItems);
+  const totalDiscountCents = grossSubtotalCents - subtotalCents;
   const selectedServiceCodes = new Set(selectedItems.map((item) => item.internalCode));
   const currentStepIndex = getStepIndex(currentStep);
   const leadSelectionPayload =
@@ -79,7 +82,8 @@ export function ProposalBuilder({
         };
   const selectedServicePayload = selectedItems.map((item) => ({
     internalCode: item.internalCode,
-    quantity: item.quantity
+    quantity: item.quantity,
+    discountPercent: item.discountPercent
   }));
   const snapshotPreview =
     activeLead && selectedItems.length > 0
@@ -145,6 +149,23 @@ export function ProposalBuilder({
   function handleQuantityStep(itemCode: string, currentQuantity: number, delta: number) {
     const nextQuantity = Math.max(1, currentQuantity + delta);
     handleQuantityChange(itemCode, String(nextQuantity));
+  }
+
+  function handleDiscountChange(itemCode: string, nextValue: string) {
+    const parsedValue = Number.parseFloat(nextValue);
+
+    setSelectedItems((currentItems) =>
+      sortProposalSelectedItems(
+        currentItems.map((item) =>
+          item.internalCode === itemCode
+            ? updateProposalSelectedItemDiscount(
+                item,
+                Number.isFinite(parsedValue) ? parsedValue : 0
+              )
+            : item
+        )
+      )
+    );
   }
 
   function handleToggleExpand(code: string) {
@@ -600,11 +621,20 @@ export function ProposalBuilder({
                                                 <span>Desconto (%)</span>
                                                 <input
                                                   className="svc-discount-input"
-                                                  disabled
+                                                  max={100}
+                                                  min={0}
+                                                  onChange={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDiscountChange(
+                                                      service.internalCode,
+                                                      e.target.value
+                                                    );
+                                                  }}
                                                   onClick={(e) => e.stopPropagation()}
                                                   placeholder="0"
-                                                  title="Descontos desabilitados no MVP"
+                                                  step={1}
                                                   type="number"
+                                                  value={selectedItem.discountPercent || ""}
                                                 />
                                               </div>
                                             </div>
@@ -650,14 +680,17 @@ export function ProposalBuilder({
                               </p>
                             </div>
 
-                            <div className="snapshot-note">
-                              <strong>Descontos continuam desabilitados no MVP.</strong>
-                              <p>
-                                O Franklin hoje suporta apenas acesso de administrador e sócio. Até
-                                que as permissões de desconto sejam modeladas explicitamente, o total
-                                da proposta permanece sem descontos.
-                              </p>
-                            </div>
+                            {totalDiscountCents > 0 ? (
+                              <div className="snapshot-note">
+                                <strong>Descontos aplicados por item.</strong>
+                                <p>
+                                  Desconto total de{" "}
+                                  <span className="currency-value">{formatCurrencyFromCents(totalDiscountCents)}</span>{" "}
+                                  sobre o subtotal bruto de{" "}
+                                  <span className="currency-value">{formatCurrencyFromCents(grossSubtotalCents)}</span>.
+                                </p>
+                              </div>
+                            ) : null}
                           </div>
 
                           {activeLead ? (
@@ -699,7 +732,7 @@ export function ProposalBuilder({
                                     quantidade e preço
                                   </li>
                                   <li>
-                                    Subtotal da proposta, desconto zero e total em centavos inteiros
+                                    Subtotal da proposta, desconto por item e total em centavos inteiros
                                   </li>
                                 </ul>
                               </div>
@@ -833,25 +866,17 @@ export function ProposalBuilder({
             <div className="page-stack">
               <div className="totals-panel">
                 <div className="total-row">
-                  <span>Subtotal</span>
-                  <strong><span className="currency-value">{formatCurrencyFromCents(subtotalCents)}</span></strong>
+                  <span>Subtotal bruto</span>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(grossSubtotalCents)}</span></strong>
                 </div>
                 <div className="total-row">
                   <span>Desconto</span>
-                  <strong><span className="currency-value">{formatCurrencyFromCents(0)}</span></strong>
+                  <strong><span className="currency-value">−{formatCurrencyFromCents(totalDiscountCents)}</span></strong>
                 </div>
                 <div className="total-row is-grand">
                   <span>Total</span>
                   <strong><span className="currency-value">{formatCurrencyFromCents(totalCents)}</span></strong>
                 </div>
-              </div>
-
-              <div className="discount-disabled">
-                <strong>Os controles de desconto estão desabilitados.</strong>
-                <p>
-                  Eles permanecem bloqueados até que permissões comerciais por perfil sejam
-                  modeladas.
-                </p>
               </div>
             </div>
           </article>
@@ -999,6 +1024,12 @@ function SelectedItemList({
               <p className="detail-label">Subtotal</p>
               <strong><span className="currency-value">{formatCurrencyFromCents(item.subtotalCents)}</span></strong>
             </div>
+            {item.discountPercent > 0 ? (
+              <div className="detail-pair">
+                <p className="detail-label">Desconto</p>
+                <strong>{item.discountPercent}%</strong>
+              </div>
+            ) : null}
           </div>
 
           <div className="catalog-service-tags">

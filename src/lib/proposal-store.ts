@@ -83,6 +83,7 @@ export interface ProposalLeadSelection {
 export interface ProposalDraftSelection {
   internalCode: string;
   quantity: number;
+  discountPercent?: number;
 }
 
 export interface InternalProposalListItem {
@@ -267,12 +268,14 @@ export async function createDraftProposal(args: {
             specificClauseSnapshot: item.specificClause,
             submissionNotesSnapshot: item.submissionNotes,
             requiredDocumentsSnapshot: toJsonValue(item.requiredDocuments),
+            deliverablesSnapshot: toJsonValue(item.deliverables ?? []),
             billingTypeSnapshot: item.billingType,
             unitLabelSnapshot: item.unitLabel,
             quantity: item.quantity,
             unitPriceCents: item.unitPriceCents,
             subtotalCents: item.subtotalCents,
-            discountCents: 0,
+            discountPercent: item.discountPercent ?? 0,
+            discountCents: item.quantity * item.unitPriceCents - item.subtotalCents,
             totalCents: item.subtotalCents
           }))
         },
@@ -452,12 +455,14 @@ export async function createAndSendProposal(args: {
             specificClauseSnapshot: item.specificClause,
             submissionNotesSnapshot: item.submissionNotes,
             requiredDocumentsSnapshot: toJsonValue(item.requiredDocuments),
+            deliverablesSnapshot: toJsonValue(item.deliverables ?? []),
             billingTypeSnapshot: item.billingType,
             unitLabelSnapshot: item.unitLabel,
             quantity: item.quantity,
             unitPriceCents: item.unitPriceCents,
             subtotalCents: item.subtotalCents,
-            discountCents: 0,
+            discountPercent: item.discountPercent ?? 0,
+            discountCents: item.quantity * item.unitPriceCents - item.subtotalCents,
             totalCents: item.subtotalCents
           }))
         },
@@ -1111,6 +1116,9 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
     unitPriceCents: number;
     subtotalCents: number;
     requiredDocuments: string[];
+    deliverables: string[];
+    submissionNotes: string | null;
+    specificClause: string | null;
   }>;
   content: ProposalContentSnapshot;
   eventLog: Array<{
@@ -1131,7 +1139,10 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
     quantity: item.quantity,
     unitPriceCents: item.unitPriceCents,
     subtotalCents: item.subtotalCents,
-    requiredDocuments: parseJsonStringArray(item.requiredDocumentsSnapshot)
+    requiredDocuments: parseJsonStringArray(item.requiredDocumentsSnapshot),
+    deliverables: parseJsonStringArray(item.deliverablesSnapshot),
+    submissionNotes: item.submissionNotesSnapshot ?? null,
+    specificClause: item.specificClauseSnapshot ?? null
   }));
   const content = parseProposalContentSnapshot(proposal.contentSnapshot, {
     companyName: proposal.clientCompanyName,
@@ -1271,7 +1282,7 @@ async function buildSelectedItemsFromCatalog(
     organizationId: string;
     selections: ProposalDraftSelection[];
   }
-): Promise<Array<ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[] }>> {
+): Promise<Array<ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[]; deliverables: string[] }>> {
   if (args.selections.length === 0) {
     throw new Error("É necessário selecionar pelo menos um serviço do catálogo.");
   }
@@ -1282,7 +1293,8 @@ async function buildSelectedItemsFromCatalog(
         selection.internalCode,
         {
           internalCode: selection.internalCode,
-          quantity: normalizeQuantity(selection.quantity)
+          quantity: normalizeQuantity(selection.quantity),
+          discountPercent: selection.discountPercent ?? 0
         }
       ])
     ).values()
@@ -1304,22 +1316,27 @@ async function buildSelectedItemsFromCatalog(
     throw new Error("Um ou mais serviços selecionados do catálogo estão indisponíveis.");
   }
 
-  const quantityByCode = new Map(
-    dedupedSelections.map((selection) => [selection.internalCode, selection.quantity])
+  const selectionByCode = new Map(
+    dedupedSelections.map((selection) => [selection.internalCode, selection])
   );
 
   return sortProposalSelectedItems(
-    services.map((service) => mapServiceToSelectedItem(service, quantityByCode.get(service.internalCode) ?? 1))
-  ) as Array<ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[] }>;
+    services.map((service) => {
+      const sel = selectionByCode.get(service.internalCode);
+      return mapServiceToSelectedItem(service, sel?.quantity ?? 1, sel?.discountPercent ?? 0);
+    })
+  ) as Array<ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[]; deliverables: string[] }>;
 }
 
 function mapServiceToSelectedItem(
   service: CatalogServiceRecord,
-  requestedQuantity: number
-): ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[] } {
+  requestedQuantity: number,
+  discountPercent = 0
+): ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[]; deliverables: string[] } {
   const quantity = service.allowsVariableQuantity ? normalizeQuantity(requestedQuantity) : 1;
   const unitPriceCents = service.priceCents ?? 0;
-  const subtotalCents = quantity * unitPriceCents;
+  const normalizedDiscount = Math.min(Math.max(discountPercent, 0), 100);
+  const subtotalCents = Math.round(quantity * unitPriceCents * (1 - normalizedDiscount / 100));
   const categoryName = service.category
     ? localizeServiceCategory({
         code: service.category.code,
@@ -1347,15 +1364,17 @@ function mapServiceToSelectedItem(
     unitPriceCents,
     subtotalCents,
     allowsVariableQuantity: service.allowsVariableQuantity,
+    discountPercent: normalizedDiscount,
     requiredDocuments: getRequiredDocumentsForCatalogService({
       internalCode: service.internalCode,
       categoryCode: service.category?.code ?? null
-    })
+    }),
+    deliverables: parseJsonStringArray(service.deliverables)
   };
 }
 
 function toContentServices(
-  items: Array<ProposalBuilderSelectedItem & { requiredDocuments: string[] }>
+  items: Array<ProposalBuilderSelectedItem & { requiredDocuments: string[]; deliverables: string[] }>
 ): ProposalContentServiceInput[] {
   return items.map((item) => ({
     internalCode: item.internalCode,

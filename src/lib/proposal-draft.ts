@@ -100,6 +100,7 @@ export interface ProposalBuilderSelectedItem {
   unitPriceCents: number;
   subtotalCents: number;
   allowsVariableQuantity: boolean;
+  discountPercent: number;
 }
 
 export interface ProposalBuilderSnapshotPreview {
@@ -154,8 +155,9 @@ export function createProposalSelectedItem(
     unitLabel: catalogItem.unitLabel,
     quantity,
     unitPriceCents: catalogItem.unitPriceCents,
-    subtotalCents: calculateItemSubtotalCents(quantity, catalogItem.unitPriceCents),
-    allowsVariableQuantity: catalogItem.allowsVariableQuantity
+    subtotalCents: calculateItemSubtotalCents(quantity, catalogItem.unitPriceCents, 0),
+    allowsVariableQuantity: catalogItem.allowsVariableQuantity,
+    discountPercent: 0
   };
 }
 
@@ -168,12 +170,27 @@ export function updateProposalSelectedItemQuantity(
   return {
     ...item,
     quantity,
-    subtotalCents: calculateItemSubtotalCents(quantity, item.unitPriceCents)
+    subtotalCents: calculateItemSubtotalCents(quantity, item.unitPriceCents, item.discountPercent)
   };
 }
 
-export function calculateItemSubtotalCents(quantity: number, unitPriceCents: number): number {
-  return normalizeProposalQuantity(quantity, true) * Math.max(unitPriceCents, 0);
+export function updateProposalSelectedItemDiscount(
+  item: ProposalBuilderSelectedItem,
+  discountPercent: number
+): ProposalBuilderSelectedItem {
+  const normalized = normalizeDiscountPercent(discountPercent);
+
+  return {
+    ...item,
+    discountPercent: normalized,
+    subtotalCents: calculateItemSubtotalCents(item.quantity, item.unitPriceCents, normalized)
+  };
+}
+
+export function calculateItemSubtotalCents(quantity: number, unitPriceCents: number, discountPercent = 0): number {
+  const base = normalizeProposalQuantity(quantity, true) * Math.max(unitPriceCents, 0);
+  const discount = normalizeDiscountPercent(discountPercent);
+  return Math.round(base * (1 - discount / 100));
 }
 
 export function calculateProposalSubtotalCents(items: ProposalBuilderSelectedItem[]): number {
@@ -280,4 +297,11 @@ function normalizeProposalQuantity(quantity: number, allowsVariableQuantity: boo
   }
 
   return Math.floor(quantity);
+}
+
+function normalizeDiscountPercent(value: number): number {
+  if (!Number.isFinite(value) || value < 0) {
+    return 0;
+  }
+  return Math.min(value, 100);
 }

@@ -1,54 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../lib/firebase";
 import { StatusPill } from "@/components/ui/status-pill";
+import { signInAsDemoUser } from "@/lib/auth/actions";
+import { DEMO_ACCOUNTS } from "@/lib/auth/config";
 
 export function SignInForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const idToken = await userCredential.user.getIdToken();
-
-      const response = await fetch("/api/auth/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Falha ao criar sessão segura");
-      }
-
-      router.push("/app/dashboard");
-      router.refresh();
-    } catch (err: any) {
-      console.error("Login error:", err);
-      setError("Email ou senha inválidos. Tente novamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <section className="surface-card auth-card">
       <div className="section-head">
         <p className="eyebrow">Login</p>
         <h2>Acesse sua conta</h2>
         <p className="section-copy">
-          Entre com seu email e senha para acessar a área interna do Franklin.
+          No MVP, o acesso interno utiliza perfis de demonstração. Escolha um perfil abaixo para entrar.
         </p>
       </div>
 
@@ -57,46 +20,19 @@ export function SignInForm() {
         <StatusPill tone="neutral">Somente perfis internos</StatusPill>
       </div>
 
-      <form onSubmit={handleSubmit} className="auth-form" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {error && (
-          <div style={{ padding: '12px', background: '#ffebee', color: '#c62828', borderRadius: '4px', fontSize: '14px' }}>
-            {error}
-          </div>
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label htmlFor="email" style={{ fontSize: '14px', fontWeight: 500 }}>Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', background: 'transparent' }}
-          />
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label htmlFor="password" style={{ fontSize: '14px', fontWeight: 500 }}>Senha</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', background: 'transparent' }}
-          />
-        </div>
-
-        <button 
-          className="button-primary" 
-          type="submit" 
-          disabled={loading}
-          style={{ marginTop: '8px', opacity: loading ? 0.7 : 1 }}
-        >
-          {loading ? "Entrando..." : "Entrar na área interna"}
-        </button>
-      </form>
+      <div className="auth-demo-accounts">
+        {DEMO_ACCOUNTS.map((account) => (
+          <form key={account.id} action={signInAsDemoUser}>
+            <input name="accountId" type="hidden" value={account.id} />
+            <button className="button-primary auth-demo-button" type="submit">
+              <strong>{account.name}</strong>
+              <span className="auth-demo-meta">
+                {account.title} &middot; {account.role}
+              </span>
+            </button>
+          </form>
+        ))}
+      </div>
     </section>
   );
 }

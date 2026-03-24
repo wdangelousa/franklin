@@ -79,9 +79,16 @@ export function PublicProposalSections({
 
                 <div className="catalog-service-pricing">
                   <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
-                  <span>
-                    {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
-                  </span>
+                  {service.subtotalCents < service.quantity * service.unitPriceCents ? (
+                    <span>
+                      {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
+                      {" "}<span className="service-discount-strikethrough"><span className="currency-value">{formatCurrencyFromCents(service.quantity * service.unitPriceCents)}</span></span>
+                    </span>
+                  ) : (
+                    <span>
+                      {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -107,6 +114,24 @@ export function PublicProposalSections({
                   <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
                 </div>
               </div>
+
+              {service.deliverables.length > 0 ? (
+                <ul className="feature-list">
+                  {service.deliverables.map((deliverable) => (
+                    <li key={deliverable}>{deliverable}</li>
+                  ))}
+                </ul>
+              ) : null}
+
+              {service.specificClause ? (
+                <div className="service-clause-callout">
+                  <p>{service.specificClause}</p>
+                </div>
+              ) : null}
+
+              {service.submissionNotes ? (
+                <p className="section-copy service-submission-notes">{service.submissionNotes}</p>
+              ) : null}
 
               <div className="catalog-service-tags">
                 <StatusPill tone="accent">{service.billingLabel}</StatusPill>

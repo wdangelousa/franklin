@@ -27,6 +27,9 @@ export interface PublicProposalSelectedServiceSnapshot {
   unitPriceCents: number;
   subtotalCents: number;
   requiredDocuments: string[];
+  deliverables: string[];
+  submissionNotes: string | null;
+  specificClause: string | null;
 }
 
 export interface PublicProposalSnapshot {

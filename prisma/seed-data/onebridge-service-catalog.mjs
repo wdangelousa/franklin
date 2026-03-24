@@ -10,8 +10,8 @@ export const seedOrganization = {
 export const serviceCatalogSeed = [
   {
     code: "formation",
-    name: "Company Formation",
-    description: "Company formation, offshore setup, and business banking services.",
+    name: "Formação de Empresas",
+    description: "Abertura de empresas, estruturação offshore e serviços bancários empresariais.",
     sortOrder: 1,
     services: [
       {
@@ -24,15 +24,15 @@ export const serviceCatalogSeed = [
         priceCents: 99000,
         allowsVariableQuantity: false,
         longDescription:
-          "Full formation of your LLC or Corporation in the state of Florida, with all the support needed to make your company legally operational in the United States.",
+          "Formação completa da sua LLC ou Corporation no estado da Flórida, com todo o suporte necessário para tornar sua empresa legalmente operacional nos Estados Unidos.",
         specificClause: null,
-        submissionNotes: "Estimated timeline: 5–10 business days",
+        submissionNotes: "Prazo estimado: 5–10 dias úteis",
         deliverables: [
-          "Articles of Organization / Incorporation",
-          "Operating Agreement or Bylaws",
-          "EIN obtainment (federal tax ID number)",
-          "Sunbiz registration (FL Secretary of State)",
-          "Estimated timeline: 5–10 business days"
+          "Artigos de Organização / Incorporação",
+          "Contrato Operacional ou Estatuto Social",
+          "Obtenção do EIN (número federal de identificação fiscal)",
+          "Registro no Sunbiz (Secretary of State da Flórida)",
+          "Prazo estimado: 5–10 dias úteis"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -48,15 +48,15 @@ export const serviceCatalogSeed = [
         priceCents: 179000,
         allowsVariableQuantity: false,
         longDescription:
-          "Formation of your LLC or Corporation in Delaware, a state recognized for its advanced corporate law and superior legal protections for businesses of any size.",
+          "Formação da sua LLC ou Corporation em Delaware, estado reconhecido por sua legislação societária avançada e proteções jurídicas superiores para empresas de qualquer porte.",
         specificClause: null,
-        submissionNotes: "Estimated timeline: 7–14 business days",
+        submissionNotes: "Prazo estimado: 7–14 dias úteis",
         deliverables: [
-          "Certificate of Formation / Incorporation",
-          "Operating Agreement or Bylaws",
-          "EIN obtainment (federal tax ID number)",
-          "Division of Corporations registration",
-          "Estimated timeline: 7–14 business days"
+          "Certificado de Formação / Incorporação",
+          "Contrato Operacional ou Estatuto Social",
+          "Obtenção do EIN (número federal de identificação fiscal)",
+          "Registro na Division of Corporations",
+          "Prazo estimado: 7–14 dias úteis"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -72,15 +72,15 @@ export const serviceCatalogSeed = [
         priceCents: 179000,
         allowsVariableQuantity: false,
         longDescription:
-          "Formation of your LLC or Corporation in Wyoming, a state with zero state income tax, strong asset protection, and privacy for members.",
+          "Formação da sua LLC ou Corporation em Wyoming, estado com imposto de renda estadual zero, forte proteção de ativos e privacidade para membros.",
         specificClause: null,
-        submissionNotes: "Estimated timeline: 7–14 business days",
+        submissionNotes: "Prazo estimado: 7–14 dias úteis",
         deliverables: [
-          "Articles of Organization / Incorporation",
-          "Operating Agreement or Bylaws",
-          "EIN obtainment (federal tax ID number)",
-          "WY Secretary of State registration",
-          "Estimated timeline: 7–14 business days"
+          "Artigos de Organização / Incorporação",
+          "Contrato Operacional ou Estatuto Social",
+          "Obtenção do EIN (número federal de identificação fiscal)",
+          "Registro no Secretary of State de Wyoming",
+          "Prazo estimado: 7–14 dias úteis"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -96,14 +96,14 @@ export const serviceCatalogSeed = [
         priceCents: 360000,
         allowsVariableQuantity: false,
         longDescription:
-          "Company formation in the British Virgin Islands, one of the most respected offshore jurisdictions in the world, ideal for international holdings, asset protection, and global tax planning.",
-        specificClause: "BVI Registered Agent included for the first year.",
-        submissionNotes: "Estimated timeline: 10–20 business days",
+          "Abertura de empresa nas British Virgin Islands, uma das jurisdições offshore mais respeitadas do mundo, ideal para holdings internacionais, proteção de ativos e planejamento tributário global.",
+        specificClause: "Agente Registrado nas BVI incluído no primeiro ano.",
+        submissionNotes: "Prazo estimado: 10–20 dias úteis",
         deliverables: [
-          "Memorandum & Articles of Association",
-          "Certificate of Incorporation",
-          "BVI Registered Agent included for the first year",
-          "Estimated timeline: 10–20 business days"
+          "Memorando e Artigos de Associação",
+          "Certificado de Incorporação",
+          "Agente Registrado nas BVI incluído no primeiro ano",
+          "Prazo estimado: 10–20 dias úteis"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -119,13 +119,13 @@ export const serviceCatalogSeed = [
         priceCents: 35000,
         allowsVariableQuantity: false,
         longDescription:
-          "Full assistance in opening a U.S. business bank account, including guidance on required documentation and follow-up until account activation.",
+          "Assessoria completa para abertura de conta bancária empresarial nos EUA, incluindo orientação sobre documentação necessária e acompanhamento até a ativação da conta.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Company profile analysis for ideal bank selection",
-          "Documentation preparation and review",
-          "Process follow-up until approval"
+          "Análise do perfil da empresa para seleção ideal do banco",
+          "Preparação e revisão de documentação",
+          "Acompanhamento do processo até a aprovação"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -135,8 +135,8 @@ export const serviceCatalogSeed = [
   },
   {
     code: "registered_agent",
-    name: "Registered Agent",
-    description: "State-level registered agent coverage and legal address services.",
+    name: "Agente Registrado",
+    description: "Serviço de agente registrado em nível estadual e endereço legal.",
     sortOrder: 2,
     services: [
       {
@@ -149,13 +149,13 @@ export const serviceCatalogSeed = [
         priceCents: 22000,
         allowsVariableQuantity: false,
         longDescription:
-          "Registered Agent service in the state of Florida. Your company maintains a valid legal address for receiving official correspondence, legal notices, and state documents.",
+          "Serviço de Agente Registrado no estado da Flórida. Sua empresa mantém um endereço legal válido para recebimento de correspondência oficial, notificações judiciais e documentos estaduais.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Legal address for official correspondence",
-          "Receipt and forwarding of legal notices",
-          "Compliance with state requirements"
+          "Endereço legal para correspondência oficial",
+          "Recebimento e encaminhamento de notificações judiciais",
+          "Conformidade com requisitos estaduais"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -171,13 +171,13 @@ export const serviceCatalogSeed = [
         priceCents: 22000,
         allowsVariableQuantity: false,
         longDescription:
-          "Registered Agent service in the state of Delaware. A mandatory legal address for every company registered in the state, with receipt and forwarding of official documents.",
+          "Serviço de Agente Registrado no estado de Delaware. Endereço legal obrigatório para toda empresa registrada no estado, com recebimento e encaminhamento de documentos oficiais.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Legal address for official correspondence",
-          "Receipt and forwarding of legal notices",
-          "Compliance with state requirements"
+          "Endereço legal para correspondência oficial",
+          "Recebimento e encaminhamento de notificações judiciais",
+          "Conformidade com requisitos estaduais"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -193,13 +193,13 @@ export const serviceCatalogSeed = [
         priceCents: 22000,
         allowsVariableQuantity: false,
         longDescription:
-          "Registered Agent service in the state of Wyoming. A mandatory legal address for every company registered in the state, with receipt and forwarding of official documents.",
+          "Serviço de Agente Registrado no estado de Wyoming. Endereço legal obrigatório para toda empresa registrada no estado, com recebimento e encaminhamento de documentos oficiais.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Legal address for official correspondence",
-          "Receipt and forwarding of legal notices",
-          "Compliance with state requirements"
+          "Endereço legal para correspondência oficial",
+          "Recebimento e encaminhamento de notificações judiciais",
+          "Conformidade com requisitos estaduais"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -209,8 +209,8 @@ export const serviceCatalogSeed = [
   },
   {
     code: "compliance",
-    name: "Annual Compliance",
-    description: "Annual compliance, renewal, and standing-maintenance services.",
+    name: "Compliance Anual",
+    description: "Serviços de compliance anual, renovação e manutenção de boa situação legal.",
     sortOrder: 3,
     services: [
       {
@@ -223,13 +223,13 @@ export const serviceCatalogSeed = [
         priceCents: 44000,
         allowsVariableQuantity: false,
         longDescription:
-          "Annual maintenance of your Florida company, ensuring all state obligations are met on time, avoiding fines and administrative dissolution risks.",
+          "Manutenção anual da sua empresa na Flórida, garantindo o cumprimento de todas as obrigações estaduais dentro dos prazos, evitando multas e riscos de dissolução administrativa.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Annual Report filed with Sunbiz",
-          "Registered Agent renewal",
-          "Deadline and obligation monitoring"
+          "Relatório Anual protocolado no Sunbiz",
+          "Renovação do Agente Registrado",
+          "Monitoramento de prazos e obrigações"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -245,13 +245,13 @@ export const serviceCatalogSeed = [
         priceCents: 79000,
         allowsVariableQuantity: false,
         longDescription:
-          "Annual maintenance for Delaware Corporations, including mandatory Franchise Tax and Annual Report, keeping your company in Good Standing with the state.",
+          "Manutenção anual para Corporations em Delaware, incluindo o Franchise Tax obrigatório e o Relatório Anual, mantendo sua empresa em Good Standing junto ao estado.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Franchise Tax filing",
-          "Annual Report with Division of Corporations",
-          "Registered Agent renewal"
+          "Declaração do Franchise Tax",
+          "Relatório Anual na Division of Corporations",
+          "Renovação do Agente Registrado"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -267,13 +267,13 @@ export const serviceCatalogSeed = [
         priceCents: 79000,
         allowsVariableQuantity: false,
         longDescription:
-          "Annual maintenance for Delaware LLCs, including the mandatory $300 annual state tax payment, keeping your company active and in compliance.",
-        specificClause: "Includes the mandatory $300 Delaware annual state tax.",
+          "Manutenção anual para LLCs em Delaware, incluindo o pagamento obrigatório da taxa estadual anual de $300, mantendo sua empresa ativa e em conformidade.",
+        specificClause: "Inclui o pagamento obrigatório da taxa estadual anual de $300 de Delaware.",
         submissionNotes: null,
         deliverables: [
-          "Annual Tax payment ($300 included)",
-          "Registered Agent renewal",
-          "Deadline and obligation monitoring"
+          "Pagamento da taxa anual ($300 incluída)",
+          "Renovação do Agente Registrado",
+          "Monitoramento de prazos e obrigações"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -289,13 +289,13 @@ export const serviceCatalogSeed = [
         priceCents: 44000,
         allowsVariableQuantity: false,
         longDescription:
-          "Annual maintenance of your Wyoming company, including the mandatory Annual Report filing and registered agent renewal.",
+          "Manutenção anual da sua empresa em Wyoming, incluindo o protocolo obrigatório do Relatório Anual e a renovação do agente registrado.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Annual Report filed with Secretary of State",
-          "Registered Agent renewal",
-          "Deadline and obligation monitoring"
+          "Relatório Anual protocolado no Secretary of State",
+          "Renovação do Agente Registrado",
+          "Monitoramento de prazos e obrigações"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -311,13 +311,13 @@ export const serviceCatalogSeed = [
         priceCents: 286000,
         allowsVariableQuantity: false,
         longDescription:
-          "Annual maintenance of your BVI offshore company, including registered agent renewal, government fees, and ongoing compliance with local regulations.",
+          "Manutenção anual da sua empresa offshore nas BVI, incluindo renovação do agente registrado, taxas governamentais e conformidade contínua com a regulamentação local.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "BVI Registered Agent renewal",
-          "Annual government fees included",
-          "Compliance with BVI regulations"
+          "Renovação do Agente Registrado nas BVI",
+          "Taxas governamentais anuais incluídas",
+          "Conformidade com regulamentações das BVI"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -327,8 +327,8 @@ export const serviceCatalogSeed = [
   },
   {
     code: "corporate_changes",
-    name: "Corporate Changes",
-    description: "Entity amendments, dissolution, and custom corporate document services.",
+    name: "Alterações Societárias",
+    description: "Alterações societárias, dissolução de entidades e serviços de documentação corporativa personalizada.",
     sortOrder: 4,
     services: [
       {
@@ -341,13 +341,13 @@ export const serviceCatalogSeed = [
         priceCents: 37000,
         allowsVariableQuantity: false,
         longDescription:
-          "Formal closing of your Florida company, filing the necessary documents with the state for voluntary dissolution, avoiding undue future obligations.",
+          "Encerramento formal da sua empresa na Flórida, com protocolo dos documentos necessários junto ao estado para dissolução voluntária, evitando obrigações futuras indevidas.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Articles of Dissolution filed with Sunbiz",
-          "Final Annual Report (if applicable)",
-          "Guidance on final tax obligations"
+          "Artigos de Dissolução protocolados no Sunbiz",
+          "Relatório Anual final (se aplicável)",
+          "Orientação sobre obrigações tributárias finais"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -363,13 +363,13 @@ export const serviceCatalogSeed = [
         priceCents: 68000,
         allowsVariableQuantity: false,
         longDescription:
-          "Formal closing of your Delaware company, filing the Certificate of Cancellation/Dissolution with the Division of Corporations.",
+          "Encerramento formal da sua empresa em Delaware, com protocolo do Certificado de Cancelamento/Dissolução na Division of Corporations.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Certificate of Cancellation / Dissolution",
-          "Payment of outstanding state taxes",
-          "Guidance on final tax obligations"
+          "Certificado de Cancelamento / Dissolução",
+          "Pagamento de tributos estaduais pendentes",
+          "Orientação sobre obrigações tributárias finais"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -385,13 +385,13 @@ export const serviceCatalogSeed = [
         priceCents: 68000,
         allowsVariableQuantity: false,
         longDescription:
-          "Formal closing of your Wyoming company, filing dissolution documents with the Secretary of State.",
+          "Encerramento formal da sua empresa em Wyoming, com protocolo dos documentos de dissolução junto ao Secretary of State.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Articles of Dissolution",
-          "Payment of outstanding state taxes",
-          "Guidance on final tax obligations"
+          "Artigos de Dissolução",
+          "Pagamento de tributos estaduais pendentes",
+          "Orientação sobre obrigações tributárias finais"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -407,13 +407,13 @@ export const serviceCatalogSeed = [
         priceCents: 44000,
         allowsVariableQuantity: false,
         longDescription:
-          "Formal changes to your company’s registration, such as name change, address, members, managers, or business purpose, with state filing update.",
+          "Alterações formais no registro da sua empresa, como mudança de nome, endereço, membros, gerentes ou objeto social, com atualização junto ao estado.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Amendment / Articles of Amendment preparation",
-          "Filing with the corresponding state",
-          "Operating Agreement update (if applicable)"
+          "Preparação do Amendment / Artigos de Alteração",
+          "Protocolo junto ao estado correspondente",
+          "Atualização do Contrato Operacional (se aplicável)"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -429,13 +429,13 @@ export const serviceCatalogSeed = [
         priceCents: 80000,
         allowsVariableQuantity: false,
         longDescription:
-          "Preparation or customization of tailored corporate documents, such as complex Operating Agreements, detailed Bylaws, resolutions, and other documents specific to your company’s needs.",
+          "Preparação ou customização de documentos corporativos sob medida, como Contratos Operacionais complexos, Estatutos Sociais detalhados, resoluções e outros documentos específicos para as necessidades da sua empresa.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Company structure and needs analysis",
-          "Document drafting and review",
-          "Up to 2 rounds of revisions"
+          "Análise da estrutura e necessidades da empresa",
+          "Elaboração e revisão dos documentos",
+          "Até 2 rodadas de revisão"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -445,8 +445,8 @@ export const serviceCatalogSeed = [
   },
   {
     code: "visas",
-    name: "Visas & Immigration",
-    description: "Immigration petition, response, and refiling services.",
+    name: "Vistos e Imigração",
+    description: "Petições imigratórias, respostas a RFE e serviços de reapresentação de casos.",
     sortOrder: 5,
     services: [
       {
@@ -459,15 +459,15 @@ export const serviceCatalogSeed = [
         priceCents: 1690000,
         allowsVariableQuantity: false,
         longDescription:
-          "Full petition for the EB-1 visa, designed for professionals with internationally recognized extraordinary ability in sciences, arts, education, business, or athletics. A priority category that does not require a job offer.",
-        specificClause: "Does not require a job offer.",
+          "Petição completa para o visto EB-1, destinado a profissionais com habilidade extraordinária reconhecida internacionalmente em ciências, artes, educação, negócios ou esportes. Uma categoria prioritária que não exige oferta de emprego.",
+        specificClause: "Não exige oferta de emprego.",
         submissionNotes: null,
         deliverables: [
-          "Detailed eligibility assessment",
-          "Full petition preparation (Form I-140)",
-          "Recommendation letters and evidence drafting",
-          "Documentation package compilation and organization",
-          "USCIS government filing fees included"
+          "Avaliação detalhada de elegibilidade",
+          "Preparação completa da petição (Formulário I-140)",
+          "Elaboração de cartas de recomendação e evidências",
+          "Compilação e organização do pacote documental",
+          "Taxas governamentais do USCIS incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -483,16 +483,16 @@ export const serviceCatalogSeed = [
         priceCents: 1690000,
         allowsVariableQuantity: false,
         longDescription:
-          "Petition for the EB-2 visa, for professionals with an advanced degree (master’s or higher) or exceptional ability. Includes the possibility of a National Interest Waiver (NIW), which waives the job offer requirement.",
+          "Petição para o visto EB-2, para profissionais com grau avançado (mestrado ou superior) ou habilidade excepcional. Inclui a possibilidade do National Interest Waiver (NIW), que dispensa a exigência de oferta de emprego.",
         specificClause:
-          "May include a National Interest Waiver, which waives the job offer requirement.",
+          "Pode incluir o National Interest Waiver, que dispensa a exigência de oferta de emprego.",
         submissionNotes: null,
         deliverables: [
-          "Eligibility assessment (classic EB-2 or NIW)",
-          "Full petition preparation (Form I-140)",
-          "Legal argumentation for National Interest Waiver",
-          "Documentation package compilation",
-          "USCIS government filing fees included"
+          "Avaliação de elegibilidade (EB-2 clássico ou NIW)",
+          "Preparação completa da petição (Formulário I-140)",
+          "Argumentação jurídica para o National Interest Waiver",
+          "Compilação do pacote documental",
+          "Taxas governamentais do USCIS incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -508,15 +508,15 @@ export const serviceCatalogSeed = [
         priceCents: 1290000,
         allowsVariableQuantity: false,
         longDescription:
-          "Petition for the EB-3 visa, aimed at skilled workers, professionals with a bachelor’s degree, or workers in specific categories. Requires a job offer from a U.S. employer.",
-        specificClause: "Requires a job offer from a U.S. employer.",
+          "Petição para o visto EB-3, destinado a trabalhadores qualificados, profissionais com bacharelado ou trabalhadores em categorias específicas. Exige oferta de emprego de empregador nos EUA.",
+        specificClause: "Exige oferta de emprego de empregador nos EUA.",
         submissionNotes: null,
         deliverables: [
-          "Eligibility assessment",
-          "Labor Certification (PERM) coordination",
-          "Petition preparation (Form I-140)",
-          "Documentation package compilation",
-          "USCIS government filing fees included"
+          "Avaliação de elegibilidade",
+          "Coordenação da Labor Certification (PERM)",
+          "Preparação da petição (Formulário I-140)",
+          "Compilação do pacote documental",
+          "Taxas governamentais do USCIS incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -532,15 +532,15 @@ export const serviceCatalogSeed = [
         priceCents: 1290000,
         allowsVariableQuantity: false,
         longDescription:
-          "Petition for the E-2 visa, designed for investors from treaty countries who are investing substantial capital in a U.S. business.",
-        specificClause: "Available only to investors from treaty countries.",
+          "Petição para o visto E-2, destinado a investidores de países com tratado que estão investindo capital substancial em um negócio nos EUA.",
+        specificClause: "Disponível apenas para investidores de países com tratado.",
         submissionNotes: null,
         deliverables: [
-          "Investment and business structure analysis",
-          "Full petition preparation (Form DS-160 / I-129)",
-          "Business Plan preparation (if needed)",
-          "Financial and documentary evidence compilation",
-          "Government filing fees included"
+          "Análise do investimento e estrutura do negócio",
+          "Preparação completa da petição (Formulário DS-160 / I-129)",
+          "Elaboração do Business Plan (se necessário)",
+          "Compilação de evidências financeiras e documentais",
+          "Taxas governamentais incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -556,16 +556,16 @@ export const serviceCatalogSeed = [
         priceCents: 1290000,
         allowsVariableQuantity: false,
         longDescription:
-          "Petition for the L-1 visa, which allows the transfer of executives, managers, or employees with specialized knowledge from a foreign company to a U.S. branch, subsidiary, or parent company.",
+          "Petição para o visto L-1, que permite a transferência de executivos, gerentes ou funcionários com conhecimento especializado de uma empresa estrangeira para uma filial, subsidiária ou matriz nos EUA.",
         specificClause:
-          "Requires a qualifying parent, branch, subsidiary, or affiliate relationship.",
+          "Exige relação societária qualificada entre empresa matriz, filial, subsidiária ou afiliada.",
         submissionNotes: null,
         deliverables: [
-          "Company relationship analysis (parent/subsidiary)",
-          "Full petition preparation (Form I-129)",
-          "Corporate relationship supporting documentation",
-          "Evidence package compilation",
-          "USCIS government filing fees included"
+          "Análise do vínculo societário (matriz/subsidiária)",
+          "Preparação completa da petição (Formulário I-129)",
+          "Documentação de suporte do vínculo societário",
+          "Compilação do pacote de evidências",
+          "Taxas governamentais do USCIS incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -581,15 +581,15 @@ export const serviceCatalogSeed = [
         priceCents: 1290000,
         allowsVariableQuantity: false,
         longDescription:
-          "Petition for the O-1 visa, designed for individuals with extraordinary ability or notable achievements in sciences, arts, education, business, athletics, film, or television.",
+          "Petição para o visto O-1, destinado a indivíduos com habilidade extraordinária ou realizações notáveis em ciências, artes, educação, negócios, esportes, cinema ou televisão.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Detailed eligibility assessment",
-          "Full petition preparation (Form I-129)",
-          "Recommendation letters drafting",
-          "Evidence package compilation",
-          "USCIS government filing fees included"
+          "Avaliação detalhada de elegibilidade",
+          "Preparação completa da petição (Formulário I-129)",
+          "Elaboração de cartas de recomendação",
+          "Compilação do pacote de evidências",
+          "Taxas governamentais do USCIS incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -605,14 +605,14 @@ export const serviceCatalogSeed = [
         priceCents: 100000,
         allowsVariableQuantity: false,
         longDescription:
-          "Preparation of a response to a Request for Evidence (RFE) issued by USCIS during the processing of your immigration case.",
+          "Preparação de resposta a um Request for Evidence (RFE) emitido pelo USCIS durante o processamento do seu caso imigratório.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Detailed RFE analysis",
-          "Customized response strategy",
-          "Additional evidence compilation",
-          "Response drafting and submission"
+          "Análise detalhada do RFE",
+          "Estratégia de resposta personalizada",
+          "Compilação de evidências adicionais",
+          "Elaboração e envio da resposta"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -628,14 +628,14 @@ export const serviceCatalogSeed = [
         priceCents: 280000,
         allowsVariableQuantity: false,
         longDescription:
-          "Preparation and submission of an Appeal or Motion (Motion to Reopen / Reconsider) after an unfavorable USCIS decision.",
+          "Preparação e envio de um Appeal ou Motion (Motion to Reopen / Reconsider) após decisão desfavorável do USCIS.",
         specificClause: null,
-        submissionNotes: "Submission includes filing with AAO or USCIS.",
+        submissionNotes: "Envio inclui protocolo junto ao AAO ou USCIS.",
         deliverables: [
-          "Unfavorable decision analysis",
-          "Legal strategy for the appeal",
-          "Brief / argumentation drafting",
-          "Filing with AAO / USCIS"
+          "Análise da decisão desfavorável",
+          "Estratégia jurídica para o recurso",
+          "Elaboração do brief / argumentação",
+          "Protocolo junto ao AAO / USCIS"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -651,14 +651,14 @@ export const serviceCatalogSeed = [
         priceCents: 280000,
         allowsVariableQuantity: false,
         longDescription:
-          "Complete refiling of a previously denied immigration petition, with a new strategy, strengthened evidence, and updated argumentation.",
+          "Reapresentação completa de uma petição imigratória previamente negada, com nova estratégia, evidências reforçadas e argumentação atualizada.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Previous denial reason analysis",
-          "New petition strategy",
-          "Evidence package reinforcement",
-          "USCIS government filing fees included"
+          "Análise dos motivos da negativa anterior",
+          "Nova estratégia para a petição",
+          "Reforço do pacote de evidências",
+          "Taxas governamentais do USCIS incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -668,8 +668,8 @@ export const serviceCatalogSeed = [
   },
   {
     code: "specialized",
-    name: "Specialized Services",
-    description: "Tax, trademark, apostille, business plan, and CPA advisory services.",
+    name: "Serviços Especializados",
+    description: "Planejamento tributário, registro de marca, apostilamento, business plan e consultoria com CPA.",
     sortOrder: 6,
     services: [
       {
@@ -682,15 +682,15 @@ export const serviceCatalogSeed = [
         priceCents: 380000,
         allowsVariableQuantity: false,
         longDescription:
-          "Preparation of a professional Business Plan, structured to meet both immigration requirements (E-2, L-1 visas) and presentations to investors and financial institutions.",
+          "Preparação de um Business Plan profissional, estruturado para atender tanto requisitos imigratórios (vistos E-2, L-1) quanto apresentações a investidores e instituições financeiras.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Market and competition analysis",
-          "Detailed financial projections",
-          "Operational and growth strategy",
-          "Professionally formatted document",
-          "Up to 2 rounds of revisions"
+          "Análise de mercado e concorrência",
+          "Projeções financeiras detalhadas",
+          "Estratégia operacional e de crescimento",
+          "Documento formatado profissionalmente",
+          "Até 2 rodadas de revisão"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -706,14 +706,14 @@ export const serviceCatalogSeed = [
         priceCents: 320000,
         allowsVariableQuantity: false,
         longDescription:
-          "Tax planning advisory to structure your U.S. operations in a tax-efficient manner, covering federal and state obligations, company tax classification, and basic optimization strategies.",
+          "Consultoria de planejamento tributário para estruturar suas operações nos EUA de forma eficiente, cobrindo obrigações federais e estaduais, classificação tributária da empresa e estratégias básicas de otimização.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Current tax structure analysis",
-          "Tax classification recommendation (LLC vs Corp, S-Corp election)",
-          "Federal and state obligation guidance",
-          "Report with recommendations"
+          "Análise da estrutura tributária atual",
+          "Recomendação de classificação tributária (LLC vs Corp, eleição S-Corp)",
+          "Orientação sobre obrigações federais e estaduais",
+          "Relatório com recomendações"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -729,15 +729,15 @@ export const serviceCatalogSeed = [
         priceCents: 480000,
         allowsVariableQuantity: false,
         longDescription:
-          "In-depth tax planning for complex corporate structures, including international operations, holdings, double taxation treaties, and advanced asset protection strategies.",
+          "Planejamento tributário aprofundado para estruturas corporativas complexas, incluindo operações internacionais, holdings, tratados de dupla tributação e estratégias avançadas de proteção de ativos.",
         specificClause: null,
         submissionNotes: null,
         deliverables: [
-          "Full multi-jurisdictional structure analysis",
-          "Transfer pricing and international compliance strategies",
-          "Double taxation treaty planning",
-          "Specialized CPA advisory",
-          "Detailed executive report"
+          "Análise completa da estrutura multijurisdicional",
+          "Estratégias de transfer pricing e compliance internacional",
+          "Planejamento de tratados de dupla tributação",
+          "Consultoria especializada com CPA",
+          "Relatório executivo detalhado"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -753,14 +753,14 @@ export const serviceCatalogSeed = [
         priceCents: 250000,
         allowsVariableQuantity: true,
         longDescription:
-          "Registration of your trademark with the United States Patent and Trademark Office (USPTO), ensuring legal protection of your brand across the entire U.S. territory. Price per registration class.",
-        specificClause: "Price applies per registration class.",
+          "Registro da sua marca junto ao United States Patent and Trademark Office (USPTO), garantindo proteção legal da sua marca em todo o território norte-americano. Preço por classe de registro.",
+        specificClause: "Preço aplicável por classe de registro.",
         submissionNotes: null,
         deliverables: [
-          "Trademark availability search",
-          "Application preparation and submission",
-          "Process follow-up until approval",
-          "USPTO fees included"
+          "Pesquisa de disponibilidade da marca",
+          "Preparação e envio da aplicação",
+          "Acompanhamento do processo até aprovação",
+          "Taxas do USPTO incluídas"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -776,14 +776,14 @@ export const serviceCatalogSeed = [
         priceCents: 360000,
         allowsVariableQuantity: false,
         longDescription:
-          "Complete apostille and certified translation service, accepted by U.S. and international government agencies. Ideal for validating Brazilian documents in the U.S. or vice versa.",
+          "Serviço completo de apostilamento e tradução juramentada, aceito por órgãos governamentais dos EUA e internacionais. Ideal para validação de documentos brasileiros nos EUA ou vice-versa.",
         specificClause: null,
-        submissionNotes: "Estimated timeline: varies by state/country.",
+        submissionNotes: "Prazo estimado: varia conforme estado/país.",
         deliverables: [
-          "Certified translation (USCIS-accepted)",
-          "Complete apostille process",
-          "Document shipping and logistics",
-          "Estimated timeline: varies by state/country"
+          "Tradução juramentada (aceita pelo USCIS)",
+          "Processo completo de apostilamento",
+          "Logística de envio de documentos",
+          "Prazo estimado: varia conforme estado/país"
         ],
         isActive: true,
         status: "ACTIVE",
@@ -799,13 +799,13 @@ export const serviceCatalogSeed = [
         priceCents: 39000,
         allowsVariableQuantity: true,
         longDescription:
-          "Advisory session with a specialized accountant (CPA) in U.S. taxation for businesses and individuals, ideal for specific questions, tax situation review, or a professional second opinion.",
-        specificClause: "Billed per hour.",
+          "Sessão de consultoria com contador especializado (CPA) em tributação norte-americana para empresas e pessoas físicas, ideal para dúvidas específicas, revisão da situação fiscal ou uma segunda opinião profissional.",
+        specificClause: "Cobrança por hora.",
         submissionNotes: null,
         deliverables: [
-          "Session with a CPA specialized in U.S. tax",
-          "Personalized analysis of your situation",
-          "Documented written recommendations (if requested)"
+          "Sessão com CPA especializado em tributação dos EUA",
+          "Análise personalizada da sua situação",
+          "Recomendações por escrito documentadas (se solicitado)"
         ],
         isActive: true,
         status: "ACTIVE",
