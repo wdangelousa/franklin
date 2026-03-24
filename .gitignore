@@ -4,4 +4,7 @@ node_modules
 .env.local
 dist
 coverage
+tsconfig.tsbuildinfo
+.pnpm-store
+.vercel
 

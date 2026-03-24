@@ -370,6 +370,127 @@ export async function sendDraftProposal(args: {
   });
 }
 
+export async function createAndSendProposal(args: {
+  session: SessionData;
+  leadSelection: ProposalLeadSelection;
+  selectedServices: ProposalDraftSelection[];
+}): Promise<{ proposalId: string }> {
+  const { organization, user } = await ensureInternalActor(args.session);
+
+  return prisma.$transaction(async (tx) => {
+    const lead = await resolveProposalLead(tx, {
+      organizationId: organization.id,
+      ownerUserId: user.id,
+      selection: args.leadSelection
+    });
+    const selectedItems = await buildSelectedItemsFromCatalog(tx, {
+      organizationId: organization.id,
+      selections: args.selectedServices
+    });
+    const snapshotPreview = buildProposalSnapshotPreview({
+      lead,
+      items: selectedItems,
+      ownerName: user.name,
+      ownerRole: args.session.user.role
+    });
+    const proposalNumber = createProposalNumber();
+    const sentAt = new Date();
+    const expiresAt = addDays(sentAt, 14);
+    const token = createProposalToken();
+
+    const proposal = await tx.proposal.create({
+      data: {
+        organizationId: organization.id,
+        leadId: lead.id || null,
+        ownerUserId: user.id,
+        proposalNumber,
+        title: buildProposalDraftTitle(lead.company),
+        publicSlug: buildPublicProposalSlug(proposalNumber, lead.company),
+        status: "SENT",
+        clientCompanyName: snapshotPreview.clientCompanyName,
+        clientContactName: snapshotPreview.clientContactName,
+        clientContactEmail: snapshotPreview.clientContactEmail,
+        clientContactPhone: snapshotPreview.clientContactPhone,
+        summary: snapshotPreview.leadNotes || null,
+        contentSnapshot: toJsonValue(
+          buildProposalContentSnapshot({
+            companyName: lead.company,
+            contactName: lead.fullName,
+            services: toContentServices(selectedItems)
+          })
+        ),
+        subtotalCents: snapshotPreview.subtotalCents,
+        discountCents: snapshotPreview.discountCents,
+        totalCents: snapshotPreview.totalCents,
+        sentAt,
+        expiresAt,
+        publishedAt: sentAt,
+        lastEventAt: sentAt,
+        items: {
+          create: selectedItems.map((item, index) => ({
+            sortOrder: index,
+            sourceServiceId: item.sourceServiceId,
+            categoryCodeSnapshot: item.categoryCode,
+            categoryNameSnapshot: item.categoryName,
+            serviceCodeSnapshot: item.internalCode,
+            serviceNameSnapshot: item.serviceName,
+            servicePublicNameSnapshot: item.publicName,
+            serviceShortDescriptionSnapshot: item.description,
+            serviceDescriptionSnapshot: item.description,
+            specificClauseSnapshot: item.specificClause,
+            submissionNotesSnapshot: item.submissionNotes,
+            requiredDocumentsSnapshot: toJsonValue(item.requiredDocuments),
+            billingTypeSnapshot: item.billingType,
+            unitLabelSnapshot: item.unitLabel,
+            quantity: item.quantity,
+            unitPriceCents: item.unitPriceCents,
+            subtotalCents: item.subtotalCents,
+            discountCents: 0,
+            totalCents: item.subtotalCents
+          }))
+        },
+        publicTokens: {
+          create: {
+            issuedByUserId: user.id,
+            label: "Link principal de entrega",
+            tokenPrefix: token.prefix,
+            tokenHash: token.hash,
+            tokenCiphertext: token.ciphertext,
+            lastUsedAt: null
+          }
+        },
+        events: {
+          create: [
+            {
+              actorUserId: user.id,
+              type: "CREATED",
+              description: formatProposalEventDescription("CREATED"),
+              occurredAt: sentAt
+            },
+            {
+              actorUserId: user.id,
+              type: "PUBLIC_TOKEN_ISSUED",
+              description: formatProposalEventDescription("PUBLIC_TOKEN_ISSUED"),
+              metadata: { tokenPrefix: token.prefix },
+              occurredAt: sentAt
+            },
+            {
+              actorUserId: user.id,
+              type: "SENT",
+              description: formatProposalEventDescription("SENT"),
+              occurredAt: sentAt
+            }
+          ]
+        }
+      }
+    });
+
+    return {
+      proposalId: proposal.id
+    };
+  });
+}
+
 export async function syncExpiredProposalStatusesForOrganization(organizationId: string): Promise<void> {
   await syncExpiredProposals(organizationId);
 }
@@ -680,6 +801,55 @@ export async function getPublicProposalRecordByToken(args: {
   });
 
   return proposal as ProposalWithRelations | null;
+}
+
+export async function cancelProposal(args: {
+  proposalId: string;
+  session: SessionData;
+}): Promise<{ proposalId: string }> {
+  const { organization, user } = await ensureInternalActor(args.session);
+
+  return prisma.$transaction(async (tx) => {
+    const proposal = await tx.proposal.findFirst({
+      where: {
+        id: args.proposalId,
+        organizationId: organization.id
+      }
+    });
+
+    if (!proposal) {
+      throw new Error("Proposta não encontrada.");
+    }
+
+    if (!["DRAFT", "SENT", "VIEWED"].includes(proposal.status)) {
+      throw new Error("Apenas propostas em aberto podem ser canceladas.");
+    }
+
+    const cancelledAt = new Date();
+
+    await tx.proposal.update({
+      where: {
+        id: proposal.id
+      },
+      data: {
+        status: "CANCELLED",
+        cancelledAt,
+        lastEventAt: cancelledAt,
+        events: {
+          create: {
+            actorUserId: user.id,
+            type: "CANCELLED",
+            description: formatProposalEventDescription("CANCELLED"),
+            occurredAt: cancelledAt
+          }
+        }
+      }
+    });
+
+    return {
+      proposalId: proposal.id
+    };
+  });
 }
 
 export async function acceptProposalByToken(token: string): Promise<void> {

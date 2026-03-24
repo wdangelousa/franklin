@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ProposalPublicLinkActions } from "@/components/workspace/proposal-public-link-actions";
+import { ProposalSentSuccess } from "@/components/workspace/proposal-sent-success";
 import { requireInternalSession } from "@/lib/auth/session";
 import { sendProposalDraftAction } from "@/lib/proposal-actions";
 import { getInternalProposalDetail } from "@/lib/proposal-store";
@@ -17,7 +18,9 @@ interface ProposalDetailPageProps {
   searchParams?: Promise<{
     created?: string;
     sent?: string;
+    cancelled?: string;
     sendError?: string;
+    cancelError?: string;
   }>;
 }
 
@@ -35,6 +38,10 @@ export default async function ProposalDetailPage({
 
   if (!detail) {
     notFound();
+  }
+
+  if (feedback?.sent === "1" && detail.status === "Enviada") {
+    return <ProposalSentSuccess proposal={detail} />;
   }
 
   return (
