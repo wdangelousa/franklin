@@ -1,12 +1,14 @@
 import "server-only";
 
 import {
+  ChecklistItemSide,
   LeadSource,
   LeadStatus,
   Prisma,
   ProposalEventType,
   ProposalStatus,
   UserRole,
+  type ProposalChecklistItem,
   type ProposalEvent,
   type ProposalPublicToken,
   type Proposal,
@@ -141,6 +143,16 @@ export interface InternalProposalDetail {
     title: string;
     description: string;
     occurredAt: string;
+  }>;
+  checklistItems: Array<{
+    id: string;
+    side: "CLIENT" | "INTERNAL";
+    title: string;
+    description: string | null;
+    sortOrder: number;
+    isCompleted: boolean;
+    completedAt: string | null;
+    completedBy: string | null;
   }>;
 }
 
@@ -613,6 +625,12 @@ export async function getInternalProposalDetail(args: {
           createdAt: "desc"
         },
         take: 1
+      },
+      checklistItems: {
+        orderBy: [
+          { side: "asc" },
+          { sortOrder: "asc" }
+        ]
       }
     }
   });
@@ -666,6 +684,16 @@ export async function getInternalProposalDetail(args: {
       title: formatProposalEventTitle(event.type),
       description: formatProposalEventDescription(event.type),
       occurredAt: event.occurredAt.toISOString()
+    })),
+    checklistItems: (proposal.checklistItems ?? []).map((ci) => ({
+      id: ci.id,
+      side: ci.side as "CLIENT" | "INTERNAL",
+      title: ci.title,
+      description: ci.description,
+      sortOrder: ci.sortOrder,
+      isCompleted: ci.isCompleted,
+      completedAt: ci.completedAt?.toISOString() ?? null,
+      completedBy: ci.completedBy
     }))
   };
 }
@@ -962,6 +990,9 @@ export async function acceptProposalByToken(
         lastUsedAt: acceptedAt
       }
     });
+
+    // Create persistent checklist items based on the accepted proposal
+    await createProposalChecklist(proposal.id, tx);
   });
 }
 
@@ -1666,6 +1697,8 @@ function formatProposalEventDescription(type: ProposalEventType): string {
       return "A janela de revisão da proposta expirou.";
     case "PDF_GENERATION_QUEUED":
       return "A proposta aceita foi marcada como pronta para geração de PDF.";
+    case "CHECKLIST_ITEM_COMPLETED":
+      return "Um item do checklist foi marcado como concluído.";
     default:
       return "Ocorreu uma atualização no fluxo da proposta.";
   }
@@ -1692,4 +1725,168 @@ function getInternalPublicLink(token: ProposalPublicToken | null): string | null
 
 function toJsonValue<T>(value: T): Prisma.InputJsonValue {
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+}
+
+// ---------------------------------------------------------------------------
+// Checklist helpers
+// ---------------------------------------------------------------------------
+
+type PrismaTx = Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown>
+  ? T
+  : never;
+
+export interface ProposalChecklistItemRecord {
+  id: string;
+  proposalId: string;
+  side: ChecklistItemSide;
+  title: string;
+  description: string | null;
+  sortOrder: number;
+  isCompleted: boolean;
+  completedAt: Date | null;
+  completedBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const INTERNAL_CHECKLIST_DEFAULTS = [
+  { title: "Configurar ambiente do projeto", description: "Preparar ferramentas, acessos e repositórios necessários para o início dos trabalhos." },
+  { title: "Atribuir equipe responsável", description: "Definir os membros da equipe interna que irão conduzir o projeto." },
+  { title: "Agendar reunião de kickoff", description: "Marcar a reunião inicial com o cliente para alinhar escopo, cronograma e expectativas." },
+  { title: "Emitir fatura inicial", description: "Gerar e enviar a fatura referente à entrada ou primeira parcela do contrato." }
+] as const;
+
+async function createProposalChecklist(proposalId: string, tx: PrismaTx): Promise<void> {
+  // Fetch the proposal items to extract required documents
+  const items = await tx.proposalItem.findMany({
+    where: { proposalId }
+  });
+
+  const clientItems: Array<{ title: string; description: string; side: ChecklistItemSide; sortOrder: number }> = [];
+
+  let sortIndex = 0;
+  for (const item of items) {
+    const docs = parseJsonStringArray(item.requiredDocumentsSnapshot);
+    for (const doc of docs) {
+      clientItems.push({
+        title: doc,
+        description: `Documento necessário referente ao serviço: ${item.servicePublicNameSnapshot}`,
+        side: "CLIENT" as ChecklistItemSide,
+        sortOrder: sortIndex++
+      });
+    }
+  }
+
+  const internalItems = INTERNAL_CHECKLIST_DEFAULTS.map((item, idx) => ({
+    title: item.title,
+    description: item.description,
+    side: "INTERNAL" as ChecklistItemSide,
+    sortOrder: idx
+  }));
+
+  const allItems = [...clientItems, ...internalItems];
+
+  if (allItems.length === 0) {
+    return;
+  }
+
+  await tx.proposalChecklistItem.createMany({
+    data: allItems.map((item) => ({
+      id: crypto.randomUUID(),
+      proposalId,
+      side: item.side,
+      title: item.title,
+      description: item.description,
+      sortOrder: item.sortOrder,
+      isCompleted: false
+    }))
+  });
+}
+
+export async function getProposalChecklist(
+  proposalId: string
+): Promise<ProposalChecklistItemRecord[]> {
+  return prisma.proposalChecklistItem.findMany({
+    where: { proposalId },
+    orderBy: [
+      { side: "asc" },
+      { sortOrder: "asc" }
+    ]
+  });
+}
+
+export async function getProposalChecklistByToken(
+  token: string
+): Promise<ProposalChecklistItemRecord[]> {
+  const tokenHash = hashProposalToken(token);
+  const tokenRecord = await prisma.proposalPublicToken.findUnique({
+    where: { tokenHash },
+    select: { proposalId: true, revokedAt: true }
+  });
+
+  if (!tokenRecord || tokenRecord.revokedAt) {
+    return [];
+  }
+
+  return getProposalChecklist(tokenRecord.proposalId);
+}
+
+export async function completeProposalChecklistItem(
+  args: {
+    token: string;
+    itemId: string;
+    completedBy?: string;
+  }
+): Promise<void> {
+  const tokenHash = hashProposalToken(args.token);
+
+  await prisma.$transaction(async (tx) => {
+    const tokenRecord = await tx.proposalPublicToken.findUnique({
+      where: { tokenHash },
+      include: { proposal: { select: { id: true, status: true } } }
+    });
+
+    if (!tokenRecord || tokenRecord.revokedAt) {
+      throw new Error("Token inválido.");
+    }
+
+    const proposal = tokenRecord.proposal;
+
+    if (proposal.status !== "ACCEPTED") {
+      throw new Error("O checklist só está disponível para propostas aceitas.");
+    }
+
+    const item = await tx.proposalChecklistItem.findFirst({
+      where: { id: args.itemId, proposalId: proposal.id }
+    });
+
+    if (!item) {
+      throw new Error("Item do checklist não encontrado.");
+    }
+
+    if (item.isCompleted) {
+      return; // idempotent
+    }
+
+    const now = new Date();
+
+    await tx.proposalChecklistItem.update({
+      where: { id: item.id },
+      data: {
+        isCompleted: true,
+        completedAt: now,
+        completedBy: item.side === "CLIENT" ? (args.completedBy ?? null) : null
+      }
+    });
+
+    await tx.proposalEvent.create({
+      data: {
+        proposalId: proposal.id,
+        type: "CHECKLIST_ITEM_COMPLETED",
+        description: `Item do checklist concluído: "${item.title}"`,
+        occurredAt: now,
+        metadata: toJsonValue({ itemId: item.id, itemTitle: item.title, side: item.side })
+      }
+    });
+  });
 }

@@ -63,6 +63,7 @@ export function AcceptProposalForm({
           Seu nome completo
         </label>
         <input
+          aria-required="true"
           className="signature-input"
           id={`name-${compact ? "compact" : "main"}`}
           name="acceptedByName"
@@ -76,6 +77,7 @@ export function AcceptProposalForm({
 
       <label className="signature-checkbox-label">
         <input
+          aria-required="true"
           checked={agreed}
           className="signature-checkbox"
           name="agreedToTerms"

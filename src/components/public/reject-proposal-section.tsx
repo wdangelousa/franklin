@@ -44,6 +44,7 @@ export function RejectProposalSection({ token }: RejectProposalSectionProps) {
             <input name="token" type="hidden" value={token} />
 
             <textarea
+              aria-label="Motivo da recusa"
               className="reject-section-textarea"
               name="rejectedReason"
               placeholder="Motivo da recusa (opcional)"

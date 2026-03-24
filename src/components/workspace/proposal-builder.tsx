@@ -471,10 +471,12 @@ export function ProposalBuilder({
                                         <div className="svc-card-info">
                                           <strong>{service.serviceName}</strong>
                                           <span>
-                                            {formatCurrencyFromCents(service.unitPriceCents)}
+                                            <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
                                           </span>
                                         </div>
                                         <button
+                                          aria-label={`${isSelected ? "Remover" : "Adicionar"} ${service.serviceName}`}
+                                          aria-pressed={isSelected}
                                           className={[
                                             "svc-toggle",
                                             isSelected ? "is-on" : ""
@@ -542,6 +544,7 @@ export function ProposalBuilder({
                                                     aria-label={`Quantidade de ${service.serviceName}`}
                                                   >
                                                     <button
+                                                      aria-label="Diminuir quantidade"
                                                       className="button-secondary quantity-stepper-button"
                                                       disabled={selectedItem.quantity <= 1}
                                                       onClick={(e) => {
@@ -574,6 +577,7 @@ export function ProposalBuilder({
                                                       />
                                                     </label>
                                                     <button
+                                                      aria-label="Aumentar quantidade"
                                                       className="button-secondary quantity-stepper-button"
                                                       onClick={(e) => {
                                                         e.stopPropagation();
@@ -718,7 +722,7 @@ export function ProposalBuilder({
                                       <p>Itens do snapshot</p>
                                     </div>
                                     <strong>
-                                      {formatCurrencyFromCents(snapshotPreview.totalCents)}
+                                      <span className="currency-value">{formatCurrencyFromCents(snapshotPreview.totalCents)}</span>
                                     </strong>
                                   </div>
                                 </div>
@@ -802,11 +806,11 @@ export function ProposalBuilder({
               </div>
               <div className="summary-stat">
                 <span>Subtotal</span>
-                <strong>{formatCurrencyFromCents(subtotalCents)}</strong>
+                <strong><span className="currency-value">{formatCurrencyFromCents(subtotalCents)}</span></strong>
               </div>
               <div className="summary-stat">
                 <span>Total</span>
-                <strong>{formatCurrencyFromCents(totalCents)}</strong>
+                <strong><span className="currency-value">{formatCurrencyFromCents(totalCents)}</span></strong>
               </div>
             </div>
 
@@ -830,15 +834,15 @@ export function ProposalBuilder({
               <div className="totals-panel">
                 <div className="total-row">
                   <span>Subtotal</span>
-                  <strong>{formatCurrencyFromCents(subtotalCents)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(subtotalCents)}</span></strong>
                 </div>
                 <div className="total-row">
                   <span>Desconto</span>
-                  <strong>{formatCurrencyFromCents(0)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(0)}</span></strong>
                 </div>
                 <div className="total-row is-grand">
                   <span>Total</span>
-                  <strong>{formatCurrencyFromCents(totalCents)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(totalCents)}</span></strong>
                 </div>
               </div>
 
@@ -881,14 +885,14 @@ export function ProposalBuilder({
       </section>
 
       {/* Mobile sticky bottom bar */}
-      <div className="builder-mobile-bar">
+      <div aria-label="Ações da proposta" className="builder-mobile-bar">
         <div className="builder-mobile-bar-info">
           <span>
             {activeLead?.company ?? "Lead pendente"} ·{" "}
             {selectedItems.length}{" "}
             {selectedItems.length === 1 ? "serviço" : "serviços"}
           </span>
-          <strong>{formatCurrencyFromCents(totalCents)}</strong>
+          <strong><span className="currency-value">{formatCurrencyFromCents(totalCents)}</span></strong>
         </div>
         <SendNowButton disabled={!snapshotPreview} />
         <button
@@ -989,11 +993,11 @@ function SelectedItemList({
             </div>
             <div className="detail-pair">
               <p className="detail-label">Preço unitário</p>
-              <strong>{formatCurrencyFromCents(item.unitPriceCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(item.unitPriceCents)}</span></strong>
             </div>
             <div className="detail-pair">
               <p className="detail-label">Subtotal</p>
-              <strong>{formatCurrencyFromCents(item.subtotalCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(item.subtotalCents)}</span></strong>
             </div>
           </div>
 

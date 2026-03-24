@@ -100,7 +100,7 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
                   ) : (
                     <span>Sem lead vinculado</span>
                   )}
-                  <strong>{formatCurrencyFromCents(proposal.totalCents)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(proposal.totalCents)}</span></strong>
                   <Link className="button-secondary" href={`/app/proposals/${proposal.id}`}>
                     Abrir
                   </Link>

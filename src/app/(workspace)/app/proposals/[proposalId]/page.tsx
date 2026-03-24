@@ -7,7 +7,7 @@ import { ProposalPublicLinkActions } from "@/components/workspace/proposal-publi
 import { ProposalSentSuccess } from "@/components/workspace/proposal-sent-success";
 import { requireInternalSession } from "@/lib/auth/session";
 import { sendProposalDraftAction } from "@/lib/proposal-actions";
-import { getInternalProposalDetail } from "@/lib/proposal-store";
+import { getInternalProposalDetail, type InternalProposalDetail } from "@/lib/proposal-store";
 import { getProposalStatusTone, type ProposalDisplayStatus } from "@/lib/proposal-status";
 import { formatCurrencyFromCents, formatDate, formatDateTime } from "@/lib/utils";
 
@@ -139,15 +139,15 @@ export default async function ProposalDetailPage({
           <div className="totals-panel">
             <div className="total-row">
               <span>Subtotal</span>
-              <strong>{formatCurrencyFromCents(detail.subtotalCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(detail.subtotalCents)}</span></strong>
             </div>
             <div className="total-row">
               <span>Desconto</span>
-              <strong>{formatCurrencyFromCents(detail.discountCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(detail.discountCents)}</span></strong>
             </div>
             <div className="total-row is-grand">
               <span>Total</span>
-              <strong>{formatCurrencyFromCents(detail.totalCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(detail.totalCents)}</span></strong>
             </div>
           </div>
         </article>
@@ -273,11 +273,11 @@ export default async function ProposalDetailPage({
                     </div>
                     <div className="detail-pair">
                       <p className="detail-label">Preço unitário</p>
-                      <strong>{formatCurrencyFromCents(item.unitPriceCents)}</strong>
+                      <strong><span className="currency-value">{formatCurrencyFromCents(item.unitPriceCents)}</span></strong>
                     </div>
                     <div className="detail-pair">
                       <p className="detail-label">Subtotal</p>
-                      <strong>{formatCurrencyFromCents(item.subtotalCents)}</strong>
+                      <strong><span className="currency-value">{formatCurrencyFromCents(item.subtotalCents)}</span></strong>
                     </div>
                   </div>
 
@@ -335,6 +335,10 @@ export default async function ProposalDetailPage({
           )}
         </article>
       </section>
+
+      {detail.status === "Aceita" && detail.checklistItems.length > 0 ? (
+        <InternalChecklistSection items={detail.checklistItems} />
+      ) : null}
     </div>
   );
 }
@@ -367,4 +371,113 @@ function getLockedStatusMessage(status: ProposalDisplayStatus): string {
     default:
       return "Esta proposta está bloqueada para edição livre a fim de preservar o snapshot comercial final.";
   }
+}
+
+function InternalChecklistSection({
+  items
+}: {
+  items: InternalProposalDetail["checklistItems"];
+}) {
+  const clientItems = items.filter((i) => i.side === "CLIENT");
+  const internalItems = items.filter((i) => i.side === "INTERNAL");
+
+  return (
+    <section className="two-column-grid">
+      <article className="surface-card">
+        <div className="section-head">
+          <p className="eyebrow">Checklist do cliente</p>
+          <h2>Documentos e obrigações</h2>
+        </div>
+
+        {clientItems.length > 0 ? (
+          <div className="internal-checklist-list">
+            {clientItems.map((item) => (
+              <div
+                key={item.id}
+                className={`internal-checklist-row${item.isCompleted ? " is-completed" : ""}`}
+              >
+                <div
+                  className="internal-checklist-marker"
+                  aria-hidden="true"
+                  data-completed={item.isCompleted}
+                >
+                  {item.isCompleted ? "\u2713" : ""}
+                </div>
+                <div className="internal-checklist-content">
+                  <div className="internal-checklist-head">
+                    <strong>{item.title}</strong>
+                    <StatusPill tone={item.isCompleted ? "success" : "neutral"}>
+                      {item.isCompleted ? "Concluído" : "Pendente"}
+                    </StatusPill>
+                  </div>
+                  {item.description ? (
+                    <p className="section-copy">{item.description}</p>
+                  ) : null}
+                  {item.isCompleted && item.completedAt ? (
+                    <p className="section-copy checklist-completed-info">
+                      Concluído em {formatDateTime(item.completedAt)}
+                      {item.completedBy ? ` por ${item.completedBy}` : ""}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="builder-empty-state">
+            <strong>Nenhum item do cliente.</strong>
+            <p>Os serviços desta proposta não exigem documentação adicional do cliente.</p>
+          </div>
+        )}
+      </article>
+
+      <article className="surface-card">
+        <div className="section-head">
+          <p className="eyebrow">Checklist interno</p>
+          <h2>Tarefas da equipe</h2>
+        </div>
+
+        {internalItems.length > 0 ? (
+          <div className="internal-checklist-list">
+            {internalItems.map((item) => (
+              <div
+                key={item.id}
+                className={`internal-checklist-row${item.isCompleted ? " is-completed" : ""}`}
+              >
+                <div
+                  className="internal-checklist-marker"
+                  aria-hidden="true"
+                  data-completed={item.isCompleted}
+                >
+                  {item.isCompleted ? "\u2713" : ""}
+                </div>
+                <div className="internal-checklist-content">
+                  <div className="internal-checklist-head">
+                    <strong>{item.title}</strong>
+                    <StatusPill tone={item.isCompleted ? "success" : "neutral"}>
+                      {item.isCompleted ? "Concluído" : "Pendente"}
+                    </StatusPill>
+                  </div>
+                  {item.description ? (
+                    <p className="section-copy">{item.description}</p>
+                  ) : null}
+                  {item.isCompleted && item.completedAt ? (
+                    <p className="section-copy checklist-completed-info">
+                      Concluído em {formatDateTime(item.completedAt)}
+                      {item.completedBy ? ` por ${item.completedBy}` : ""}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="builder-empty-state">
+            <strong>Nenhum item interno.</strong>
+            <p>Nenhuma tarefa interna foi gerada para esta proposta.</p>
+          </div>
+        )}
+      </article>
+    </section>
+  );
 }

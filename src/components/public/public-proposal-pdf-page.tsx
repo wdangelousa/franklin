@@ -67,7 +67,7 @@ export function PublicProposalPdfPage({ proposal }: PublicProposalPdfPageProps) 
             </div>
             <div className="detail-pair">
               <p className="detail-label">Investimento</p>
-              <strong>{formatCurrencyFromCents(proposal.totalInvestmentCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(proposal.totalInvestmentCents)}</span></strong>
             </div>
           </div>
         </aside>

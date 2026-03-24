@@ -102,7 +102,7 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
           <div className="totals-panel">
             <div className="total-row">
               <span>Investimento</span>
-              <strong>{formatCurrencyFromCents(proposal.totalInvestmentCents)}</strong>
+              <strong><span className="currency-value">{formatCurrencyFromCents(proposal.totalInvestmentCents)}</span></strong>
             </div>
             <div className="total-row">
               <span>Status</span>

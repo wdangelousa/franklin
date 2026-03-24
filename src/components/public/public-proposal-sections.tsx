@@ -78,9 +78,9 @@ export function PublicProposalSections({
                 </div>
 
                 <div className="catalog-service-pricing">
-                  <strong>{formatCurrencyFromCents(service.subtotalCents)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
                   <span>
-                    {service.quantity} × {formatCurrencyFromCents(service.unitPriceCents)}
+                    {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
                   </span>
                 </div>
               </div>
@@ -100,11 +100,11 @@ export function PublicProposalSections({
                 </div>
                 <div className="detail-pair">
                   <p className="detail-label">Preço unitário</p>
-                  <strong>{formatCurrencyFromCents(service.unitPriceCents)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span></strong>
                 </div>
                 <div className="detail-pair">
                   <p className="detail-label">Subtotal</p>
-                  <strong>{formatCurrencyFromCents(service.subtotalCents)}</strong>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
                 </div>
               </div>
 
@@ -133,7 +133,7 @@ export function PublicProposalSections({
         <article className="surface-card">
           <div className="section-head">
             <p className="eyebrow">Investimento</p>
-            <h2>{formatCurrencyFromCents(proposal.totalInvestmentCents)}</h2>
+            <h2><span className="currency-value">{formatCurrencyFromCents(proposal.totalInvestmentCents)}</span></h2>
           </div>
           <p className="section-copy">{snapshot.investmentIntro}</p>
 
@@ -146,7 +146,7 @@ export function PublicProposalSections({
                     {service.quantity} × {service.unitLabel}
                   </p>
                 </div>
-                <strong>{formatCurrencyFromCents(service.subtotalCents)}</strong>
+                <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
               </div>
             ))}
           </div>

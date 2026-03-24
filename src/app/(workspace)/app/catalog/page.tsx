@@ -36,7 +36,7 @@ export default async function CatalogPage() {
                     <span>
                       {getBillingTypeLabel(service.billingType)} · {getUnitLabel(service.unitLabel)}
                     </span>
-                    <strong>{formatCurrencyFromCents(service.unitPriceCents)}</strong>
+                    <strong><span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span></strong>
                   </div>
                 </article>
               ))}

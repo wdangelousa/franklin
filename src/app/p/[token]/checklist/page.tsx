@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { PublicProposalChecklistPage } from "@/components/public/public-proposal-checklist-page";
 import { getResolvedPublicProposalByToken } from "@/lib/public-proposal-access";
+import { getProposalChecklistByToken } from "@/lib/proposal-store";
 import { getPublicProposalSnapshotByToken } from "@/lib/public-proposals";
 
 export const dynamic = "force-dynamic";
@@ -43,13 +44,14 @@ export default async function PublicTokenChecklistPage({
   params
 }: PublicTokenChecklistPageProps) {
   const { token } = await params;
-  const proposal = await getResolvedPublicProposalByToken(token, {
-    recordView: false
-  });
+  const [proposal, checklistItems] = await Promise.all([
+    getResolvedPublicProposalByToken(token, { recordView: false }),
+    getProposalChecklistByToken(token)
+  ]);
 
   if (!proposal) {
     notFound();
   }
 
-  return <PublicProposalChecklistPage proposal={proposal} />;
+  return <PublicProposalChecklistPage checklistItems={checklistItems} proposal={proposal} />;
 }

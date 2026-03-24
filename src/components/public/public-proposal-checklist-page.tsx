@@ -4,21 +4,26 @@ import { BrandMark } from "@/components/ui/brand-mark";
 import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
 import { getProposalPdfPlan } from "@/lib/proposal-pdf";
-import { buildProposalChecklist } from "@/lib/proposal-checklist";
+import type { ProposalChecklistItemRecord } from "@/lib/proposal-store";
+import { completeChecklistItemAction } from "@/lib/public-proposal-actions";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
 import { formatDateTime } from "@/lib/utils";
 
 interface PublicProposalChecklistPageProps {
   proposal: ResolvedPublicProposal;
+  checklistItems: ProposalChecklistItemRecord[];
 }
 
 export function PublicProposalChecklistPage({
-  proposal
+  proposal,
+  checklistItems
 }: PublicProposalChecklistPageProps) {
   const { snapshot } = proposal;
-  const checklist = buildProposalChecklist(snapshot);
   const checklistIsAvailable = proposal.lifecycle.status === "ACCEPTED";
   const pdfPlan = getProposalPdfPlan(proposal);
+
+  const clientItems = checklistItems.filter((item) => item.side === "CLIENT");
+  const completedCount = clientItems.filter((item) => item.isCompleted).length;
 
   return (
     <main className="proposal-shell checklist-shell">
@@ -38,8 +43,8 @@ export function PublicProposalChecklistPage({
           <p className="eyebrow">{snapshot.proposalNumber}</p>
           <h1>Checklist de documentos</h1>
           <p className="proposal-summary">
-            Consolidado apenas a partir do snapshot da proposta aceita, com requisitos duplicados
-            removidos entre os serviços selecionados.
+            Itens de onboarding gerados a partir da proposta aceita. Marque cada item conforme
+            for concluído.
           </p>
 
           <div className="proposal-status-banner">
@@ -52,8 +57,8 @@ export function PublicProposalChecklistPage({
               <p>
                 {checklistIsAvailable
                   ? proposal.lifecycle.acceptedAt
-                    ? `O aceite foi registrado em ${formatDateTime(proposal.lifecycle.acceptedAt)}. Use esta página como referência operacional para entrega documental.`
-                    : "O aceite foi registrado para esta proposta. Use esta página como referência operacional para entrega documental."
+                    ? `O aceite foi registrado em ${formatDateTime(proposal.lifecycle.acceptedAt)}. Use esta página para acompanhar a entrega dos documentos.`
+                    : "O aceite foi registrado para esta proposta. Use esta página para acompanhar a entrega dos documentos."
                   : proposal.statusMessage}
               </p>
             </div>
@@ -64,9 +69,9 @@ export function PublicProposalChecklistPage({
 
           <div className="pill-row">
             <StatusPill tone="neutral">{snapshot.companyName}</StatusPill>
-            <StatusPill tone="neutral">{checklist.totalItems} documentos únicos</StatusPill>
-            <StatusPill tone="neutral">
-              {snapshot.selectedServices.length} serviços selecionados
+            <StatusPill tone="neutral">{clientItems.length} itens do cliente</StatusPill>
+            <StatusPill live tone={completedCount === clientItems.length && clientItems.length > 0 ? "success" : "neutral"}>
+              {completedCount}/{clientItems.length} concluídos
             </StatusPill>
           </div>
         </article>
@@ -79,9 +84,8 @@ export function PublicProposalChecklistPage({
 
           <div className="public-text-stack">
             <p className="section-copy">
-              Este checklist é apenas informativo no MVP. O Franklin ainda não coleta arquivos
-              diretamente, mas o snapshot aceito já expõe chaves estáveis de documento para um
-              futuro módulo de upload.
+              Marque os itens abaixo conforme entregar os documentos solicitados.
+              A {brand.parentName} acompanhará o progresso internamente.
             </p>
             <p className="section-copy">
               A {brand.parentName} revisará o conjunto de arquivos enviados antes do kickoff.
@@ -103,43 +107,59 @@ export function PublicProposalChecklistPage({
 
       {checklistIsAvailable ? (
         <section className="checklist-layout">
-            <article className="surface-card checklist-main-card">
-              <div className="section-head">
-                <p className="eyebrow">Checklist</p>
-                <h2>Documentos obrigatórios</h2>
-              </div>
+          <article className="surface-card checklist-main-card">
+            <div className="section-head">
+              <p className="eyebrow">Checklist</p>
+              <h2>Documentos obrigatórios</h2>
+            </div>
 
             <div className="checklist-list">
-              {checklist.items.map((item, index) => (
-                <article key={item.id} className="checklist-item-card">
-                  <div className="checklist-item-index" aria-hidden="true">
-                    {index + 1}
-                  </div>
-
-                  <div className="checklist-item-copy">
-                    <div className="checklist-item-head">
-                      <strong>{item.title}</strong>
-                      <StatusPill tone="neutral">Somente informativo</StatusPill>
+              {clientItems.length > 0 ? (
+                clientItems.map((item, index) => (
+                  <article
+                    key={item.id}
+                    className={`checklist-item-card${item.isCompleted ? " is-completed" : ""}`}
+                  >
+                    <div className="checklist-item-index" aria-hidden="true">
+                      {item.isCompleted ? "\u2713" : index + 1}
                     </div>
 
-                    <div className="checklist-source-list">
-                      {item.sources.map((source) => (
-                        <StatusPill
-                          key={`${item.id}-${source.kind}-${source.label}`}
-                          tone={source.kind === "service" ? "accent" : "neutral"}
-                        >
-                          {source.label}
+                    <div className="checklist-item-copy">
+                      <div className="checklist-item-head">
+                        <strong>{item.title}</strong>
+                        <StatusPill tone={item.isCompleted ? "success" : "neutral"}>
+                          {item.isCompleted ? "Concluído" : "Pendente"}
                         </StatusPill>
-                      ))}
-                    </div>
+                      </div>
 
-                    <p className="section-copy">
-                      Este requisito aparece em {item.sources.length} fonte(s) de escopo e já tem
-                      um slot de upload reservado para o futuro módulo documental.
-                    </p>
-                  </div>
-                </article>
-              ))}
+                      {item.description ? (
+                        <p className="section-copy">{item.description}</p>
+                      ) : null}
+
+                      {item.isCompleted ? (
+                        <p className="section-copy checklist-completed-info">
+                          Concluído em {formatDateTime(item.completedAt!.toISOString())}
+                          {item.completedBy ? ` por ${item.completedBy}` : ""}
+                        </p>
+                      ) : (
+                        <form action={completeChecklistItemAction}>
+                          <input type="hidden" name="token" value={snapshot.token} />
+                          <input type="hidden" name="itemId" value={item.id} />
+                          <input type="hidden" name="completedBy" value={snapshot.contactName} />
+                          <button className="button-secondary checklist-complete-button" type="submit">
+                            Marcar como concluído
+                          </button>
+                        </form>
+                      )}
+                    </div>
+                  </article>
+                ))
+              ) : (
+                <div className="builder-empty-state">
+                  <strong>Nenhum documento obrigatório encontrado.</strong>
+                  <p>Os serviços desta proposta não exigem documentação adicional do cliente.</p>
+                </div>
+              )}
             </div>
           </article>
 
@@ -158,18 +178,17 @@ export function PublicProposalChecklistPage({
 
             <article className="surface-card">
               <div className="section-head">
-                <p className="eyebrow">Módulo de upload</p>
-                <h2>Preparado para uma fase futura</h2>
+                <p className="eyebrow">Progresso</p>
+                <h2>Resumo do checklist</h2>
               </div>
 
               <div className="public-text-stack">
                 <p className="section-copy">
-                  Uploads diretos continuam propositalmente desabilitados no MVP.
-                </p>
-                <p className="section-copy">
-                  Cada item do checklist é gerado com uma chave estável para que um futuro fluxo
-                  seguro de upload possa anexar arquivos ao snapshot da proposta aceita sem alterar
-                  o registro comercial.
+                  {completedCount === 0
+                    ? "Nenhum item foi concluído ainda. Marque os itens conforme entregar os documentos."
+                    : completedCount === clientItems.length
+                      ? "Todos os itens foram concluídos. A equipe revisará a documentação antes do kickoff."
+                      : `${completedCount} de ${clientItems.length} itens concluídos. Continue marcando os itens conforme entregar os documentos.`}
                 </p>
               </div>
             </article>

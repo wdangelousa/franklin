@@ -3,7 +3,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { acceptProposalByToken, rejectProposalByToken } from "@/lib/proposal-store";
+import { revalidatePath } from "next/cache";
+
+import { acceptProposalByToken, completeProposalChecklistItem, rejectProposalByToken } from "@/lib/proposal-store";
 
 export async function acceptPublicProposal(formData: FormData): Promise<void> {
   const token = formData.get("token");
@@ -59,6 +61,34 @@ export async function rejectPublicProposal(formData: FormData): Promise<void> {
   }
 
   redirect(`/p/${normalizedToken}?rejected=1`);
+}
+
+export async function completeChecklistItemAction(formData: FormData): Promise<void> {
+  const token = formData.get("token");
+  const itemId = formData.get("itemId");
+  const completedBy = formData.get("completedBy");
+
+  if (typeof token !== "string" || token.trim().length === 0) {
+    return;
+  }
+
+  if (typeof itemId !== "string" || itemId.trim().length === 0) {
+    return;
+  }
+
+  const normalizedToken = token.trim();
+
+  try {
+    await completeProposalChecklistItem({
+      token: normalizedToken,
+      itemId: itemId.trim(),
+      completedBy: typeof completedBy === "string" ? completedBy.trim() || undefined : undefined
+    });
+  } catch {
+    // Silently fail — item may already be completed or token invalid
+  }
+
+  revalidatePath(`/p/${normalizedToken}/checklist`);
 }
 
 function mapAcceptErrorCode(error: unknown): string {

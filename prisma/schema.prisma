@@ -71,6 +71,12 @@ enum ProposalEventType {
   PUBLIC_TOKEN_ISSUED
   PUBLIC_TOKEN_REVOKED
   NOTE_ADDED
+  CHECKLIST_ITEM_COMPLETED
+}
+
+enum ChecklistItemSide {
+  CLIENT
+  INTERNAL
 }
 
 model Organization {
@@ -227,6 +233,7 @@ model Proposal {
   items              ProposalItem[]
   events             ProposalEvent[]
   publicTokens       ProposalPublicToken[]
+  checklistItems     ProposalChecklistItem[]
   createdAt          DateTime              @default(now())
   updatedAt          DateTime              @updatedAt
 
@@ -281,6 +288,23 @@ model ProposalEvent {
 
   @@index([proposalId, occurredAt])
   @@index([actorUserId])
+}
+
+model ProposalChecklistItem {
+  id          String            @id @default(cuid())
+  proposalId  String
+  side        ChecklistItemSide
+  title       String
+  description String?           @db.Text
+  sortOrder   Int               @default(0)
+  isCompleted Boolean           @default(false)
+  completedAt DateTime?
+  completedBy String?
+  proposal    Proposal          @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([proposalId, side, sortOrder])
 }
 
 model ProposalPublicToken {
