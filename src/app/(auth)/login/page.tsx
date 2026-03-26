@@ -9,15 +9,17 @@ export default function LoginPage() {
   return (
     <main className="auth-grid">
       <section className="auth-copy">
-        <BrandMark />
-        <Image
-          src="/icone-franklin-240.png"
-          alt="Icone do Franklin"
-          width={120}
-          height={120}
-          className="login-icon"
-          priority
-        />
+        <div className="auth-brand-lockup">
+          <BrandMark />
+          <Image
+            src="/icone-franklin.png"
+            alt="Icone do Franklin"
+            width={92}
+            height={92}
+            className="login-icon auth-brand-symbol"
+            priority
+          />
+        </div>
         <p className="eyebrow">Acesso interno</p>
         <h1>Login da área interna protegida do Franklin.</h1>
         <p className="section-copy">
@@ -65,7 +67,9 @@ export default function LoginPage() {
         </div>
       </section>
 
-      <SignInForm />
+      <div className="auth-panel">
+        <SignInForm />
+      </div>
     </main>
   );
 }
