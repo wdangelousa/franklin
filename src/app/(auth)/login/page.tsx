@@ -10,6 +10,14 @@ export default function LoginPage() {
     <main className="auth-grid">
       <section className="auth-copy">
         <BrandMark />
+        <Image
+          src="/icone-franklin-240.png"
+          alt="Icone do Franklin"
+          width={120}
+          height={120}
+          className="login-icon"
+          priority
+        />
         <p className="eyebrow">Acesso interno</p>
         <h1>Login da área interna protegida do Franklin.</h1>
         <p className="section-copy">
