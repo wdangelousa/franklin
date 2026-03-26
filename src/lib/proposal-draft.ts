@@ -9,17 +9,12 @@ export const proposalBuilderSteps = [
   {
     id: "services",
     label: "Serviços",
-    description: "Monte a proposta a partir do catálogo interno do Franklin."
-  },
-  {
-    id: "quantities",
-    label: "Quantidades",
-    description: "Ajuste itens repetíveis e valide os subtotais."
+    description: "Monte a proposta a partir do catálogo interno."
   },
   {
     id: "review",
     label: "Revisão",
-    description: "Prepare o snapshot da proposta que será salvo no envio."
+    description: "Revise o snapshot da proposta antes de enviar."
   }
 ] as const;
 
@@ -284,7 +279,7 @@ export function getUnitLabel(unitLabel: string | null): string {
 }
 
 export function buildProposalDraftTitle(companyName: string): string {
-  return `Proposta Franklin para ${companyName}`;
+  return `Proposta para ${companyName}`;
 }
 
 function normalizeProposalQuantity(quantity: number, allowsVariableQuantity: boolean): number {

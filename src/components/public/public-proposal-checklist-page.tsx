@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { PaymentInstructions } from "@/components/public/payment-instructions";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
@@ -7,7 +8,7 @@ import { getProposalPdfPlan } from "@/lib/proposal-pdf";
 import type { ProposalChecklistItemRecord } from "@/lib/proposal-store";
 import { completeChecklistItemAction } from "@/lib/public-proposal-actions";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
-import { formatDateTime } from "@/lib/utils";
+import { formatCurrencyFromCents, formatDateTime } from "@/lib/utils";
 
 interface PublicProposalChecklistPageProps {
   proposal: ResolvedPublicProposal;
@@ -104,6 +105,14 @@ export function PublicProposalChecklistPage({
           </div>
         </aside>
       </section>
+
+      {checklistIsAvailable ? (
+        <PaymentInstructions
+          totalFormatted={formatCurrencyFromCents(proposal.totalInvestmentCents)}
+          proposalNumber={snapshot.proposalNumber}
+          clientName={snapshot.contactName}
+        />
+      ) : null}
 
       {checklistIsAvailable ? (
         <section className="checklist-layout">

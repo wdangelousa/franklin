@@ -1,38 +1,29 @@
 "use client";
 
-import { StatusPill } from "@/components/ui/status-pill";
 import { signInAsDemoUser } from "@/lib/auth/actions";
-import { DEMO_ACCOUNTS } from "@/lib/auth/config";
+import { DEFAULT_DEMO_ACCOUNT, DEMO_ACCOUNTS } from "@/lib/auth/config";
 
 export function SignInForm() {
   return (
-    <section className="surface-card auth-card">
-      <div className="section-head">
-        <p className="eyebrow">Login</p>
-        <h2>Acesse sua conta</h2>
-        <p className="section-copy">
-          No MVP, o acesso interno utiliza perfis de demonstração. Escolha um perfil abaixo para entrar.
-        </p>
+    <div className="login-form">
+      <form action={signInAsDemoUser}>
+        <input name="accountId" type="hidden" value={DEFAULT_DEMO_ACCOUNT.id} />
+        <button className="login-enter-button" type="submit">
+          Entrar
+        </button>
+      </form>
+      <div className="login-alt-accounts">
+        {DEMO_ACCOUNTS.filter((a) => a.id !== DEFAULT_DEMO_ACCOUNT.id).map(
+          (account) => (
+            <form key={account.id} action={signInAsDemoUser}>
+              <input name="accountId" type="hidden" value={account.id} />
+              <button className="login-alt-button" type="submit">
+                {account.name}
+              </button>
+            </form>
+          )
+        )}
       </div>
-
-      <div className="pill-row">
-        <StatusPill tone="accent">Acesso Seguro</StatusPill>
-        <StatusPill tone="neutral">Somente perfis internos</StatusPill>
-      </div>
-
-      <div className="auth-demo-accounts">
-        {DEMO_ACCOUNTS.map((account) => (
-          <form key={account.id} action={signInAsDemoUser}>
-            <input name="accountId" type="hidden" value={account.id} />
-            <button className="button-primary auth-demo-button" type="submit">
-              <strong>{account.name}</strong>
-              <span className="auth-demo-meta">
-                {account.title} &middot; {account.role}
-              </span>
-            </button>
-          </form>
-        ))}
-      </div>
-    </section>
+    </div>
   );
 }

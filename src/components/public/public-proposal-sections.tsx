@@ -1,4 +1,3 @@
-import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
 import { buildProposalChecklist } from "@/lib/proposal-checklist";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
@@ -22,33 +21,23 @@ export function PublicProposalSections({
 
   return (
     <>
-      <section className={gridClassName}>
-        <article className="surface-card">
-          <div className="section-head">
-            <p className="eyebrow">Tagline de capa</p>
-            <h2>Posicionamento executivo</h2>
-          </div>
-          <p className="section-copy">{snapshot.coverTagline}</p>
-        </article>
-
-        <article className="surface-card">
-          <div className="section-head">
-            <p className="eyebrow">Apresentação institucional da Onebridge</p>
-            <h2>{brand.parentName}</h2>
-          </div>
-          <div className="public-text-stack">
-            {snapshot.onebridgeInstitutionalPresentation.map((paragraph) => (
-              <p key={paragraph} className="section-copy">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </article>
-      </section>
+      <article className="surface-card">
+        <div className="section-head">
+          <p className="eyebrow">Apresentação institucional</p>
+          <h2>{brand.parentName}</h2>
+        </div>
+        <div className="public-text-stack">
+          {snapshot.onebridgeInstitutionalPresentation.map((paragraph) => (
+            <p key={paragraph} className="section-copy">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      </article>
 
       <article className="surface-card">
         <div className="section-head">
-          <p className="eyebrow">Introdução da proposta</p>
+          <p className="eyebrow">Introdução</p>
           <h2>Escopo preparado para {snapshot.companyName}</h2>
         </div>
         <div className="public-text-stack">
@@ -62,83 +51,87 @@ export function PublicProposalSections({
 
       <article className="surface-card">
         <div className="section-head">
-          <p className="eyebrow">Serviços selecionados</p>
-          <h2>Apenas itens do snapshot</h2>
+          <p className="eyebrow">Serviços</p>
+          <h2>Serviços incluídos</h2>
         </div>
 
-        <div className="selected-service-list">
-          {snapshot.selectedServices.map((service) => (
-            <article key={service.internalCode} className="selected-service-card">
-              <div className="selected-service-head">
-                <div>
-                  <strong>{service.serviceName}</strong>
-                  {service.publicName !== service.serviceName ? (
-                    <p>Nome original: {service.publicName}</p>
-                  ) : null}
-                </div>
+        <div className="public-service-list">
+          {snapshot.selectedServices.map((service) => {
+            const hasDiscount = service.subtotalCents < service.quantity * service.unitPriceCents;
 
-                <div className="catalog-service-pricing">
-                  <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
-                  {service.subtotalCents < service.quantity * service.unitPriceCents ? (
-                    <span>
-                      {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
-                      {" "}<span className="service-discount-strikethrough"><span className="currency-value">{formatCurrencyFromCents(service.quantity * service.unitPriceCents)}</span></span>
-                    </span>
-                  ) : (
-                    <span>
-                      {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
-                    </span>
-                  )}
-                </div>
-              </div>
+            return (
+              <article key={service.internalCode} className="surface-card public-service-card">
+                <h3>{service.serviceName}</h3>
 
-              <div className="selected-service-grid">
-                <div className="detail-pair">
-                  <p className="detail-label">Nome do serviço</p>
-                  <strong>{service.serviceName}</strong>
-                </div>
-                <div className="detail-pair">
-                  <p className="detail-label">Nome original</p>
-                  <strong>{service.publicName}</strong>
-                </div>
-                <div className="detail-pair">
-                  <p className="detail-label">Quantidade</p>
-                  <strong>{service.quantity}</strong>
-                </div>
-                <div className="detail-pair">
-                  <p className="detail-label">Preço unitário</p>
-                  <strong><span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span></strong>
-                </div>
-                <div className="detail-pair">
-                  <p className="detail-label">Subtotal</p>
+                {service.description ? (
+                  <p className="public-service-description">{service.description}</p>
+                ) : null}
+
+                {service.deliverables.length > 0 ? (
+                  <div className="public-service-deliverables">
+                    <p className="eyebrow">O que está incluído</p>
+                    <ul className="feature-list">
+                      {service.deliverables.map((deliverable) => (
+                        <li key={deliverable}>{deliverable}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {service.submissionNotes ? (
+                  <p className="public-service-timeline">{service.submissionNotes}</p>
+                ) : null}
+
+                {service.specificClause ? (
+                  <div className="public-service-clause">
+                    <p>{service.specificClause}</p>
+                  </div>
+                ) : null}
+
+                <div className="public-service-price">
+                  <span>
+                    {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
+                    {hasDiscount ? ` c/ desconto` : ""}
+                  </span>
                   <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
                 </div>
-              </div>
+              </article>
+            );
+          })}
+        </div>
+      </article>
 
-              {service.deliverables.length > 0 ? (
-                <ul className="feature-list">
-                  {service.deliverables.map((deliverable) => (
-                    <li key={deliverable}>{deliverable}</li>
-                  ))}
-                </ul>
-              ) : null}
+      <article className="surface-card">
+        <div className="section-head">
+          <p className="eyebrow">Investimento</p>
+          <h2>Resumo do investimento</h2>
+        </div>
+        {snapshot.investmentIntro ? (
+          <p className="section-copy">{snapshot.investmentIntro}</p>
+        ) : null}
 
-              {service.specificClause ? (
-                <div className="service-clause-callout">
-                  <p>{service.specificClause}</p>
+        <div className="review-item-list">
+          {snapshot.selectedServices.map((service) => {
+            const hasDiscount = service.subtotalCents < service.quantity * service.unitPriceCents;
+
+            return (
+              <div key={service.internalCode} className="review-item-row">
+                <strong>{service.serviceName}</strong>
+                <div className="review-item-pricing">
+                  <span className="review-item-calc">
+                    {service.quantity} × <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
+                    {hasDiscount ? ` c/ desconto` : ""}
+                  </span>
+                  <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
                 </div>
-              ) : null}
-
-              {service.submissionNotes ? (
-                <p className="section-copy service-submission-notes">{service.submissionNotes}</p>
-              ) : null}
-
-              <div className="catalog-service-tags">
-                <StatusPill tone="accent">{service.billingLabel}</StatusPill>
-                <StatusPill tone="neutral">{service.unitLabel}</StatusPill>
               </div>
-            </article>
-          ))}
+            );
+          })}
+
+          <div className="review-item-total">
+            <strong>Total</strong>
+            <strong><span className="currency-value">{formatCurrencyFromCents(proposal.totalInvestmentCents)}</span></strong>
+          </div>
         </div>
       </article>
 
@@ -146,7 +139,7 @@ export function PublicProposalSections({
         <article className="surface-card">
           <div className="section-head">
             <p className="eyebrow">Termos específicos</p>
-            <h2>Limites comerciais desta proposta</h2>
+            <h2>Condições desta proposta</h2>
           </div>
           <ul className="feature-list">
             {snapshot.specificTerms.map((term) => (
@@ -157,32 +150,8 @@ export function PublicProposalSections({
 
         <article className="surface-card">
           <div className="section-head">
-            <p className="eyebrow">Investimento</p>
-            <h2><span className="currency-value">{formatCurrencyFromCents(proposal.totalInvestmentCents)}</span></h2>
-          </div>
-          <p className="section-copy">{snapshot.investmentIntro}</p>
-
-          <div className="investment-breakdown">
-            {snapshot.selectedServices.map((service) => (
-              <div key={service.internalCode} className="data-row">
-                <div className="data-row-stack">
-                  <strong>{service.serviceName}</strong>
-                  <p>
-                    {service.quantity} × {service.unitLabel}
-                  </p>
-                </div>
-                <strong><span className="currency-value">{formatCurrencyFromCents(service.subtotalCents)}</span></strong>
-              </div>
-            ))}
-          </div>
-        </article>
-      </section>
-
-      <section className={gridClassName}>
-        <article className="surface-card">
-          <div className="section-head">
             <p className="eyebrow">Documentos obrigatórios</p>
-            <h2>O que a equipe precisa de você</h2>
+            <h2>Documentos necessários</h2>
           </div>
           <ul className="feature-list">
             {checklist.items.map((item) => (
@@ -190,39 +159,37 @@ export function PublicProposalSections({
             ))}
           </ul>
         </article>
-
-        <article className="surface-card">
-          <div className="section-head">
-            <p className="eyebrow">Instruções de envio de documentos</p>
-            <h2>Como enviar o conjunto de arquivos</h2>
-          </div>
-          <ul className="feature-list">
-            {snapshot.documentSubmissionInstructions.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </article>
       </section>
+
+      <article className="surface-card">
+        <div className="section-head">
+          <p className="eyebrow">Instruções de envio</p>
+          <h2>Como enviar seus documentos</h2>
+        </div>
+        <ul className="feature-list">
+          {snapshot.documentSubmissionInstructions.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article className="surface-card">
+        <div className="section-head">
+          <p className="eyebrow">Termos gerais</p>
+          <h2>Termos gerais</h2>
+        </div>
+        <ul className="feature-list">
+          {snapshot.generalTerms.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </article>
 
       <section className={gridClassName}>
         <article className="surface-card">
           <div className="section-head">
-            <p className="eyebrow">Termos gerais</p>
-            <h2>Condições operacionais base</h2>
-          </div>
-          <ul className="feature-list">
-            {snapshot.generalTerms.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </article>
-      </section>
-
-      <section className={gridClassName}>
-        <article className="surface-card">
-          <div className="section-head">
-            <p className="eyebrow">Introdução ao pagamento</p>
-            <h2>Próximo passo comercial</h2>
+            <p className="eyebrow">Pagamento</p>
+            <h2>Próximos passos</h2>
           </div>
           <p className="section-copy">{snapshot.paymentIntro}</p>
         </article>
@@ -230,7 +197,7 @@ export function PublicProposalSections({
         <article className="surface-card">
           <div className="section-head">
             <p className="eyebrow">Encerramento</p>
-            <h2>Próxima ação</h2>
+            <h2>Como prosseguir</h2>
           </div>
           <p className="section-copy">{snapshot.closingParagraph}</p>
         </article>

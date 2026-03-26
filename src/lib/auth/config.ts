@@ -7,19 +7,27 @@ export const AUTH_MODE = process.env.FRANKLIN_AUTH_MODE === "strict" ? "strict" 
 
 export const DEMO_ACCOUNTS: SessionUser[] = [
   {
-    id: "demo-admin",
-    name: "Camille Bennett",
-    email: "camille@onebridge.example",
-    title: "Administradora da plataforma",
-    role: "ADMIN",
+    id: "evandro",
+    name: "Professor Evandro",
+    email: "pay@onebridgestalwart.com",
+    title: "Sócio Fundador",
+    role: "PARTNER",
     organizationName: brand.organizationName
   },
   {
-    id: "demo-partner",
-    name: "Julian Hart",
-    email: "julian@onebridge.example",
-    title: "Sócio consultivo",
+    id: "samuel",
+    name: "Samuel Marçal",
+    email: "samuel@onebridgestalwart.com",
+    title: "Sócio Operacional",
     role: "PARTNER",
+    organizationName: brand.organizationName
+  },
+  {
+    id: "walter",
+    name: "Walter D'Angelo",
+    email: "walter@onebridgestalwart.com",
+    title: "Administrador da Plataforma",
+    role: "ADMIN",
     organizationName: brand.organizationName
   }
 ];

@@ -22,7 +22,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 99000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Formação completa da sua LLC ou Corporation no estado da Flórida, com todo o suporte necessário para tornar sua empresa legalmente operacional nos Estados Unidos.",
         specificClause: null,
@@ -46,7 +46,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 179000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Formação da sua LLC ou Corporation em Delaware, estado reconhecido por sua legislação societária avançada e proteções jurídicas superiores para empresas de qualquer porte.",
         specificClause: null,
@@ -70,7 +70,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 179000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Formação da sua LLC ou Corporation em Wyoming, estado com imposto de renda estadual zero, forte proteção de ativos e privacidade para membros.",
         specificClause: null,
@@ -94,7 +94,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 360000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Abertura de empresa nas British Virgin Islands, uma das jurisdições offshore mais respeitadas do mundo, ideal para holdings internacionais, proteção de ativos e planejamento tributário global.",
         specificClause: "Agente Registrado nas BVI incluído no primeiro ano.",
@@ -117,7 +117,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 35000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Assessoria completa para abertura de conta bancária empresarial nos EUA, incluindo orientação sobre documentação necessária e acompanhamento até a ativação da conta.",
         specificClause: null,
@@ -147,7 +147,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 22000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Serviço de Agente Registrado no estado da Flórida. Sua empresa mantém um endereço legal válido para recebimento de correspondência oficial, notificações judiciais e documentos estaduais.",
         specificClause: null,
@@ -169,7 +169,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 22000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Serviço de Agente Registrado no estado de Delaware. Endereço legal obrigatório para toda empresa registrada no estado, com recebimento e encaminhamento de documentos oficiais.",
         specificClause: null,
@@ -191,7 +191,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 22000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Serviço de Agente Registrado no estado de Wyoming. Endereço legal obrigatório para toda empresa registrada no estado, com recebimento e encaminhamento de documentos oficiais.",
         specificClause: null,
@@ -221,7 +221,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 44000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Manutenção anual da sua empresa na Flórida, garantindo o cumprimento de todas as obrigações estaduais dentro dos prazos, evitando multas e riscos de dissolução administrativa.",
         specificClause: null,
@@ -243,7 +243,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 79000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Manutenção anual para Corporations em Delaware, incluindo o Franchise Tax obrigatório e o Relatório Anual, mantendo sua empresa em Good Standing junto ao estado.",
         specificClause: null,
@@ -265,7 +265,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 79000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Manutenção anual para LLCs em Delaware, incluindo o pagamento obrigatório da taxa estadual anual de $300, mantendo sua empresa ativa e em conformidade.",
         specificClause: "Inclui o pagamento obrigatório da taxa estadual anual de $300 de Delaware.",
@@ -287,7 +287,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 44000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Manutenção anual da sua empresa em Wyoming, incluindo o protocolo obrigatório do Relatório Anual e a renovação do agente registrado.",
         specificClause: null,
@@ -309,7 +309,7 @@ export const serviceCatalogSeed = [
         billingType: "ANNUAL",
         unitLabel: "year",
         priceCents: 286000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Manutenção anual da sua empresa offshore nas BVI, incluindo renovação do agente registrado, taxas governamentais e conformidade contínua com a regulamentação local.",
         specificClause: null,
@@ -339,7 +339,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 37000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Encerramento formal da sua empresa na Flórida, com protocolo dos documentos necessários junto ao estado para dissolução voluntária, evitando obrigações futuras indevidas.",
         specificClause: null,
@@ -361,7 +361,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 68000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Encerramento formal da sua empresa em Delaware, com protocolo do Certificado de Cancelamento/Dissolução na Division of Corporations.",
         specificClause: null,
@@ -383,7 +383,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 68000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Encerramento formal da sua empresa em Wyoming, com protocolo dos documentos de dissolução junto ao Secretary of State.",
         specificClause: null,
@@ -405,7 +405,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 44000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Alterações formais no registro da sua empresa, como mudança de nome, endereço, membros, gerentes ou objeto social, com atualização junto ao estado.",
         specificClause: null,
@@ -427,7 +427,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 80000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Preparação ou customização de documentos corporativos sob medida, como Contratos Operacionais complexos, Estatutos Sociais detalhados, resoluções e outros documentos específicos para as necessidades da sua empresa.",
         specificClause: null,
@@ -457,7 +457,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 1690000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Petição completa para o visto EB-1, destinado a profissionais com habilidade extraordinária reconhecida internacionalmente em ciências, artes, educação, negócios ou esportes. Uma categoria prioritária que não exige oferta de emprego.",
         specificClause: "Não exige oferta de emprego.",
@@ -481,7 +481,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 1690000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Petição para o visto EB-2, para profissionais com grau avançado (mestrado ou superior) ou habilidade excepcional. Inclui a possibilidade do National Interest Waiver (NIW), que dispensa a exigência de oferta de emprego.",
         specificClause:
@@ -506,7 +506,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 1290000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Petição para o visto EB-3, destinado a trabalhadores qualificados, profissionais com bacharelado ou trabalhadores em categorias específicas. Exige oferta de emprego de empregador nos EUA.",
         specificClause: "Exige oferta de emprego de empregador nos EUA.",
@@ -530,7 +530,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 1290000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Petição para o visto E-2, destinado a investidores de países com tratado que estão investindo capital substancial em um negócio nos EUA.",
         specificClause: "Disponível apenas para investidores de países com tratado.",
@@ -554,7 +554,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 1290000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Petição para o visto L-1, que permite a transferência de executivos, gerentes ou funcionários com conhecimento especializado de uma empresa estrangeira para uma filial, subsidiária ou matriz nos EUA.",
         specificClause:
@@ -579,7 +579,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 1290000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Petição para o visto O-1, destinado a indivíduos com habilidade extraordinária ou realizações notáveis em ciências, artes, educação, negócios, esportes, cinema ou televisão.",
         specificClause: null,
@@ -603,7 +603,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 100000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Preparação de resposta a um Request for Evidence (RFE) emitido pelo USCIS durante o processamento do seu caso imigratório.",
         specificClause: null,
@@ -626,7 +626,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 280000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Preparação e envio de um Appeal ou Motion (Motion to Reopen / Reconsider) após decisão desfavorável do USCIS.",
         specificClause: null,
@@ -649,7 +649,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 280000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Reapresentação completa de uma petição imigratória previamente negada, com nova estratégia, evidências reforçadas e argumentação atualizada.",
         specificClause: null,
@@ -680,7 +680,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 380000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Preparação de um Business Plan profissional, estruturado para atender tanto requisitos imigratórios (vistos E-2, L-1) quanto apresentações a investidores e instituições financeiras.",
         specificClause: null,
@@ -704,7 +704,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 320000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Consultoria de planejamento tributário para estruturar suas operações nos EUA de forma eficiente, cobrindo obrigações federais e estaduais, classificação tributária da empresa e estratégias básicas de otimização.",
         specificClause: null,
@@ -727,7 +727,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 480000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Planejamento tributário aprofundado para estruturas corporativas complexas, incluindo operações internacionais, holdings, tratados de dupla tributação e estratégias avançadas de proteção de ativos.",
         specificClause: null,
@@ -774,7 +774,7 @@ export const serviceCatalogSeed = [
         billingType: "FIXED_FEE",
         unitLabel: "engagement",
         priceCents: 360000,
-        allowsVariableQuantity: false,
+        allowsVariableQuantity: true,
         longDescription:
           "Serviço completo de apostilamento e tradução juramentada, aceito por órgãos governamentais dos EUA e internacionais. Ideal para validação de documentos brasileiros nos EUA ou vice-versa.",
         specificClause: null,

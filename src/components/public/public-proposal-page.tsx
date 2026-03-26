@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { AcceptProposalForm } from "@/components/public/accept-proposal-form";
+import { PaymentInstructions } from "@/components/public/payment-instructions";
 import { PublicProposalSections } from "@/components/public/public-proposal-sections";
 import { RejectProposalSection } from "@/components/public/reject-proposal-section";
 import { BrandMark } from "@/components/ui/brand-mark";
@@ -8,7 +9,7 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
 import { getProposalPdfPlan } from "@/lib/proposal-pdf";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
-import { formatCurrencyFromCents, formatDate, formatDateTime } from "@/lib/utils";
+import { formatCurrencyFromCents, formatDate } from "@/lib/utils";
 
 interface PublicProposalPageProps {
   proposal: ResolvedPublicProposal;
@@ -67,16 +68,6 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
           <h1>{snapshot.title}</h1>
           <p className="proposal-summary">{snapshot.coverTagline}</p>
 
-          <div className="proposal-status-banner">
-            <div>
-              <strong>{proposal.statusTitle}</strong>
-              <p>{proposal.statusMessage}</p>
-            </div>
-            <StatusPill tone={getStatusTone(proposal.lifecycle.status)}>
-              {proposal.statusLabel}
-            </StatusPill>
-          </div>
-
           <div className="pill-row">
             <StatusPill tone="neutral">{snapshot.companyName}</StatusPill>
             <StatusPill tone="neutral">Preparada em {formatDate(snapshot.preparedAt)}</StatusPill>
@@ -121,21 +112,6 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
             </div>
           </div>
 
-          {showForms ? (
-            <AcceptProposalForm
-              canAccept={proposal.lifecycle.canAccept}
-              status={proposal.lifecycle.status}
-              statusMessage={proposal.statusMessage}
-              token={proposal.snapshot.token}
-            />
-          ) : !isRejectedFeedback ? (
-            <AcceptProposalForm
-              canAccept={false}
-              status={proposal.lifecycle.status}
-              statusMessage={proposal.statusMessage}
-              token={proposal.snapshot.token}
-            />
-          ) : null}
           {proposal.lifecycle.status === "ACCEPTED" ? (
             <div className="public-proposal-actions">
               <Link className="button-secondary public-checklist-link" href={`/p/${snapshot.token}/checklist`}>
@@ -151,70 +127,33 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
 
       {proposal.showDetails ? (
         <>
-          <section className="public-proposal-grid">
-            <article className="surface-card">
-              <div className="section-head">
-                <p className="eyebrow">Status</p>
-                <h2>Ciclo de vida e log de eventos</h2>
-              </div>
-
-              <div className="proposal-event-log">
-                {proposal.lifecycle.eventLog.map((event) => (
-                  <div key={event.id} className="proposal-event-row">
-                    <div className="proposal-event-marker" aria-hidden="true" />
-                    <div className="proposal-event-content">
-                      <div className="proposal-event-head">
-                        <strong>{event.title}</strong>
-                        <span>{formatDateTime(event.occurredAt)}</span>
-                      </div>
-                      <p className="section-copy">{event.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </article>
-
-            <article className="surface-card">
-              <div className="section-head">
-                <p className="eyebrow">Controles da proposta</p>
-                <h2>Política de edição e aceite</h2>
-              </div>
-
-              <div className="public-text-stack">
-                <p className="section-copy">
-                  {proposal.isEditable
-                    ? "Esta proposta continua em revisão ativa. O snapshot aceito só é consolidado depois que o clique de aceite é registrado."
-                    : proposal.lifecycle.lockReason ?? "Esta proposta está bloqueada para edição livre."}
-                </p>
-                {proposal.futureAutomationReady ? (
-                  <p className="section-copy">
-                    O aceite é salvo com timestamp, e o próximo gatilho de automação já está pronto
-                    para gerar o PDF imutável da cópia aceita a partir deste snapshot.
-                  </p>
-                ) : null}
-              </div>
-            </article>
-          </section>
-
           <PublicProposalSections proposal={proposal} />
 
-          <article className="surface-card">
-            <div className="section-head">
-              <p className="eyebrow">Texto de aceite</p>
-              <h2>Confirmação formal</h2>
-            </div>
-            <p className="section-copy">{snapshot.acceptanceText}</p>
-            {showForms ? (
-              <AcceptProposalForm
-                acceptanceText={snapshot.acceptanceText}
-                canAccept={proposal.lifecycle.canAccept}
-                compact
-                status={proposal.lifecycle.status}
-                statusMessage={proposal.statusMessage}
-                token={snapshot.token}
-              />
-            ) : null}
-          </article>
+          {proposal.lifecycle.status === "ACCEPTED" ? (
+            <PaymentInstructions
+              totalFormatted={formatCurrencyFromCents(proposal.totalInvestmentCents)}
+              proposalNumber={snapshot.proposalNumber}
+              clientName={snapshot.contactName}
+            />
+          ) : (
+            <article className="surface-card">
+              <div className="section-head">
+                <p className="eyebrow">Aceite</p>
+                <h2>Aceitar esta proposta</h2>
+              </div>
+              <p className="section-copy">{snapshot.acceptanceText}</p>
+              {showForms ? (
+                <AcceptProposalForm
+                  acceptanceText={snapshot.acceptanceText}
+                  canAccept={proposal.lifecycle.canAccept}
+                  compact
+                  status={proposal.lifecycle.status}
+                  statusMessage={proposal.statusMessage}
+                  token={snapshot.token}
+                />
+              ) : null}
+            </article>
+          )}
 
           {showForms ? (
             <RejectProposalSection token={snapshot.token} />

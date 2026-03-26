@@ -14,7 +14,6 @@ import {
   calculateProposalTotalCents,
   createProposalSelectedItem,
   getBillingTypeLabel,
-  getUnitLabel,
   isLeadDraftComplete,
   proposalBuilderSteps,
   sortProposalSelectedItems,
@@ -650,23 +649,6 @@ export function ProposalBuilder({
                         </div>
                       )}
 
-                      {step.id === "quantities" && (
-                        <div className="page-stack">
-                          <p className="section-copy">
-                            As quantidades só podem ser editadas quando o catálogo permite variação
-                            de forma explícita. Toda a matemática permanece em centavos inteiros para
-                            manter o snapshot final estável.
-                          </p>
-
-                          <SelectedItemList
-                            editable
-                            items={selectedItems}
-                            onQuantityChange={handleQuantityChange}
-                            onQuantityStep={handleQuantityStep}
-                          />
-                        </div>
-                      )}
-
                       {step.id === "review" && (
                         <div className="page-stack">
                           <div className="review-grid">
@@ -714,50 +696,40 @@ export function ProposalBuilder({
                             </div>
                           ) : null}
 
-                          <SelectedItemList items={selectedItems} />
+                          {selectedItems.length > 0 ? (
+                            <div className="review-item-list">
+                              {selectedItems.map((item) => (
+                                <div key={item.internalCode} className="review-item-row">
+                                  <strong>{item.serviceName}</strong>
+                                  <div className="review-item-pricing">
+                                    <span className="review-item-calc">
+                                      {item.quantity} × <span className="currency-value">{formatCurrencyFromCents(item.unitPriceCents)}</span>
+                                      {item.discountPercent > 0 ? ` − ${item.discountPercent}%` : ""}
+                                    </span>
+                                    <strong><span className="currency-value">{formatCurrencyFromCents(item.subtotalCents)}</span></strong>
+                                  </div>
+                                </div>
+                              ))}
+
+                              <div className="review-item-total">
+                                <strong>Total</strong>
+                                <strong><span className="currency-value">{formatCurrencyFromCents(totalCents)}</span></strong>
+                              </div>
+                            </div>
+                          ) : null}
 
                           {snapshotPreview ? (
-                            <div className="review-grid">
-                              <div className="snapshot-note">
-                                <strong>
-                                  Campos do snapshot que serão salvos na criação do rascunho
-                                </strong>
-                                <ul className="feature-list">
-                                  <li>
-                                    Empresa, contato, email, telefone, origem e observações do
-                                    cliente
-                                  </li>
-                                  <li>
-                                    Nome do serviço, nome original, tipo de cobrança, unidade,
-                                    quantidade e preço
-                                  </li>
-                                  <li>
-                                    Subtotal da proposta, desconto por item e total em centavos inteiros
-                                  </li>
-                                </ul>
-                              </div>
-
-                              <div className="snapshot-note">
-                                <strong>Responsabilidade interna da proposta</strong>
-                                <div className="data-list">
-                                  <div className="data-row">
-                                    <div className="data-row-stack">
-                                      <strong>{snapshotPreview.ownerName}</strong>
-                                      <p>Responsável pela proposta</p>
-                                    </div>
-                                    <StatusPill tone="accent">
-                                      {snapshotPreview.ownerRole}
-                                    </StatusPill>
+                            <div className="snapshot-note">
+                              <strong>Responsabilidade interna da proposta</strong>
+                              <div className="data-list">
+                                <div className="data-row">
+                                  <div className="data-row-stack">
+                                    <strong>{snapshotPreview.ownerName}</strong>
+                                    <p>Responsável pela proposta</p>
                                   </div>
-                                  <div className="data-row">
-                                    <div className="data-row-stack">
-                                      <strong>{snapshotPreview.itemCount}</strong>
-                                      <p>Itens do snapshot</p>
-                                    </div>
-                                    <strong>
-                                      <span className="currency-value">{formatCurrencyFromCents(snapshotPreview.totalCents)}</span>
-                                    </strong>
-                                  </div>
+                                  <StatusPill tone="accent">
+                                    {snapshotPreview.ownerRole}
+                                  </StatusPill>
                                 </div>
                               </div>
                             </div>
@@ -932,132 +904,6 @@ export function ProposalBuilder({
   );
 }
 
-function SelectedItemList({
-  items,
-  editable = false,
-  onQuantityChange,
-  onQuantityStep
-}: {
-  items: ProposalBuilderSelectedItem[];
-  editable?: boolean;
-  onQuantityChange?: (itemCode: string, nextValue: string) => void;
-  onQuantityStep?: (itemCode: string, currentQuantity: number, delta: number) => void;
-}) {
-  if (items.length === 0) {
-    return (
-      <div className="builder-empty-state">
-        <strong>Nenhum serviço selecionado ainda.</strong>
-        <p>Volte para a etapa do catálogo e escolha os serviços que devem aparecer nesta proposta.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="selected-item-list">
-      {items.map((item) => (
-        <article key={item.internalCode} className="selected-item-card">
-          <div className="selected-item-head">
-            <div>
-              <span className="catalog-service-kicker">
-                {item.internalCode} · {item.categoryName}
-              </span>
-              <strong>{item.serviceName}</strong>
-              {item.publicName !== item.serviceName ? <p>Nome original: {item.publicName}</p> : null}
-            </div>
-
-            <StatusPill tone={item.allowsVariableQuantity ? "accent" : "neutral"}>
-              {item.allowsVariableQuantity ? "Quantidade variável" : "Quantidade fixa"}
-            </StatusPill>
-          </div>
-
-          <div className="selected-item-grid">
-            <div className="detail-pair">
-              <p className="detail-label">Nome do serviço</p>
-              <strong>{item.serviceName}</strong>
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Nome original</p>
-              <strong>{item.publicName}</strong>
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Quantidade</p>
-              {editable && onQuantityChange && item.allowsVariableQuantity ? (
-                <div className="quantity-stepper" role="group" aria-label={`Quantidade de ${item.serviceName}`}>
-                  <button
-                    className="button-secondary quantity-stepper-button"
-                    disabled={item.quantity <= 1}
-                    onClick={() => onQuantityStep?.(item.internalCode, item.quantity, -1)}
-                    type="button"
-                  >
-                    -
-                  </button>
-
-                  <label className="field quantity-field">
-                    <span>Qtd.</span>
-                    <input
-                      inputMode="numeric"
-                      min={1}
-                      onChange={(event) => onQuantityChange(item.internalCode, event.target.value)}
-                      pattern="[0-9]*"
-                      type="number"
-                      value={item.quantity}
-                    />
-                  </label>
-
-                  <button
-                    className="button-secondary quantity-stepper-button"
-                    onClick={() => onQuantityStep?.(item.internalCode, item.quantity, 1)}
-                    type="button"
-                  >
-                    +
-                  </button>
-                </div>
-              ) : (
-                <strong>{item.quantity}</strong>
-              )}
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Preço unitário</p>
-              <strong><span className="currency-value">{formatCurrencyFromCents(item.unitPriceCents)}</span></strong>
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Subtotal</p>
-              <strong><span className="currency-value">{formatCurrencyFromCents(item.subtotalCents)}</span></strong>
-            </div>
-            {item.discountPercent > 0 ? (
-              <div className="detail-pair">
-                <p className="detail-label">Desconto</p>
-                <strong>{item.discountPercent}%</strong>
-              </div>
-            ) : null}
-          </div>
-
-          <div className="catalog-service-tags">
-            <StatusPill tone="accent">{getBillingTypeLabel(item.billingType)}</StatusPill>
-            <StatusPill tone="neutral">{getUnitLabel(item.unitLabel)}</StatusPill>
-          </div>
-
-          {item.specificClause || item.submissionNotes ? (
-            <div className="catalog-service-notes">
-              {item.specificClause ? (
-                <p>
-                  <strong>Cláusula específica:</strong> {item.specificClause}
-                </p>
-              ) : null}
-
-              {item.submissionNotes ? (
-                <p>
-                  <strong>Observações para envio:</strong> {item.submissionNotes}
-                </p>
-              ) : null}
-            </div>
-          ) : null}
-        </article>
-      ))}
-    </div>
-  );
-}
-
 function getActiveLead(args: {
   leadMode: LeadMode;
   selectedLeadId: string;
@@ -1109,7 +955,6 @@ function canContinue(
     case "lead":
       return hasLead;
     case "services":
-    case "quantities":
       return selectedItemCount > 0;
     case "review":
       return false;
@@ -1126,7 +971,6 @@ function isStepUnlocked(
       return true;
     case "services":
       return hasLead;
-    case "quantities":
     case "review":
       return hasLead && selectedItemCount > 0;
   }
@@ -1146,9 +990,7 @@ function getStepSummary(
     case "lead":
       return activeLead ? `${activeLead.company} · ${activeLead.email}` : "";
     case "services":
-      return `${selectedItems.length} ${selectedItems.length === 1 ? "serviço" : "serviços"}`;
-    case "quantities":
-      return `${selectedItems.length} ${selectedItems.length === 1 ? "item" : "itens"} · ${formatCurrencyFromCents(totalCents)}`;
+      return `${selectedItems.length} ${selectedItems.length === 1 ? "serviço" : "serviços"} · ${formatCurrencyFromCents(totalCents)}`;
     case "review":
       return "";
   }
@@ -1191,12 +1033,8 @@ function getContinueHint(
         : "Selecione um lead existente ou conclua o lead rápido para continuar.";
     case "services":
       return selectedItemCount > 0
-        ? "A seleção de serviços está pronta. Continue para as quantidades."
+        ? "A seleção de serviços está pronta. Continue para a revisão."
         : "Escolha pelo menos um serviço do catálogo interno para continuar.";
-    case "quantities":
-      return selectedItemCount > 0
-        ? "As quantidades estão prontas. Continue para a revisão."
-        : "Volte para serviços e escolha pelo menos um item.";
     case "review":
       return "A prévia do snapshot está pronta. Use \"Enviar agora\" para criar e enviar a proposta.";
   }

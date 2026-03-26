@@ -1,34 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
-
-import { brand } from "@/lib/brand";
 
 interface BrandMarkProps {
   href?: string | null;
   compact?: boolean;
 }
 
-export function BrandMark({
-  href = "/",
-  compact = false
-}: BrandMarkProps) {
-  const className = `brand-mark${compact ? " brand-mark-compact" : ""}`;
-  const content = (
-    <>
-      <span aria-hidden className="brand-mark-emblem" />
-      <span className="brand-mark-copy">
-        <strong>{brand.platformName}</strong>
-        <small>{brand.parentName}</small>
-      </span>
-    </>
-  );
+export function BrandMark({ href = "/", compact = false }: BrandMarkProps) {
+  const logo = compact
+    ? <Image src="/logomark.png" alt="Onebridge" width={30} height={30} className="brand-logo-compact" />
+    : <Image src="/logo.png" alt="Onebridge Stalwart" width={180} height={36} className="brand-logo-full" />;
 
   if (!href) {
-    return <div className={className}>{content}</div>;
+    return <span className="brand-mark">{logo}</span>;
   }
 
-  return (
-    <Link className={className} href={href}>
-      {content}
-    </Link>
-  );
+  return <Link href={href} className="brand-mark">{logo}</Link>;
 }
