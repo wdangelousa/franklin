@@ -119,9 +119,9 @@ export function resolveProposalWorkflow(input: ProposalWorkflowInput): ProposalW
       ? [
           {
             key: "GENERATE_ACCEPTED_PDF",
-            label: "Gerar PDF da proposta aceita",
+            label: "PDF da proposta aceita disponível",
             description:
-              "A aceitação foi registrada com sucesso. O próximo gatilho de automação deve gerar um PDF imutável da proposta aceita a partir do snapshot salvo."
+              "A aceitação foi registrada com sucesso. A rota segura de PDF da proposta aceita já pode ser usada a partir do snapshot salvo."
           }
         ]
       : []

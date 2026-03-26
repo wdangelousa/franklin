@@ -78,6 +78,15 @@ export function PublicProposalChecklistPage({
         </article>
 
         <aside className="surface-card checklist-sidebar">
+          <div className="public-flow-card">
+            <p className="eyebrow">Onboarding</p>
+            <h2>Entregue cada item sem perder o contexto</h2>
+            <p className="section-copy">
+              O checklist foi reorganizado como uma área de progresso: contexto no topo, ações no
+              lado e itens em sequência clara.
+            </p>
+          </div>
+
           <div className="section-head">
             <p className="eyebrow">Próximas ações</p>
             <h2>{snapshot.contactName}</h2>

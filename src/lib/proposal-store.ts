@@ -1333,7 +1333,7 @@ function mapServiceToSelectedItem(
   requestedQuantity: number,
   discountPercent = 0
 ): ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[]; deliverables: string[] } {
-  const quantity = service.allowsVariableQuantity ? normalizeQuantity(requestedQuantity) : 1;
+  const quantity = normalizeQuantity(requestedQuantity);
   const unitPriceCents = service.priceCents ?? 0;
   const normalizedDiscount = Math.min(Math.max(discountPercent, 0), 100);
   const subtotalCents = Math.round(quantity * unitPriceCents * (1 - normalizedDiscount / 100));
@@ -1690,7 +1690,7 @@ function formatProposalEventTitle(type: ProposalEventType): string {
     case "EXPIRED":
       return "Proposta expirada";
     case "PDF_GENERATION_QUEUED":
-      return "Geração de PDF enfileirada";
+      return "PDF da proposta aceita disponível";
     default:
       return "Evento da proposta";
   }
@@ -1715,7 +1715,7 @@ function formatProposalEventDescription(type: ProposalEventType): string {
     case "EXPIRED":
       return "A janela de revisão da proposta expirou.";
     case "PDF_GENERATION_QUEUED":
-      return "A proposta aceita foi marcada como pronta para geração de PDF.";
+      return "A proposta aceita agora pode ser aberta pela rota segura de PDF baseada no snapshot salvo.";
     case "CHECKLIST_ITEM_COMPLETED":
       return "Um item do checklist foi marcado como concluído.";
     default:

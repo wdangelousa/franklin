@@ -44,6 +44,15 @@ export function PublicProposalPdfPage({ proposal }: PublicProposalPdfPageProps) 
         </article>
 
         <aside className="surface-card pdf-proposal-sidebar">
+          <div className="public-flow-card pdf-meta-card">
+            <p className="eyebrow">Entrega</p>
+            <h2>Cópia final pronta para compartilhamento</h2>
+            <p className="section-copy">
+              Esta visão serve como versão final controlada, com metadados e investimento visíveis
+              sem depender do estado atual do catálogo.
+            </p>
+          </div>
+
           <div className="pdf-proposal-meta">
             <div className="detail-pair">
               <p className="detail-label">Preparada para</p>

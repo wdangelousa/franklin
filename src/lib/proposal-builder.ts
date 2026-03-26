@@ -13,18 +13,21 @@ export async function getInternalProposalCatalog(): Promise<ProposalBuilderCatal
     return [];
   }
 
-  const organization = await prisma.organization.findUnique({
+  const organization = await prisma.organization.upsert({
     where: {
       slug: brand.organizationSlug
+    },
+    update: {
+      name: brand.organizationName
+    },
+    create: {
+      slug: brand.organizationSlug,
+      name: brand.organizationName
     },
     select: {
       id: true
     }
   });
-
-  if (!organization) {
-    return [];
-  }
 
   const categories = await prisma.serviceCategory.findMany({
     where: {
@@ -35,6 +38,10 @@ export async function getInternalProposalCatalog(): Promise<ProposalBuilderCatal
     },
     include: {
       services: {
+        where: {
+          isActive: true,
+          status: "ACTIVE"
+        },
         orderBy: [
           {
             sortOrder: "asc"
@@ -47,37 +54,39 @@ export async function getInternalProposalCatalog(): Promise<ProposalBuilderCatal
     }
   });
 
-  return categories.map((category) => {
-    const localizedCategory = localizeServiceCategory({
-      code: category.code,
-      name: category.name,
-      description: category.description
-    });
+  return categories
+    .map((category) => {
+      const localizedCategory = localizeServiceCategory({
+        code: category.code,
+        name: category.name,
+        description: category.description
+      });
 
-    return {
-      code: category.code,
-      name: localizedCategory.name,
-      description: localizedCategory.description,
-      sortOrder: category.sortOrder,
-      services: category.services.map((service) => ({
-        categoryCode: category.code,
-        categoryName: localizedCategory.name,
-        categoryDescription: localizedCategory.description,
-        categorySortOrder: category.sortOrder,
-        internalCode: service.internalCode,
-        slug: service.slug,
-        serviceName: service.serviceName,
-        publicName: service.publicName,
-        longDescription: service.longDescription,
-        specificClause: service.specificClause,
-        submissionNotes: service.submissionNotes,
-        billingType: service.billingType as ProposalBuilderBillingType,
-        unitLabel: service.unitLabel,
-        unitPriceCents: service.priceCents ?? 0,
-        allowsVariableQuantity: service.allowsVariableQuantity,
-        isActive: service.isActive,
-        sortOrder: service.sortOrder
-      }))
-    };
-  });
+      return {
+        code: category.code,
+        name: localizedCategory.name,
+        description: localizedCategory.description,
+        sortOrder: category.sortOrder,
+        services: category.services.map((service) => ({
+          categoryCode: category.code,
+          categoryName: localizedCategory.name,
+          categoryDescription: localizedCategory.description,
+          categorySortOrder: category.sortOrder,
+          internalCode: service.internalCode,
+          slug: service.slug,
+          serviceName: service.serviceName,
+          publicName: service.publicName,
+          longDescription: service.longDescription,
+          specificClause: service.specificClause,
+          submissionNotes: service.submissionNotes,
+          billingType: service.billingType as ProposalBuilderBillingType,
+          unitLabel: service.unitLabel,
+          unitPriceCents: service.priceCents ?? 0,
+          allowsVariableQuantity: service.allowsVariableQuantity,
+          isActive: service.isActive,
+          sortOrder: service.sortOrder
+        }))
+      };
+    })
+    .filter((category) => category.services.length > 0);
 }

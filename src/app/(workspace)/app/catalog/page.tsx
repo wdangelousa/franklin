@@ -7,36 +7,49 @@ export default async function CatalogPage() {
   const catalog = await getInternalProposalCatalog();
 
   return (
-    <div className="page-stack">
+    <div className="page-stack catalog-page">
       <PageHeader
-        description="A rota de catálogo agora lê os registros reais de serviços do Anexo A salvos em Prisma, a mesma origem usada pelo builder e pela persistência de snapshots."
+        description="Consulte os serviços ativos e os preços disponíveis hoje para montagem de propostas. O catálogo abaixo reflete a mesma base usada pelo builder e pelos snapshots enviados ao cliente."
         eyebrow="Catálogo"
         title="Catálogo de serviços"
       />
 
       {catalog.length > 0 ? (
         catalog.map((category) => (
-          <section key={category.code} className="page-stack">
-            <div className="section-head">
+          <section key={category.code} className="surface-card catalog-category">
+            <div className="section-head catalog-category-head">
               <p className="eyebrow">{category.name}</p>
               <h2>{category.description ?? "Serviços do catálogo interno"}</h2>
             </div>
 
-            <div className="card-grid">
+            <div className="catalog-grid">
               {category.services.map((service) => (
-                <article key={service.internalCode} className="surface-card">
-                  <div className="section-head">
-                    <p className="eyebrow">{service.internalCode}</p>
-                    <h2>{service.serviceName}</h2>
+                <article key={service.internalCode} className="catalog-card">
+                  <div className="catalog-card-head">
+                    <p className="catalog-card-code">{service.internalCode}</p>
+                    <h2 className="catalog-card-title">{service.serviceName}</h2>
                   </div>
-                  {service.publicName !== service.serviceName ? (
-                    <p className="section-copy">Nome original: {service.publicName}</p>
-                  ) : null}
-                  <div className="service-meta">
-                    <span>
-                      {getBillingTypeLabel(service.billingType)} · {getUnitLabel(service.unitLabel)}
-                    </span>
-                    <strong><span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span></strong>
+
+                  <div className="catalog-card-body">
+                    {service.publicName !== service.serviceName ? (
+                      <p className="catalog-card-copy">Nome público: {service.publicName}</p>
+                    ) : null}
+
+                    {service.longDescription ? (
+                      <p className="catalog-card-copy">{service.longDescription}</p>
+                    ) : null}
+                  </div>
+
+                  <hr className="catalog-card-divider" />
+
+                  <div className="catalog-price-row">
+                    <div className="catalog-price-meta">
+                      <span>{getBillingTypeLabel(service.billingType)}</span>
+                      <span>{getUnitLabel(service.unitLabel)}</span>
+                    </div>
+                    <strong className="catalog-price-value">
+                      <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
+                    </strong>
                   </div>
                 </article>
               ))}

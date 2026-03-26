@@ -9,7 +9,7 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
 import { getProposalPdfPlan } from "@/lib/proposal-pdf";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
-import { formatCurrencyFromCents, formatDate } from "@/lib/utils";
+import { formatCurrencyFromCents, formatDate, formatDateTime } from "@/lib/utils";
 
 interface PublicProposalPageProps {
   proposal: ResolvedPublicProposal;
@@ -76,6 +76,15 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
         </article>
 
         <aside className="surface-card public-proposal-sidebar">
+          <div className="public-flow-card">
+            <p className="eyebrow">Decisão</p>
+            <h2>Resumo rápido para revisão</h2>
+            <p className="section-copy">
+              Use este bloco para confirmar destinatário, investimento e janela de revisão antes de
+              aceitar ou recusar a proposta.
+            </p>
+          </div>
+
           <div className="section-head">
             <p className="eyebrow">Preparada para</p>
             <h2>{snapshot.contactName}</h2>
@@ -113,7 +122,7 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
           </div>
 
           {proposal.lifecycle.status === "ACCEPTED" ? (
-            <div className="public-proposal-actions">
+            <div className="public-proposal-actions public-sidebar-actions">
               <Link className="button-secondary public-checklist-link" href={`/p/${snapshot.token}/checklist`}>
                 Abrir checklist de documentos
               </Link>
@@ -127,6 +136,50 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
 
       {proposal.showDetails ? (
         <>
+          <section className="public-proposal-grid">
+            <article className="surface-card public-decision-card">
+              <div className="section-head">
+                <p className="eyebrow">Status</p>
+                <h2>Ciclo de vida e log de eventos</h2>
+              </div>
+
+              <div className="proposal-event-log">
+                {proposal.lifecycle.eventLog.map((event) => (
+                  <div key={event.id} className="proposal-event-row">
+                    <div className="proposal-event-marker" aria-hidden="true" />
+                    <div className="proposal-event-content">
+                      <div className="proposal-event-head">
+                        <strong>{event.title}</strong>
+                        <span>{formatDateTime(event.occurredAt)}</span>
+                      </div>
+                      <p className="section-copy">{event.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="surface-card public-decision-card">
+              <div className="section-head">
+                <p className="eyebrow">Controles da proposta</p>
+                <h2>Política de edição e aceite</h2>
+              </div>
+
+              <div className="public-text-stack">
+                <p className="section-copy">
+                  {proposal.isEditable
+                    ? "Esta proposta continua em revisão ativa. O snapshot aceito só é consolidado depois que o clique de aceite é registrado."
+                    : proposal.lifecycle.lockReason ?? "Esta proposta está bloqueada para edição livre."}
+                </p>
+                {proposal.futureAutomationReady ? (
+                  <p className="section-copy">
+                    O aceite fica registrado com timestamp, e a cópia aceita pode ser aberta pela
+                    rota segura de PDF sempre que a equipe precisar compartilhar a versão final.
+                  </p>
+                ) : null}
+              </div>
+            </article>
+          </section>
           <PublicProposalSections proposal={proposal} />
 
           {proposal.lifecycle.status === "ACCEPTED" ? (

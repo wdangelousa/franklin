@@ -132,7 +132,7 @@ export function isLeadDraftComplete(leadDraft: ProposalBuilderLeadDraft): boolea
 export function createProposalSelectedItem(
   catalogItem: ProposalBuilderCatalogItem
 ): ProposalBuilderSelectedItem {
-  const quantity = normalizeProposalQuantity(1, catalogItem.allowsVariableQuantity);
+  const quantity = normalizeProposalQuantity(1);
 
   return {
     internalCode: catalogItem.internalCode,
@@ -160,7 +160,7 @@ export function updateProposalSelectedItemQuantity(
   item: ProposalBuilderSelectedItem,
   nextQuantity: number
 ): ProposalBuilderSelectedItem {
-  const quantity = normalizeProposalQuantity(nextQuantity, item.allowsVariableQuantity);
+  const quantity = normalizeProposalQuantity(nextQuantity);
 
   return {
     ...item,
@@ -183,7 +183,7 @@ export function updateProposalSelectedItemDiscount(
 }
 
 export function calculateItemSubtotalCents(quantity: number, unitPriceCents: number, discountPercent = 0): number {
-  const base = normalizeProposalQuantity(quantity, true) * Math.max(unitPriceCents, 0);
+  const base = normalizeProposalQuantity(quantity) * Math.max(unitPriceCents, 0);
   const discount = normalizeDiscountPercent(discountPercent);
   return Math.round(base * (1 - discount / 100));
 }
@@ -282,11 +282,7 @@ export function buildProposalDraftTitle(companyName: string): string {
   return `Proposta para ${companyName}`;
 }
 
-function normalizeProposalQuantity(quantity: number, allowsVariableQuantity: boolean): number {
-  if (!allowsVariableQuantity) {
-    return 1;
-  }
-
+function normalizeProposalQuantity(quantity: number): number {
   if (!Number.isFinite(quantity) || quantity < 1) {
     return 1;
   }

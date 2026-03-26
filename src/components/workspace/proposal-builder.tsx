@@ -450,114 +450,123 @@ export function ProposalBuilder({
                             </StatusPill>
                           </div>
 
-                          {catalog.map((section) => (
-                            <section key={section.code} className="catalog-section">
-                              <div className="section-head">
-                                <p className="eyebrow">{section.name}</p>
-                                <h2>
-                                  {section.description ?? "Registros do catálogo interno"}
-                                </h2>
-                              </div>
+                          <div className="builder-inline-note">
+                            <strong>A quantidade é definida na proposta, não apenas no catálogo.</strong>
+                            <p>
+                              Depois de selecionar o serviço, ajuste a quantidade conforme o escopo
+                              comercial desta proposta. O snapshot salvo preserva esse número no
+                              rascunho, no envio e na versão aceita.
+                            </p>
+                          </div>
 
-                              <div className="catalog-service-list">
-                                {section.services.map((service) => {
-                                  const isSelected = selectedServiceCodes.has(
-                                    service.internalCode
-                                  );
-                                  const isExpanded =
-                                    expandedServiceCode === service.internalCode;
-                                  const selectedItem = selectedItems.find(
-                                    (item) => item.internalCode === service.internalCode
-                                  );
+                          {catalog.length > 0 ? (
+                            catalog.map((section) => (
+                              <section key={section.code} className="catalog-section">
+                                <div className="section-head">
+                                  <p className="eyebrow">{section.name}</p>
+                                  <h2>
+                                    {section.description ?? "Registros do catálogo interno"}
+                                  </h2>
+                                </div>
 
-                                  return (
-                                    <div
-                                      key={service.internalCode}
-                                      className={[
-                                        "svc-card",
-                                        isSelected ? "is-selected" : "",
-                                        isExpanded ? "is-expanded" : "",
-                                        service.isActive ? "" : "is-disabled"
-                                      ]
-                                        .filter(Boolean)
-                                        .join(" ")}
-                                    >
+                                <div className="catalog-service-list">
+                                  {section.services.map((service) => {
+                                    const isSelected = selectedServiceCodes.has(
+                                      service.internalCode
+                                    );
+                                    const isExpanded =
+                                      expandedServiceCode === service.internalCode;
+                                    const selectedItem = selectedItems.find(
+                                      (item) => item.internalCode === service.internalCode
+                                    );
+
+                                    return (
                                       <div
-                                        className="svc-card-row"
-                                        onClick={() =>
-                                          handleToggleExpand(service.internalCode)
-                                        }
+                                        key={service.internalCode}
+                                        className={[
+                                          "svc-card",
+                                          isSelected ? "is-selected" : "",
+                                          isExpanded ? "is-expanded" : "",
+                                          service.isActive ? "" : "is-disabled"
+                                        ]
+                                          .filter(Boolean)
+                                          .join(" ")}
                                       >
-                                        <div className="svc-card-info">
-                                          <strong>{service.serviceName}</strong>
-                                          <span>
-                                            <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
-                                          </span>
-                                        </div>
-                                        <button
-                                          aria-label={`${isSelected ? "Remover" : "Adicionar"} ${service.serviceName}`}
-                                          aria-pressed={isSelected}
-                                          className={[
-                                            "svc-toggle",
-                                            isSelected ? "is-on" : ""
-                                          ]
-                                            .filter(Boolean)
-                                            .join(" ")}
-                                          disabled={!service.isActive}
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleToggleService(service);
-                                          }}
-                                          type="button"
+                                        <div
+                                          className="svc-card-row"
+                                          onClick={() =>
+                                            handleToggleExpand(service.internalCode)
+                                          }
                                         >
-                                          {isSelected ? "ON" : "OFF"}
-                                        </button>
-                                      </div>
-
-                                      <div className="svc-card-detail">
-                                        <div className="svc-card-detail-inner">
-                                          {service.publicName !== service.serviceName ? (
-                                            <p className="svc-public-name">
-                                              Nome público: {service.publicName}
-                                            </p>
-                                          ) : null}
-
-                                          {service.longDescription ? (
-                                            <p className="svc-description">
-                                              {service.longDescription}
-                                            </p>
-                                          ) : null}
-
-                                          {service.specificClause ? (
-                                            <div className="svc-callout">
-                                              <strong>Cláusula específica</strong>
-                                              <p>{service.specificClause}</p>
-                                            </div>
-                                          ) : null}
-
-                                          {service.submissionNotes ? (
-                                            <div className="svc-timeline">
-                                              <strong>Prazo e entrega</strong>
-                                              <p>{service.submissionNotes}</p>
-                                            </div>
-                                          ) : null}
-
-                                          <div className="svc-card-tags">
-                                            <StatusPill tone="accent">
-                                              {getBillingTypeLabel(service.billingType)}
-                                            </StatusPill>
-                                            <StatusPill tone="neutral">
-                                              {service.allowsVariableQuantity
-                                                ? "Quantidade variável"
-                                                : "Quantidade fixa"}
-                                            </StatusPill>
+                                          <div className="svc-card-info">
+                                            <strong>{service.serviceName}</strong>
+                                            <span>
+                                              <span className="currency-value">{formatCurrencyFromCents(service.unitPriceCents)}</span>
+                                            </span>
                                           </div>
+                                          <button
+                                            aria-label={`${isSelected ? "Remover" : "Adicionar"} ${service.serviceName}`}
+                                            aria-pressed={isSelected}
+                                            className={[
+                                              "svc-toggle",
+                                              isSelected ? "is-on" : ""
+                                            ]
+                                              .filter(Boolean)
+                                              .join(" ")}
+                                            disabled={!service.isActive}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleToggleService(service);
+                                            }}
+                                            type="button"
+                                          >
+                                            {isSelected ? "ON" : "OFF"}
+                                          </button>
+                                        </div>
 
-                                          {isSelected && selectedItem ? (
-                                            <div className="svc-card-fields">
-                                              <div className="svc-card-field">
-                                                <span>Quantidade</span>
-                                                {selectedItem.allowsVariableQuantity ? (
+                                        <div className="svc-card-detail">
+                                          <div className="svc-card-detail-inner">
+                                            {service.publicName !== service.serviceName ? (
+                                              <p className="svc-public-name">
+                                                Nome público: {service.publicName}
+                                              </p>
+                                            ) : null}
+
+                                            {service.longDescription ? (
+                                              <p className="svc-description">
+                                                {service.longDescription}
+                                              </p>
+                                            ) : null}
+
+                                            {service.specificClause ? (
+                                              <div className="svc-callout">
+                                                <strong>Cláusula específica</strong>
+                                                <p>{service.specificClause}</p>
+                                              </div>
+                                            ) : null}
+
+                                            {service.submissionNotes ? (
+                                              <div className="svc-timeline">
+                                                <strong>Prazo e entrega</strong>
+                                                <p>{service.submissionNotes}</p>
+                                              </div>
+                                            ) : null}
+
+                                            <div className="svc-card-tags">
+                                              <StatusPill tone="accent">
+                                                {getBillingTypeLabel(service.billingType)}
+                                              </StatusPill>
+                                              <StatusPill tone="neutral">
+                                                {service.allowsVariableQuantity
+                                                  ? "Catálogo: quantidade variável"
+                                                  : "Catálogo: quantidade fixa"}
+                                              </StatusPill>
+                                            </div>
+
+                                            {isSelected && selectedItem ? (
+                                              <div className="svc-card-fields">
+                                                <div className="svc-card-field">
+                                                  <span>Quantidade</span>
                                                   <div
                                                     className="quantity-stepper"
                                                     role="group"
@@ -612,40 +621,51 @@ export function ProposalBuilder({
                                                       +
                                                     </button>
                                                   </div>
-                                                ) : (
-                                                  <strong>1 (fixa)</strong>
-                                                )}
+                                                </div>
+                                                <div className="svc-card-field">
+                                                  <span>Desconto (%)</span>
+                                                  <input
+                                                    className="svc-discount-input"
+                                                    max={100}
+                                                    min={0}
+                                                    onChange={(e) => {
+                                                      e.stopPropagation();
+                                                      handleDiscountChange(
+                                                        service.internalCode,
+                                                        e.target.value
+                                                      );
+                                                    }}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    placeholder="0"
+                                                    step={1}
+                                                    type="number"
+                                                    value={selectedItem.discountPercent || ""}
+                                                  />
+                                                </div>
                                               </div>
-                                              <div className="svc-card-field">
-                                                <span>Desconto (%)</span>
-                                                <input
-                                                  className="svc-discount-input"
-                                                  max={100}
-                                                  min={0}
-                                                  onChange={(e) => {
-                                                    e.stopPropagation();
-                                                    handleDiscountChange(
-                                                      service.internalCode,
-                                                      e.target.value
-                                                    );
-                                                  }}
-                                                  onClick={(e) => e.stopPropagation()}
-                                                  placeholder="0"
-                                                  step={1}
-                                                  type="number"
-                                                  value={selectedItem.discountPercent || ""}
-                                                />
-                                              </div>
-                                            </div>
-                                          ) : null}
+                                            ) : null}
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  );
-                                })}
+                                    );
+                                  })}
+                                </div>
+                              </section>
+                            ))
+                          ) : (
+                            <div className="builder-empty-state">
+                              <strong>Nenhum serviço utilizável está disponível no catálogo.</strong>
+                              <p>
+                                Carregue o seed do Prisma ou publique pelo menos um serviço ativo
+                                para continuar criando propostas.
+                              </p>
+                              <div className="inline-actions">
+                                <Link className="button-secondary" href="/app/catalog">
+                                  Revisar catálogo
+                                </Link>
                               </div>
-                            </section>
-                          ))}
+                            </div>
+                          )}
                         </div>
                       )}
 
@@ -873,8 +893,8 @@ export function ProposalBuilder({
                 proposta é enviada.
               </li>
               <li>
-                A geração de PDF continua adiada, mas o aceite já tem um gatilho durável
-                preparado.
+                Depois do aceite, a rota segura de PDF desta cópia aceita fica disponível sem
+                depender do catálogo ao vivo.
               </li>
             </ul>
           </article>

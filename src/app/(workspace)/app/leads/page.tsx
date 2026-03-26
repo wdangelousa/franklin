@@ -29,7 +29,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const assignedPartnerCount = new Set(leadList.map((lead) => lead.assignedPartner)).size;
 
   return (
-    <div className="page-stack">
+    <div className="page-stack leads-page">
       <PageHeader
         actions={
           <Link className="button-primary" href="/app/leads/new">
@@ -40,6 +40,32 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
         eyebrow="Leads"
         title="Área de leads"
       />
+
+      <section className="surface-card operations-hero">
+        <div className="operations-hero-copy">
+          <p className="eyebrow">Qualificação</p>
+          <h2>Contexto comercial antes da proposta.</h2>
+          <p className="section-copy">
+            Esta tela foi refinada para facilitar a leitura do estágio, da responsabilidade e do
+            próximo passo sem exigir navegação imediata para o detalhe.
+          </p>
+        </div>
+
+        <div className="operations-hero-metrics">
+          <div className="summary-stat">
+            <span>Leads ativos</span>
+            <strong>{leadList.length}</strong>
+          </div>
+          <div className="summary-stat">
+            <span>Prontos para proposta</span>
+            <strong>{proposalReadyCount}</strong>
+          </div>
+          <div className="summary-stat">
+            <span>Sócios responsáveis</span>
+            <strong>{assignedPartnerCount}</strong>
+          </div>
+        </div>
+      </section>
 
       {params?.created === "1" ? (
         <section className="surface-card notice-panel">
@@ -91,10 +117,10 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
           <h2>Pipeline de leads orientado a proposta</h2>
         </div>
 
-        <div className="lead-list">
+        <div className="lead-list lead-record-list">
           {leadList.length > 0 ? (
             leadList.map((lead) => (
-              <article key={lead.id} className="lead-row">
+              <article key={lead.id} className="lead-row lead-record">
                 <div className="lead-row-primary">
                   <div className="lead-row-heading">
                     <div>
@@ -135,7 +161,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
                 </div>
 
                 <div className="lead-row-footer">
-                  <p>{lead.nextStep}</p>
+                  <p className="lead-next-step">{lead.nextStep}</p>
 
                   <div className="inline-actions">
                     <Link className="button-secondary" href={`/app/proposals/new?leadId=${lead.id}`}>

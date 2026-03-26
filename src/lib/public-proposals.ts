@@ -252,7 +252,7 @@ function getPublicProposalStatusTitle(status: ProposalWorkflowStatus): string {
       return "Proposta visualizada";
     case "SENT":
     default:
-      return "Proposta pronta para revisão";
+      return "Proposta disponível para revisão";
   }
 }
 
@@ -350,8 +350,8 @@ function mapEventType(type: ProposalEventType): {
       return {
         type: "ACCEPTED",
         status: "ACCEPTED",
-        title: "Geração de PDF enfileirada",
-        description: "A proposta aceita foi marcada como pronta para geração de PDF."
+        title: "PDF da proposta aceita disponível",
+        description: "A proposta aceita agora pode ser aberta pela rota segura de PDF gerada a partir do snapshot salvo."
       };
     default:
       return null;

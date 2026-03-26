@@ -32,7 +32,8 @@ export function AppShell({ session, children }: AppShellProps) {
           <h2>Área interna protegida</h2>
           <p>
             No MVP, as rotas internas do Franklin são limitadas a sessões de administrador e sócio.
-            O acesso do cliente permanece apenas nos links públicos de proposta.
+            O acesso do cliente permanece apenas nos links públicos de proposta. O login demo atual
+            é temporário e existe apenas para uso interno controlado.
           </p>
         </div>
       </aside>
@@ -47,7 +48,7 @@ export function AppShell({ session, children }: AppShellProps) {
 
           <div className="workspace-topbar-actions">
             <StatusPill tone={session.mode === "mock" ? "accent" : "neutral"}>
-              {session.mode === "mock" ? "Sessão demo" : "Protegido"}
+              {session.mode === "mock" ? "Sessão demo temporária" : "Protegido"}
             </StatusPill>
 
             <StatusPill tone={roleDefinition.tone}>

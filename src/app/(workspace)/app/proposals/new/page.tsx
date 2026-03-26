@@ -50,6 +50,16 @@ export default async function NewProposalPage({ searchParams }: NewProposalPageP
         </section>
       ) : null}
 
+      {catalog.length === 0 ? (
+        <section className="surface-card notice-panel">
+          <strong>O catálogo utilizável ainda não está disponível.</strong>
+          <p className="section-copy">
+            O builder continua acessível, mas você só conseguirá criar propostas depois que houver
+            pelo menos um serviço ativo no catálogo interno.
+          </p>
+        </section>
+      ) : null}
+
       <ProposalBuilder
         catalog={catalog}
         initialLeadId={initialLeadId}

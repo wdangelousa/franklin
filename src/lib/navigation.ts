@@ -8,7 +8,7 @@ export const workspaceNavigation: NavigationItem[] = [
   {
     href: "/app/dashboard",
     label: "Painel",
-    description: "Atividade executiva de propostas, prontidão analítica e movimentação atual."
+    description: "Atividade atual de propostas e atalhos para o fluxo interno do dia."
   },
   {
     href: "/app/leads",
@@ -23,12 +23,12 @@ export const workspaceNavigation: NavigationItem[] = [
   {
     href: "/app/catalog",
     label: "Catálogo",
-    description: "Serviços, posicionamento de preço e estrutura comercial."
+    description: "Serviços ativos e preços disponíveis hoje no builder de proposta."
   },
   {
     href: "/app/settings",
     label: "Configurações",
-    description: "Padrões da área interna, acesso e controles do sistema."
+    description: "Postura atual de acesso e limites operacionais do MVP."
   }
 ];
 

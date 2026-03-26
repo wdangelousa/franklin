@@ -15,7 +15,7 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <header className="page-header">
-      <div>
+      <div className="page-header-main">
         <p className="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
         <p className="page-header-copy">{description}</p>

@@ -3,7 +3,7 @@ import { brand } from "@/lib/brand";
 
 export const SESSION_COOKIE_NAME = "franklin_session";
 
-export const AUTH_MODE = process.env.FRANKLIN_AUTH_MODE === "strict" ? "strict" : "mock";
+export const AUTH_MODE = "mock";
 
 export const DEMO_ACCOUNTS: SessionUser[] = [
   {

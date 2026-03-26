@@ -21,12 +21,12 @@ const dashboardShortcuts = [
   {
     href: "/app/catalog",
     label: "Catálogo",
-    description: "Confira estrutura de serviços, posicionamento de preço e o modelo pronto para seed."
+    description: "Confira os serviços ativos e os preços que o builder consegue usar hoje."
   },
   {
     href: "/app/settings",
     label: "Configurações",
-    description: "Revise postura de acesso, padrões do sistema e prontidão de implementação."
+    description: "Revise o modo atual de acesso e os limites operacionais assumidos no MVP."
   }
 ] as const;
 
@@ -35,7 +35,7 @@ export default async function DashboardPage() {
   const snapshot = await getDashboardSnapshot(session);
 
   return (
-    <div className="page-stack">
+    <div className="page-stack dashboard-page">
       <PageHeader
         actions={
           <>
@@ -51,6 +51,23 @@ export default async function DashboardPage() {
         eyebrow="Painel"
         title="Painel interno"
       />
+
+      <section className="surface-card workspace-intro-card">
+        <div className="workspace-intro-copy">
+          <p className="eyebrow">Leitura rápida</p>
+          <h2>Primeiro entenda a carga do dia, depois aprofunde.</h2>
+          <p className="section-copy">
+            Esta área foi reorganizada para destacar prioridades imediatas, atalhos de ação e
+            leitura curta de status antes de entrar nos detalhes operacionais.
+          </p>
+        </div>
+
+        <div className="pill-row">
+          <StatusPill tone="accent">Fluxo consultivo</StatusPill>
+          <StatusPill tone="neutral">Leitura rápida</StatusPill>
+          <StatusPill tone="neutral">Ação direta</StatusPill>
+        </div>
+      </section>
 
       <section className="surface-card dashboard-overview">
         <div className="dashboard-overview-copy">

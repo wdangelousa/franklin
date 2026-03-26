@@ -6,7 +6,7 @@ const settingsSections = [
   {
     eyebrow: "Acesso",
     title: "Scaffold de autenticação",
-    copy: "O acesso interno por perfil continua propositalmente mínimo no MVP: apenas sessões ADMIN e PARTNER, com a revisão pública de propostas fora do login da área interna."
+    copy: "O acesso interno por perfil continua propositalmente mínimo e temporário no MVP: apenas sessões ADMIN e PARTNER em modo mock, com a revisão pública de propostas fora do login da área interna."
   },
   {
     eyebrow: "Dados",
@@ -37,7 +37,7 @@ export default function SettingsPage() {
 
         <div className="pill-row">
           <StatusPill tone={AUTH_MODE === "mock" ? "accent" : "warning"}>
-            {AUTH_MODE === "mock" ? "Modo demo de auth" : "Modo estrito de auth"}
+            Modo mock temporário
           </StatusPill>
           <StatusPill tone="neutral">O acesso do cliente continua público</StatusPill>
           <StatusPill tone="neutral">Controles avançados adiados</StatusPill>

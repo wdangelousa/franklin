@@ -26,9 +26,10 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
   const proposals = await getInternalProposalList(session, {
     status: selectedStatus ?? undefined
   });
+  const lockedCount = proposals.filter((proposal) => proposal.isLocked).length;
 
   return (
-    <div className="page-stack">
+    <div className="page-stack operations-page">
       <PageHeader
         actions={
           <Link className="button-primary" href="/app/proposals/new">
@@ -39,6 +40,32 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
         eyebrow="Propostas"
         title="Área de propostas"
       />
+
+      <section className="surface-card operations-hero">
+        <div className="operations-hero-copy">
+          <p className="eyebrow">Operação</p>
+          <h2>Encontre rápido o que precisa de ação.</h2>
+          <p className="section-copy">
+            A lista abaixo prioriza leitura operacional: status, vencimento, lead relacionado e
+            acesso imediato ao detalhe da proposta.
+          </p>
+        </div>
+
+        <div className="operations-hero-metrics">
+          <div className="summary-stat">
+            <span>Propostas visíveis</span>
+            <strong>{proposals.length}</strong>
+          </div>
+          <div className="summary-stat">
+            <span>Bloqueadas</span>
+            <strong>{lockedCount}</strong>
+          </div>
+          <div className="summary-stat">
+            <span>Filtro</span>
+            <strong>{selectedStatus ?? "Todos os status"}</strong>
+          </div>
+        </div>
+      </section>
 
       {sendErrorMessage ? (
         <section className="surface-card notice-panel">
@@ -53,7 +80,7 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
           <h2>Propostas atuais</h2>
         </div>
 
-        <div className="inline-actions">
+        <div className="filter-toolbar inline-actions">
           <Link
             className={`button-secondary${selectedStatus ? "" : " is-active"}`}
             href="/app/proposals"
@@ -72,10 +99,10 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
         </div>
 
         {proposals.length > 0 ? (
-          <div className="data-list">
+          <div className="proposal-list">
             {proposals.map((proposal) => (
-              <div key={proposal.id} className="data-row">
-                <div>
+              <article key={proposal.id} className="proposal-record">
+                <div className="proposal-record-main">
                   <strong>
                     <Link className="text-link" href={`/app/proposals/${proposal.id}`}>
                       {proposal.title}
@@ -86,7 +113,7 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
                   </p>
                 </div>
 
-                <div className="row-meta row-meta-wide">
+                <div className="proposal-record-meta">
                   <StatusPill tone={getProposalStatusTone(proposal.status)}>{proposal.status}</StatusPill>
                   {proposal.isLocked ? <StatusPill tone="neutral">Bloqueada</StatusPill> : null}
                   <span>Atualizada em {formatDate(proposal.updatedAt)}</span>
@@ -105,7 +132,7 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
                     Abrir
                   </Link>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         ) : (

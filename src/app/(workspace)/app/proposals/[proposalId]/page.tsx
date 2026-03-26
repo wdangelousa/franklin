@@ -262,6 +262,17 @@ export default async function ProposalDetailPage({
                     <StatusPill tone="accent">{item.billingType}</StatusPill>
                   </div>
 
+                  <div className="selected-item-summary">
+                    <strong>
+                      {item.quantity} x <span className="currency-value">{formatCurrencyFromCents(item.unitPriceCents)}</span>
+                    </strong>
+                    <span>
+                      {item.quantity === 1
+                        ? "1 unidade aplicada neste snapshot comercial."
+                        : `${item.quantity} unidades aplicadas neste snapshot comercial.`}
+                    </span>
+                  </div>
+
                   <div className="selected-item-grid">
                     <div className="detail-pair">
                       <p className="detail-label">Quantidade</p>

@@ -32,11 +32,12 @@ export async function acceptPublicProposal(formData: FormData): Promise<void> {
       acceptedByIp,
       acceptedByUserAgent
     });
-    redirect(`/p/${normalizedToken}/checklist`);
   } catch (error) {
     const errorCode = mapAcceptErrorCode(error);
     redirect(`/p/${normalizedToken}?acceptError=${encodeURIComponent(errorCode)}`);
   }
+
+  redirect(`/p/${normalizedToken}/checklist`);
 }
 
 export async function rejectPublicProposal(formData: FormData): Promise<void> {
