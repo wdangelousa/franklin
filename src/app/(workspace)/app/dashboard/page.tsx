@@ -52,6 +52,16 @@ export default async function DashboardPage() {
         title="Painel interno"
       />
 
+      {snapshot.isOffline ? (
+        <section className="surface-card notice-panel">
+          <strong>O banco de dados está temporariamente indisponível.</strong>
+          <p>
+            Os indicadores abaixo estão zerados porque não foi possível conectar ao banco.
+            Verifique a variável DATABASE_URL e a conectividade com o servidor PostgreSQL.
+          </p>
+        </section>
+      ) : null}
+
       <section className="surface-card workspace-intro-card">
         <div className="workspace-intro-copy">
           <p className="eyebrow">Leitura rápida</p>

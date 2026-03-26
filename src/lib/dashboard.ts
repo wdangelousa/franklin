@@ -42,6 +42,8 @@ export interface DashboardSnapshot {
   metrics: DashboardMetric[];
   recentProposals: DashboardRecentProposal[];
   statusSummary: DashboardStatusSummaryItem[];
+  /** True when data could not be loaded (database unavailable). */
+  isOffline?: boolean;
 }
 
 export async function getDashboardSnapshot(session: SessionData): Promise<DashboardSnapshot> {
@@ -49,6 +51,21 @@ export async function getDashboardSnapshot(session: SessionData): Promise<Dashbo
     return buildEmptyDashboardSnapshot();
   }
 
+  try {
+    return await fetchDashboardFromDatabase(session);
+  } catch (error) {
+    console.log(JSON.stringify({
+      event: "dashboard.database.error",
+      timestamp: new Date().toISOString(),
+      outcome: "error",
+      message: error instanceof Error ? error.message : "Unknown database error",
+      userId: session.user.id
+    }));
+    return { ...buildEmptyDashboardSnapshot(), isOffline: true };
+  }
+}
+
+async function fetchDashboardFromDatabase(session: SessionData): Promise<DashboardSnapshot> {
   const { organization } = await ensureInternalActor(session);
   await syncExpiredProposalStatusesForOrganization(organization.id);
 

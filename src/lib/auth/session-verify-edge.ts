@@ -29,8 +29,13 @@ function base64UrlEncode(bytes: Uint8Array): string {
 }
 
 function base64UrlDecode(str: string): Uint8Array {
-  const padded = str.replace(/-/g, "+").replace(/_/g, "/");
-  const binary = atob(padded);
+  // Normalize base64url → base64: replace URL-safe chars and add padding
+  let base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  const remainder = base64.length % 4;
+  if (remainder === 2) base64 += "==";
+  else if (remainder === 3) base64 += "=";
+
+  const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
     bytes[i] = binary.charCodeAt(i);
@@ -59,27 +64,33 @@ async function verifyWithSecret(encodedPayload: string, providedSignature: strin
  * Returns the decoded JSON payload string, or null if verification fails.
  */
 export async function verifySessionPayloadEdge(signed: string): Promise<string | null> {
-  const { primary, previous } = getSessionSecretsEdge();
-  if (!primary) return null;
+  try {
+    const { primary, previous } = getSessionSecretsEdge();
+    if (!primary) return null;
 
-  const dotIndex = signed.indexOf(".");
-  if (dotIndex === -1) return null;
+    const dotIndex = signed.indexOf(".");
+    if (dotIndex === -1) return null;
 
-  const encodedPayload = signed.slice(0, dotIndex);
-  const providedSignature = signed.slice(dotIndex + 1);
-  if (!encodedPayload || !providedSignature) return null;
+    const encodedPayload = signed.slice(0, dotIndex);
+    const providedSignature = signed.slice(dotIndex + 1);
+    if (!encodedPayload || !providedSignature) return null;
 
-  // Try primary secret first
-  if (await verifyWithSecret(encodedPayload, providedSignature, primary)) {
-    return decodePayload(encodedPayload);
+    // Try primary secret first
+    if (await verifyWithSecret(encodedPayload, providedSignature, primary)) {
+      return decodePayload(encodedPayload);
+    }
+
+    // Try previous secret for rotation
+    if (previous && await verifyWithSecret(encodedPayload, providedSignature, previous)) {
+      return decodePayload(encodedPayload);
+    }
+
+    return null;
+  } catch {
+    // Never throw from middleware verification — malformed cookies,
+    // invalid base64, or crypto errors all result in "invalid session".
+    return null;
   }
-
-  // Try previous secret for rotation
-  if (previous && await verifyWithSecret(encodedPayload, providedSignature, previous)) {
-    return decodePayload(encodedPayload);
-  }
-
-  return null;
 }
 
 function decodePayload(encoded: string): string | null {
