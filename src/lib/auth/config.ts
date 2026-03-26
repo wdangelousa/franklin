@@ -1,9 +1,15 @@
-import type { SessionData, SessionUser } from "@/lib/auth/types";
+import type { AuthMode, SessionData, SessionUser } from "@/lib/auth/types";
 import { brand } from "@/lib/brand";
 
 export const SESSION_COOKIE_NAME = "franklin_session";
 
-export const AUTH_MODE = "mock";
+function resolveAuthMode(): AuthMode {
+  const raw = process.env.FRANKLIN_AUTH_MODE?.trim().toLowerCase();
+  if (raw === "strict") return "strict";
+  return "mock";
+}
+
+export const AUTH_MODE: AuthMode = resolveAuthMode();
 
 export const DEMO_ACCOUNTS: SessionUser[] = [
   {
@@ -41,4 +47,12 @@ export const DEMO_SESSION: SessionData = {
 
 export function getDemoAccountById(accountId: string | null): SessionUser {
   return DEMO_ACCOUNTS.find((account) => account.id === accountId) ?? DEFAULT_DEMO_ACCOUNT;
+}
+
+/**
+ * Returns true when mock demo login is allowed.
+ * Strict mode disables demo login — a real auth provider must be configured.
+ */
+export function isDemoLoginAllowed(): boolean {
+  return AUTH_MODE === "mock";
 }

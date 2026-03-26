@@ -1,18 +1,10 @@
 import "server-only";
 
 import {
-  ChecklistItemSide,
-  LeadSource,
-  LeadStatus,
-  Prisma,
-  ProposalEventType,
-  ProposalStatus,
   UserRole,
-  type ProposalChecklistItem,
-  type ProposalEvent,
+  type ProposalItem,
   type ProposalPublicToken,
   type Proposal,
-  type ProposalItem,
   type Service,
   type ServiceCategory
 } from "@prisma/client";
@@ -23,27 +15,69 @@ import { prisma } from "@/lib/prisma";
 import {
   buildProposalSnapshotPreview,
   buildProposalDraftTitle,
-  getBillingTypeLabel,
   getUnitLabel,
   sortProposalSelectedItems,
-  type ProposalBuilderLeadDraft,
   type ProposalBuilderLeadRecord,
   type ProposalBuilderSelectedItem
 } from "@/lib/proposal-draft";
 import {
   buildProposalContentSnapshot,
   getRequiredDocumentsForCatalogService,
-  parseProposalContentSnapshot,
-  type ProposalContentServiceInput,
-  type ProposalContentSnapshot
+  type ProposalContentServiceInput
 } from "@/lib/proposal-content";
 import {
   mapDatabaseProposalStatus,
   mapDisplayProposalStatusToDatabase,
   type ProposalDisplayStatus
 } from "@/lib/proposal-status";
-import { createProposalToken, decryptProposalToken, hashProposalToken } from "@/lib/proposal-token";
+import { createProposalToken, decryptProposalToken } from "@/lib/proposal-token";
+import { ProposalError } from "@/lib/proposal-errors";
 import { localizeServiceCategory } from "@/lib/service-catalog";
+
+// Imported from extracted modules
+import {
+  addDays,
+  buildPublicProposalSlug,
+  createProposalNumber,
+  formatBillingLabel,
+  formatLeadSource,
+  formatLeadStatus,
+  formatProposalEventDescription,
+  formatProposalEventTitle,
+  getLeadStatusAfterProposalLink,
+  isLockedStatus,
+  mapLeadSource,
+  normalizeQuantity,
+  parseJsonStringArray,
+  toJsonValue,
+  toLeadDraft
+} from "@/lib/proposal-store-helpers";
+import {
+  syncExpiredProposalById,
+  syncExpiredProposalStatusesForOrganization
+} from "@/lib/proposal-store-expiration";
+import { getInternalPublicLink } from "@/lib/proposal-store-public";
+
+// ---------------------------------------------------------------------------
+// Re-exports — keep external imports stable
+// ---------------------------------------------------------------------------
+
+export { syncExpiredProposalStatusesForOrganization } from "@/lib/proposal-store-expiration";
+export {
+  acceptProposalByToken,
+  buildPublicProposalSnapshotFromRecord,
+  completeProposalChecklistItem,
+  getProposalChecklist,
+  getProposalChecklistByToken,
+  getProposalTokenValueByPublicSlug,
+  getPublicProposalRecordByToken,
+  rejectProposalByToken,
+  type ProposalChecklistItemRecord
+} from "@/lib/proposal-store-public";
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 
 type ProposalWithRelations = Proposal & {
   lead: {
@@ -60,7 +94,7 @@ type ProposalWithRelations = Proposal & {
     role: string;
   } | null;
   items: ProposalItem[];
-  events: ProposalEvent[];
+  events: import("@prisma/client").ProposalEvent[];
   publicTokens: ProposalPublicToken[];
 };
 
@@ -157,6 +191,10 @@ export interface InternalProposalDetail {
   }>;
 }
 
+// ---------------------------------------------------------------------------
+// Lead options
+// ---------------------------------------------------------------------------
+
 export async function getProposalLeadOptions(session: SessionData): Promise<ProposalBuilderLeadRecord[]> {
   if (!process.env.DATABASE_URL) {
     return [];
@@ -202,6 +240,10 @@ export async function getProposalLeadOptions(session: SessionData): Promise<Prop
     stage: formatLeadStatus(lead.status)
   }));
 }
+
+// ---------------------------------------------------------------------------
+// Create draft
+// ---------------------------------------------------------------------------
 
 export async function createDraftProposal(args: {
   session: SessionData;
@@ -296,7 +338,11 @@ export async function createDraftProposal(args: {
   });
 }
 
-export async function sendDraftProposal(args: {
+// ---------------------------------------------------------------------------
+// Publish draft (formerly sendDraftProposal)
+// ---------------------------------------------------------------------------
+
+export async function publishDraftProposal(args: {
   proposalId: string;
   session: SessionData;
 }): Promise<{ proposalId: string }> {
@@ -318,11 +364,11 @@ export async function sendDraftProposal(args: {
     });
 
     if (!proposal) {
-      throw new Error("Proposta não encontrada.");
+      throw new ProposalError("PROPOSAL_NOT_FOUND", "Proposta não encontrada.");
     }
 
     if (proposal.status !== "DRAFT") {
-      throw new Error("Apenas propostas em rascunho podem ser enviadas.");
+      throw new ProposalError("INVALID_STATUS_FOR_PUBLISH", "Apenas propostas em rascunho podem ser enviadas.");
     }
 
     const token = createProposalToken();
@@ -354,6 +400,7 @@ export async function sendDraftProposal(args: {
             tokenPrefix: token.prefix,
             tokenHash: token.hash,
             tokenCiphertext: token.ciphertext,
+            expiresAt,
             lastUsedAt: null
           }
         },
@@ -385,7 +432,14 @@ export async function sendDraftProposal(args: {
   });
 }
 
-export async function createAndSendProposal(args: {
+/** @deprecated Use publishDraftProposal */
+export const sendDraftProposal = publishDraftProposal;
+
+// ---------------------------------------------------------------------------
+// Create and publish (formerly createAndSendProposal)
+// ---------------------------------------------------------------------------
+
+export async function createAndPublishProposal(args: {
   session: SessionData;
   leadSelection: ProposalLeadSelection;
   selectedServices: ProposalDraftSelection[];
@@ -473,6 +527,7 @@ export async function createAndSendProposal(args: {
             tokenPrefix: token.prefix,
             tokenHash: token.hash,
             tokenCiphertext: token.ciphertext,
+            expiresAt,
             lastUsedAt: null
           }
         },
@@ -508,9 +563,65 @@ export async function createAndSendProposal(args: {
   });
 }
 
-export async function syncExpiredProposalStatusesForOrganization(organizationId: string): Promise<void> {
-  await syncExpiredProposals(organizationId);
+/** @deprecated Use createAndPublishProposal */
+export const createAndSendProposal = createAndPublishProposal;
+
+// ---------------------------------------------------------------------------
+// Cancel
+// ---------------------------------------------------------------------------
+
+export async function cancelProposal(args: {
+  proposalId: string;
+  session: SessionData;
+}): Promise<{ proposalId: string }> {
+  const { organization, user } = await ensureInternalActor(args.session);
+
+  return prisma.$transaction(async (tx) => {
+    const proposal = await tx.proposal.findFirst({
+      where: {
+        id: args.proposalId,
+        organizationId: organization.id
+      }
+    });
+
+    if (!proposal) {
+      throw new ProposalError("PROPOSAL_NOT_FOUND", "Proposta não encontrada.");
+    }
+
+    if (!["DRAFT", "SENT", "VIEWED"].includes(proposal.status)) {
+      throw new ProposalError("INVALID_STATUS_FOR_CANCEL", "Apenas propostas em aberto podem ser canceladas.");
+    }
+
+    const cancelledAt = new Date();
+
+    await tx.proposal.update({
+      where: {
+        id: proposal.id
+      },
+      data: {
+        status: "CANCELLED",
+        cancelledAt,
+        lastEventAt: cancelledAt,
+        events: {
+          create: {
+            actorUserId: user.id,
+            type: "CANCELLED",
+            description: formatProposalEventDescription("CANCELLED"),
+            occurredAt: cancelledAt
+          }
+        }
+      }
+    });
+
+    return {
+      proposalId: proposal.id
+    };
+  });
 }
+
+// ---------------------------------------------------------------------------
+// Internal list / detail
+// ---------------------------------------------------------------------------
 
 export async function getInternalProposalList(
   session: SessionData,
@@ -703,487 +814,9 @@ export async function getInternalProposalDetail(args: {
   };
 }
 
-export async function getProposalTokenValueByPublicSlug(slug: string): Promise<string | null> {
-  const proposal = await prisma.proposal.findUnique({
-    where: {
-      publicSlug: slug
-    },
-    include: {
-      publicTokens: {
-        where: {
-          revokedAt: null
-        },
-        orderBy: {
-          createdAt: "desc"
-        },
-        take: 1
-      }
-    }
-  });
-
-  if (!proposal) {
-    return null;
-  }
-
-  return decryptProposalToken(proposal.publicTokens[0]?.tokenCiphertext ?? null);
-}
-
-export async function getPublicProposalRecordByToken(args: {
-  token: string;
-  recordView?: boolean;
-}): Promise<ProposalWithRelations | null> {
-  const tokenHash = hashProposalToken(args.token);
-  const tokenRecord = await prisma.proposalPublicToken.findUnique({
-    where: {
-      tokenHash
-    },
-    include: {
-      proposal: {
-        include: {
-          lead: {
-            select: {
-              id: true,
-              companyName: true,
-              contactName: true,
-              contactEmail: true,
-              contactPhone: true
-            }
-          },
-          owner: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              role: true
-            }
-          },
-          items: {
-            orderBy: {
-              sortOrder: "asc"
-            }
-          },
-          events: {
-            orderBy: {
-              occurredAt: "asc"
-            }
-          },
-          publicTokens: {
-            where: {
-              revokedAt: null
-            },
-            orderBy: {
-              createdAt: "desc"
-            }
-          }
-        }
-      }
-    }
-  });
-
-  if (!tokenRecord || tokenRecord.revokedAt) {
-    return null;
-  }
-
-  await syncExpiredProposalById(tokenRecord.proposalId, tokenRecord.proposal.organizationId);
-
-  if (args.recordView !== false) {
-    await recordProposalViewIfNeeded(tokenRecord.proposalId, tokenRecord.id);
-  }
-
-  const proposal = await prisma.proposal.findUnique({
-    where: {
-      id: tokenRecord.proposalId
-    },
-    include: {
-      lead: {
-        select: {
-          id: true,
-          companyName: true,
-          contactName: true,
-          contactEmail: true,
-          contactPhone: true
-        }
-      },
-      owner: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true
-        }
-      },
-      items: {
-        orderBy: {
-          sortOrder: "asc"
-        }
-      },
-      events: {
-        orderBy: {
-          occurredAt: "asc"
-        }
-      },
-      publicTokens: {
-        where: {
-          revokedAt: null
-        },
-        orderBy: {
-          createdAt: "desc"
-        }
-      }
-    }
-  });
-
-  return proposal as ProposalWithRelations | null;
-}
-
-export async function cancelProposal(args: {
-  proposalId: string;
-  session: SessionData;
-}): Promise<{ proposalId: string }> {
-  const { organization, user } = await ensureInternalActor(args.session);
-
-  return prisma.$transaction(async (tx) => {
-    const proposal = await tx.proposal.findFirst({
-      where: {
-        id: args.proposalId,
-        organizationId: organization.id
-      }
-    });
-
-    if (!proposal) {
-      throw new Error("Proposta não encontrada.");
-    }
-
-    if (!["DRAFT", "SENT", "VIEWED"].includes(proposal.status)) {
-      throw new Error("Apenas propostas em aberto podem ser canceladas.");
-    }
-
-    const cancelledAt = new Date();
-
-    await tx.proposal.update({
-      where: {
-        id: proposal.id
-      },
-      data: {
-        status: "CANCELLED",
-        cancelledAt,
-        lastEventAt: cancelledAt,
-        events: {
-          create: {
-            actorUserId: user.id,
-            type: "CANCELLED",
-            description: formatProposalEventDescription("CANCELLED"),
-            occurredAt: cancelledAt
-          }
-        }
-      }
-    });
-
-    return {
-      proposalId: proposal.id
-    };
-  });
-}
-
-export async function acceptProposalByToken(
-  token: string,
-  meta?: {
-    acceptedByName?: string;
-    acceptedByIp?: string;
-    acceptedByUserAgent?: string;
-  }
-): Promise<void> {
-  const tokenHash = hashProposalToken(token);
-
-  await prisma.$transaction(async (tx) => {
-    const tokenRecord = await tx.proposalPublicToken.findUnique({
-      where: {
-        tokenHash
-      },
-      include: {
-        proposal: true
-      }
-    });
-
-    if (!tokenRecord || tokenRecord.revokedAt) {
-      throw new Error("Token da proposta não encontrado.");
-    }
-
-    const proposal = await syncExpiredProposalStatusInTransaction(
-      tx,
-      tokenRecord.proposalId,
-      tokenRecord.proposal.organizationId
-    );
-
-    if (!proposal) {
-      throw new Error("A proposta não pode ser aceita.");
-    }
-
-    const actionTime = new Date();
-
-    if (proposal.status === "ACCEPTED") {
-      await tx.proposalPublicToken.update({
-        where: {
-          id: tokenRecord.id
-        },
-        data: {
-          lastUsedAt: actionTime
-        }
-      });
-      return;
-    }
-
-    if (!["SENT", "VIEWED"].includes(proposal.status)) {
-      throw new Error("A proposta não pode ser aceita.");
-    }
-
-    const acceptedAt = actionTime;
-    const viewNeedsCapture = !proposal.viewedAt;
-    const events: Array<{
-      actorUserId?: string;
-      type: ProposalEventType;
-      description: string;
-      occurredAt: Date;
-      metadata?: Record<string, string>;
-    }> = [];
-
-    if (viewNeedsCapture) {
-      events.push({
-        type: "VIEWED",
-        description: formatProposalEventDescription("VIEWED"),
-        occurredAt: acceptedAt
-      });
-    }
-
-    events.push(
-      {
-        type: "ACCEPTED",
-        description: formatProposalEventDescription("ACCEPTED"),
-        occurredAt: acceptedAt
-      },
-      {
-        type: "PDF_GENERATION_QUEUED",
-        description: formatProposalEventDescription("PDF_GENERATION_QUEUED"),
-        occurredAt: acceptedAt
-      }
-    );
-
-    await tx.proposal.update({
-      where: {
-        id: proposal.id
-      },
-      data: {
-        status: "ACCEPTED",
-        viewedAt: proposal.viewedAt ?? acceptedAt,
-        acceptedAt,
-        acceptedByName: meta?.acceptedByName ?? null,
-        acceptedByIp: meta?.acceptedByIp ?? null,
-        acceptedByUserAgent: meta?.acceptedByUserAgent ?? null,
-        lastEventAt: acceptedAt,
-        pdfGenerationQueuedAt: proposal.pdfGenerationQueuedAt ?? acceptedAt,
-        events: {
-          create: events
-        }
-      }
-    });
-
-    await tx.proposalPublicToken.update({
-      where: {
-        id: tokenRecord.id
-      },
-      data: {
-        lastUsedAt: acceptedAt
-      }
-    });
-
-    // Create persistent checklist items based on the accepted proposal
-    await createProposalChecklist(proposal.id, tx);
-  });
-}
-
-export async function rejectProposalByToken(
-  token: string,
-  meta?: {
-    rejectedReason?: string;
-  }
-): Promise<void> {
-  const tokenHash = hashProposalToken(token);
-
-  await prisma.$transaction(async (tx) => {
-    const tokenRecord = await tx.proposalPublicToken.findUnique({
-      where: {
-        tokenHash
-      },
-      include: {
-        proposal: true
-      }
-    });
-
-    if (!tokenRecord || tokenRecord.revokedAt) {
-      throw new Error("Token da proposta não encontrado.");
-    }
-
-    const proposal = await syncExpiredProposalStatusInTransaction(
-      tx,
-      tokenRecord.proposalId,
-      tokenRecord.proposal.organizationId
-    );
-
-    if (!proposal) {
-      throw new Error("A proposta não pode ser recusada.");
-    }
-
-    if (!["SENT", "VIEWED"].includes(proposal.status)) {
-      throw new Error("A proposta não pode ser recusada.");
-    }
-
-    const rejectedAt = new Date();
-    const viewNeedsCapture = !proposal.viewedAt;
-    const events: Array<{
-      actorUserId?: string;
-      type: ProposalEventType;
-      description: string;
-      occurredAt: Date;
-      metadata?: Record<string, string>;
-    }> = [];
-
-    if (viewNeedsCapture) {
-      events.push({
-        type: "VIEWED",
-        description: formatProposalEventDescription("VIEWED"),
-        occurredAt: rejectedAt
-      });
-    }
-
-    events.push({
-      type: "REJECTED",
-      description: formatProposalEventDescription("REJECTED"),
-      occurredAt: rejectedAt
-    });
-
-    await tx.proposal.update({
-      where: {
-        id: proposal.id
-      },
-      data: {
-        status: "REJECTED",
-        viewedAt: proposal.viewedAt ?? rejectedAt,
-        rejectedAt,
-        rejectedReason: meta?.rejectedReason?.trim() || null,
-        lastEventAt: rejectedAt,
-        events: {
-          create: events
-        }
-      }
-    });
-
-    await tx.proposalPublicToken.update({
-      where: {
-        id: tokenRecord.id
-      },
-      data: {
-        lastUsedAt: rejectedAt
-      }
-    });
-  });
-}
-
-export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRelations): {
-  token: string | null;
-  legacySlug: string;
-  proposalNumber: string;
-  title: string;
-  status: ProposalStatus;
-  companyName: string;
-  contactName: string;
-  contactTitle: string;
-  contactEmail: string;
-  draftedAt: string;
-  preparedAt: string;
-  sentAt: string;
-  expiresAt: string;
-  acceptedAt: string | null;
-  rejectedAt: string | null;
-  cancelledAt: string | null;
-  selectedServices: Array<{
-    internalCode: string;
-    serviceName: string;
-    publicName: string;
-    description: string;
-    billingLabel: string;
-    unitLabel: string;
-    quantity: number;
-    unitPriceCents: number;
-    subtotalCents: number;
-    requiredDocuments: string[];
-    deliverables: string[];
-    submissionNotes: string | null;
-    specificClause: string | null;
-  }>;
-  content: ProposalContentSnapshot;
-  eventLog: Array<{
-    id: string;
-    type: ProposalEventType;
-    occurredAt: string;
-    description: string;
-  }>;
-} {
-  const activeToken = proposal.publicTokens.find((token) => !token.revokedAt) ?? null;
-  const selectedServices = proposal.items.map((item) => ({
-    internalCode: item.serviceCodeSnapshot,
-    serviceName: item.serviceNameSnapshot,
-    publicName: item.servicePublicNameSnapshot,
-    description: item.serviceDescriptionSnapshot ?? item.serviceShortDescriptionSnapshot ?? "",
-    billingLabel: formatBillingLabel(item.billingTypeSnapshot),
-    unitLabel: getUnitLabel(item.unitLabelSnapshot),
-    quantity: item.quantity,
-    unitPriceCents: item.unitPriceCents,
-    subtotalCents: item.subtotalCents,
-    requiredDocuments: parseJsonStringArray(item.requiredDocumentsSnapshot),
-    deliverables: parseJsonStringArray(item.deliverablesSnapshot),
-    submissionNotes: item.submissionNotesSnapshot ?? null,
-    specificClause: item.specificClauseSnapshot ?? null
-  }));
-  const content = parseProposalContentSnapshot(proposal.contentSnapshot, {
-    companyName: proposal.clientCompanyName,
-    contactName: proposal.clientContactName,
-    services: proposal.items.map((item) => ({
-      internalCode: item.serviceCodeSnapshot,
-      categoryCode: item.categoryCodeSnapshot,
-      serviceName: item.serviceNameSnapshot,
-      publicName: item.servicePublicNameSnapshot,
-      specificClause: item.specificClauseSnapshot,
-      requiredDocuments: parseJsonStringArray(item.requiredDocumentsSnapshot)
-    }))
-  });
-
-  return {
-    token: activeToken ? decryptProposalToken(activeToken.tokenCiphertext) : null,
-    legacySlug: proposal.publicSlug,
-    proposalNumber: proposal.proposalNumber,
-    title: proposal.title,
-    status: proposal.status,
-    companyName: proposal.clientCompanyName,
-    contactName: proposal.clientContactName,
-    contactTitle: proposal.clientContactTitle ?? "Contato principal",
-    contactEmail: proposal.clientContactEmail ?? "",
-    draftedAt: proposal.createdAt.toISOString(),
-    preparedAt: proposal.createdAt.toISOString(),
-    sentAt: proposal.sentAt?.toISOString() ?? proposal.createdAt.toISOString(),
-    expiresAt: proposal.expiresAt?.toISOString() ?? addDays(proposal.createdAt, 14).toISOString(),
-    acceptedAt: proposal.acceptedAt?.toISOString() ?? null,
-    rejectedAt: proposal.rejectedAt?.toISOString() ?? null,
-    cancelledAt: proposal.cancelledAt?.toISOString() ?? null,
-    selectedServices,
-    content,
-    eventLog: proposal.events.map((event) => ({
-      id: event.id,
-      type: event.type,
-      occurredAt: event.occurredAt.toISOString(),
-      description: formatProposalEventDescription(event.type)
-    }))
-  };
-}
+// ---------------------------------------------------------------------------
+// Internal helpers
+// ---------------------------------------------------------------------------
 
 async function resolveProposalLead(
   tx: Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown> ? T : never,
@@ -1284,7 +917,7 @@ async function buildSelectedItemsFromCatalog(
   }
 ): Promise<Array<ProposalBuilderSelectedItem & { sourceServiceId: string; requiredDocuments: string[]; deliverables: string[] }>> {
   if (args.selections.length === 0) {
-    throw new Error("É necessário selecionar pelo menos um serviço do catálogo.");
+    throw new ProposalError("NO_SERVICES", "É necessário selecionar pelo menos um serviço do catálogo.");
   }
 
   const dedupedSelections = Array.from(
@@ -1313,7 +946,7 @@ async function buildSelectedItemsFromCatalog(
   });
 
   if (services.length !== dedupedSelections.length) {
-    throw new Error("Um ou mais serviços selecionados do catálogo estão indisponíveis.");
+    throw new ProposalError("SERVICES_UNAVAILABLE", "Um ou mais serviços selecionados do catálogo estão indisponíveis.");
   }
 
   const selectionByCode = new Map(
@@ -1386,168 +1019,6 @@ function toContentServices(
   }));
 }
 
-async function recordProposalViewIfNeeded(proposalId: string, tokenId: string) {
-  await prisma.$transaction(async (tx) => {
-    const proposal = await tx.proposal.findUnique({
-      where: {
-        id: proposalId
-      }
-    });
-
-    if (!proposal || proposal.viewedAt || proposal.status !== "SENT") {
-      return;
-    }
-
-    const viewedAt = new Date();
-
-    await tx.proposal.update({
-      where: {
-        id: proposalId
-      },
-      data: {
-        status: "VIEWED",
-        viewedAt,
-        lastEventAt: viewedAt,
-        events: {
-          create: {
-            type: "VIEWED",
-            description: formatProposalEventDescription("VIEWED"),
-            occurredAt: viewedAt
-          }
-        }
-      }
-    });
-
-    await tx.proposalPublicToken.update({
-      where: {
-        id: tokenId
-      },
-      data: {
-        lastUsedAt: viewedAt
-      }
-    });
-  });
-}
-
-async function syncExpiredProposals(organizationId: string) {
-  const now = new Date();
-  const proposals = await prisma.proposal.findMany({
-    where: {
-      organizationId,
-      status: {
-        in: ["SENT", "VIEWED"]
-      },
-      expiresAt: {
-        lt: now
-      }
-    },
-    select: {
-      id: true
-    }
-  });
-
-  await Promise.all(
-    proposals.map((proposal) => syncExpiredProposalById(proposal.id, organizationId))
-  );
-}
-
-async function syncExpiredProposalById(proposalId: string, organizationId: string) {
-  await prisma.$transaction(async (tx) => {
-    await syncExpiredProposalStatusInTransaction(tx, proposalId, organizationId);
-  });
-}
-
-async function syncExpiredProposalStatusInTransaction(
-  tx: Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown> ? T : never,
-  proposalId: string,
-  organizationId: string
-) {
-  const proposal = await tx.proposal.findFirst({
-    where: {
-      id: proposalId,
-      organizationId
-    }
-  });
-
-  if (
-    !proposal ||
-    !proposal.expiresAt ||
-    proposal.expiresAt >= new Date() ||
-    !["SENT", "VIEWED"].includes(proposal.status)
-  ) {
-    return proposal;
-  }
-
-  const expiredAt = proposal.expiresAt;
-
-  return tx.proposal.update({
-    where: {
-      id: proposal.id
-    },
-    data: {
-      status: "EXPIRED",
-      lastEventAt: expiredAt,
-      events: {
-        create: {
-          type: "EXPIRED",
-          description: formatProposalEventDescription("EXPIRED"),
-          occurredAt: expiredAt
-        }
-      }
-    }
-  });
-}
-
-function buildPublicProposalSlug(proposalNumber: string, companyName: string): string {
-  return `${slugify(companyName)}-${proposalNumber.toLowerCase()}`.slice(0, 80);
-}
-
-function createProposalNumber(): string {
-  const now = new Date();
-  const datePart = `${now.getUTCFullYear()}${String(now.getUTCMonth() + 1).padStart(2, "0")}${String(
-    now.getUTCDate()
-  ).padStart(2, "0")}`;
-  const randomPart = Math.floor(Math.random() * 9000 + 1000);
-
-  return `FRK-${datePart}-${randomPart}`;
-}
-
-function addDays(date: Date, days: number): Date {
-  const nextDate = new Date(date);
-  nextDate.setUTCDate(nextDate.getUTCDate() + days);
-  return nextDate;
-}
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function normalizeQuantity(quantity: number): number {
-  if (!Number.isFinite(quantity) || quantity < 1) {
-    return 1;
-  }
-
-  return Math.floor(quantity);
-}
-
-function getLeadStatusAfterProposalLink(status: LeadStatus): LeadStatus {
-  switch (status) {
-    case "NEW":
-    case "QUALIFIED":
-    case "DISCOVERY":
-      return "PROPOSAL";
-    case "PROPOSAL":
-    case "WON":
-    case "LOST":
-    case "ARCHIVED":
-    default:
-      return status;
-  }
-}
-
 async function resolvePartnerOwnerUserId(
   tx: Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown> ? T : never,
   args: {
@@ -1580,332 +1051,4 @@ async function resolvePartnerOwnerUserId(
   });
 
   return matchedOwner?.id ?? args.currentUserId;
-}
-
-function toLeadDraft(selection: ProposalLeadSelection): ProposalBuilderLeadDraft {
-  const fullName = selection.fullName?.trim() ?? "";
-  const company = selection.company?.trim() ?? "";
-  const email = selection.email?.trim() ?? "";
-  const phone = selection.phone?.trim() ?? "";
-  const source = selection.source?.trim() ?? "";
-  const notes = selection.notes?.trim() ?? "";
-  const assignedPartner = selection.assignedPartner?.trim() ?? "";
-
-  if (!fullName || !company || !email || !phone || !source || !assignedPartner) {
-    throw new Error("Os dados do lead estão incompletos.");
-  }
-
-  return {
-    fullName,
-    company,
-    email,
-    phone,
-    source,
-    notes,
-    assignedPartner
-  };
-}
-
-function mapLeadSource(value: string): LeadSource {
-  switch (value.trim().toLowerCase()) {
-    case "referral":
-    case "indicacao":
-    case "indicação":
-      return "REFERRAL";
-    case "inbound":
-    case "entrada":
-      return "INBOUND";
-    case "outbound":
-    case "prospeccao":
-    case "prospecção":
-      return "OUTBOUND";
-    case "partner":
-    case "socio":
-    case "sócio":
-      return "PARTNER";
-    case "event":
-    case "evento":
-      return "EVENT";
-    default:
-      return "OTHER";
-  }
-}
-
-function formatLeadSource(source: LeadSource): string {
-  switch (source) {
-    case "REFERRAL":
-      return "Indicação";
-    case "INBOUND":
-      return "Inbound";
-    case "OUTBOUND":
-      return "Outbound";
-    case "PARTNER":
-      return "Sócio";
-    case "EVENT":
-      return "Evento";
-    case "OTHER":
-    default:
-      return "Outro";
-  }
-}
-
-function formatLeadStatus(status: LeadStatus): string {
-  switch (status) {
-    case "NEW":
-      return "Novo";
-    case "QUALIFIED":
-      return "Qualificado";
-    case "DISCOVERY":
-      return "Descoberta";
-    case "PROPOSAL":
-      return "Proposta";
-    case "WON":
-      return "Ganho";
-    case "LOST":
-      return "Perdido";
-    case "ARCHIVED":
-    default:
-      return "Arquivado";
-  }
-}
-
-function formatBillingLabel(billingType: ProposalItem["billingTypeSnapshot"]): string {
-  return getBillingTypeLabel(billingType);
-}
-
-function formatProposalEventTitle(type: ProposalEventType): string {
-  switch (type) {
-    case "CREATED":
-      return "Rascunho criado";
-    case "PUBLIC_TOKEN_ISSUED":
-      return "Token público emitido";
-    case "SENT":
-      return "Proposta enviada";
-    case "VIEWED":
-      return "Primeira visualização registrada";
-    case "ACCEPTED":
-      return "Proposta aceita";
-    case "CANCELLED":
-      return "Proposta cancelada";
-    case "EXPIRED":
-      return "Proposta expirada";
-    case "PDF_GENERATION_QUEUED":
-      return "PDF da proposta aceita disponível";
-    default:
-      return "Evento da proposta";
-  }
-}
-
-function formatProposalEventDescription(type: ProposalEventType): string {
-  switch (type) {
-    case "CREATED":
-      return "O rascunho da proposta foi criado a partir do builder interno.";
-    case "PUBLIC_TOKEN_ISSUED":
-      return "O token público seguro da proposta foi emitido para revisão do cliente.";
-    case "SENT":
-      return "A proposta foi enviada e entrou em revisão do cliente.";
-    case "VIEWED":
-      return "A primeira visualização pública da proposta foi registrada.";
-    case "ACCEPTED":
-      return "A proposta foi aceita pelo fluxo seguro de clique para aceitar.";
-    case "REJECTED":
-      return "A proposta foi recusada pelo cliente no fluxo público.";
-    case "CANCELLED":
-      return "A proposta foi cancelada e bloqueada para edições livres.";
-    case "EXPIRED":
-      return "A janela de revisão da proposta expirou.";
-    case "PDF_GENERATION_QUEUED":
-      return "A proposta aceita agora pode ser aberta pela rota segura de PDF baseada no snapshot salvo.";
-    case "CHECKLIST_ITEM_COMPLETED":
-      return "Um item do checklist foi marcado como concluído.";
-    default:
-      return "Ocorreu uma atualização no fluxo da proposta.";
-  }
-}
-
-function parseJsonStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value
-    .map((item) => (typeof item === "string" ? item.trim() : ""))
-    .filter((item) => item.length > 0);
-}
-
-function isLockedStatus(status: ProposalStatus): boolean {
-  return ["ACCEPTED", "CANCELLED", "EXPIRED"].includes(status);
-}
-
-function getInternalPublicLink(token: ProposalPublicToken | null): string | null {
-  const rawToken = decryptProposalToken(token?.tokenCiphertext ?? null);
-  return rawToken ? `/p/${rawToken}` : null;
-}
-
-function toJsonValue<T>(value: T): Prisma.InputJsonValue {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-}
-
-// ---------------------------------------------------------------------------
-// Checklist helpers
-// ---------------------------------------------------------------------------
-
-type PrismaTx = Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown>
-  ? T
-  : never;
-
-export interface ProposalChecklistItemRecord {
-  id: string;
-  proposalId: string;
-  side: ChecklistItemSide;
-  title: string;
-  description: string | null;
-  sortOrder: number;
-  isCompleted: boolean;
-  completedAt: Date | null;
-  completedBy: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const INTERNAL_CHECKLIST_DEFAULTS = [
-  { title: "Configurar ambiente do projeto", description: "Preparar ferramentas, acessos e repositórios necessários para o início dos trabalhos." },
-  { title: "Atribuir equipe responsável", description: "Definir os membros da equipe interna que irão conduzir o projeto." },
-  { title: "Agendar reunião de kickoff", description: "Marcar a reunião inicial com o cliente para alinhar escopo, cronograma e expectativas." },
-  { title: "Emitir fatura inicial", description: "Gerar e enviar a fatura referente à entrada ou primeira parcela do contrato." }
-] as const;
-
-async function createProposalChecklist(proposalId: string, tx: PrismaTx): Promise<void> {
-  // Fetch the proposal items to extract required documents
-  const items = await tx.proposalItem.findMany({
-    where: { proposalId }
-  });
-
-  const clientItems: Array<{ title: string; description: string; side: ChecklistItemSide; sortOrder: number }> = [];
-
-  let sortIndex = 0;
-  for (const item of items) {
-    const docs = parseJsonStringArray(item.requiredDocumentsSnapshot);
-    for (const doc of docs) {
-      clientItems.push({
-        title: doc,
-        description: `Documento necessário referente ao serviço: ${item.servicePublicNameSnapshot}`,
-        side: "CLIENT" as ChecklistItemSide,
-        sortOrder: sortIndex++
-      });
-    }
-  }
-
-  const internalItems = INTERNAL_CHECKLIST_DEFAULTS.map((item, idx) => ({
-    title: item.title,
-    description: item.description,
-    side: "INTERNAL" as ChecklistItemSide,
-    sortOrder: idx
-  }));
-
-  const allItems = [...clientItems, ...internalItems];
-
-  if (allItems.length === 0) {
-    return;
-  }
-
-  await tx.proposalChecklistItem.createMany({
-    data: allItems.map((item) => ({
-      id: crypto.randomUUID(),
-      proposalId,
-      side: item.side,
-      title: item.title,
-      description: item.description,
-      sortOrder: item.sortOrder,
-      isCompleted: false
-    }))
-  });
-}
-
-export async function getProposalChecklist(
-  proposalId: string
-): Promise<ProposalChecklistItemRecord[]> {
-  return prisma.proposalChecklistItem.findMany({
-    where: { proposalId },
-    orderBy: [
-      { side: "asc" },
-      { sortOrder: "asc" }
-    ]
-  });
-}
-
-export async function getProposalChecklistByToken(
-  token: string
-): Promise<ProposalChecklistItemRecord[]> {
-  const tokenHash = hashProposalToken(token);
-  const tokenRecord = await prisma.proposalPublicToken.findUnique({
-    where: { tokenHash },
-    select: { proposalId: true, revokedAt: true }
-  });
-
-  if (!tokenRecord || tokenRecord.revokedAt) {
-    return [];
-  }
-
-  return getProposalChecklist(tokenRecord.proposalId);
-}
-
-export async function completeProposalChecklistItem(
-  args: {
-    token: string;
-    itemId: string;
-    completedBy?: string;
-  }
-): Promise<void> {
-  const tokenHash = hashProposalToken(args.token);
-
-  await prisma.$transaction(async (tx) => {
-    const tokenRecord = await tx.proposalPublicToken.findUnique({
-      where: { tokenHash },
-      include: { proposal: { select: { id: true, status: true } } }
-    });
-
-    if (!tokenRecord || tokenRecord.revokedAt) {
-      throw new Error("Token inválido.");
-    }
-
-    const proposal = tokenRecord.proposal;
-
-    if (proposal.status !== "ACCEPTED") {
-      throw new Error("O checklist só está disponível para propostas aceitas.");
-    }
-
-    const item = await tx.proposalChecklistItem.findFirst({
-      where: { id: args.itemId, proposalId: proposal.id }
-    });
-
-    if (!item) {
-      throw new Error("Item do checklist não encontrado.");
-    }
-
-    if (item.isCompleted) {
-      return; // idempotent
-    }
-
-    const now = new Date();
-
-    await tx.proposalChecklistItem.update({
-      where: { id: item.id },
-      data: {
-        isCompleted: true,
-        completedAt: now,
-        completedBy: item.side === "CLIENT" ? (args.completedBy ?? null) : null
-      }
-    });
-
-    await tx.proposalEvent.create({
-      data: {
-        proposalId: proposal.id,
-        type: "CHECKLIST_ITEM_COMPLETED",
-        description: `Item do checklist concluído: "${item.title}"`,
-        occurredAt: now,
-        metadata: toJsonValue({ itemId: item.id, itemTitle: item.title, side: item.side })
-      }
-    });
-  });
 }

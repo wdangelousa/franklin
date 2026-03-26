@@ -76,18 +76,12 @@ export function ProposalSentSuccess({ proposal }: ProposalSentSuccessProps) {
           </svg>
         </div>
 
-        <h1 className="sent-success-heading">Proposta enviada</h1>
+        <h1 className="sent-success-heading">Proposta publicada</h1>
         <p className="sent-success-subheading">para {proposal.companyName}</p>
 
-        {proposal.contactEmail ? (
-          <div className="sent-success-email-card">
-            <span>Email enviado para {proposal.contactEmail} {"\u2713"}</span>
-          </div>
-        ) : (
-          <div className="sent-success-email-card is-warning">
-            <span>Nenhum email de contato cadastrado. Compartilhe o link manualmente.</span>
-          </div>
-        )}
+        <div className="sent-success-email-card">
+          <span>O link público da proposta está ativo. Compartilhe com o cliente.</span>
+        </div>
 
         <div className="sent-success-actions">
           <a

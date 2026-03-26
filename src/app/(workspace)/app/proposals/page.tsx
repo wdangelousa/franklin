@@ -15,6 +15,7 @@ interface ProposalsPageProps {
   searchParams?: Promise<{
     status?: string;
     sendError?: string;
+    publishError?: string;
   }>;
 }
 
@@ -22,7 +23,8 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
   const session = await requireInternalSession();
   const params = searchParams ? await searchParams : undefined;
   const selectedStatus = parseStatusFilter(params?.status);
-  const sendErrorMessage = params?.sendError ? mapSendErrorMessage(params.sendError) : null;
+  const errorCode = params?.publishError ?? params?.sendError ?? null;
+  const publishErrorMessage = errorCode ? mapPublishErrorMessage(errorCode) : null;
   const proposals = await getInternalProposalList(session, {
     status: selectedStatus ?? undefined
   });
@@ -67,10 +69,10 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
         </div>
       </section>
 
-      {sendErrorMessage ? (
+      {publishErrorMessage ? (
         <section className="surface-card notice-panel">
           <strong>Não foi possível concluir a ação solicitada.</strong>
-          <p>{sendErrorMessage}</p>
+          <p>{publishErrorMessage}</p>
         </section>
       ) : null}
 
@@ -185,16 +187,17 @@ function parseStatusFilter(status?: string): ProposalDisplayStatus | null {
   }
 }
 
-function mapSendErrorMessage(errorCode: string): string {
+function mapPublishErrorMessage(errorCode: string): string {
   switch (errorCode) {
     case "not_found":
       return "A proposta não foi encontrada ou não pertence à organização atual.";
     case "invalid_status":
-      return "Somente propostas em rascunho podem ser enviadas.";
+      return "Somente propostas em rascunho podem ser publicadas.";
     case "missing_proposal_id":
       return "O identificador da proposta não foi recebido corretamente.";
+    case "publish_failed":
     case "send_failed":
     default:
-      return "Ocorreu uma falha no envio da proposta. Tente novamente em instantes.";
+      return "Ocorreu uma falha na publicação da proposta. Tente novamente em instantes.";
   }
 }

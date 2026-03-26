@@ -4,8 +4,26 @@ import Link from "next/link";
 import { SignInForm } from "@/components/auth/sign-in-form";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { StatusPill } from "@/components/ui/status-pill";
+import { AUTH_MODE } from "@/lib/auth/config";
+import { getOidcConfig } from "@/lib/auth/oidc-config";
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams?: Promise<{
+    error?: string;
+    detail?: string;
+  }>;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const query = searchParams ? await searchParams : undefined;
+
+  // Check OIDC availability for strict mode
+  let oidcAvailable = false;
+  if (AUTH_MODE === "strict") {
+    const { config } = await getOidcConfig();
+    oidcAvailable = config !== null;
+  }
+
   return (
     <main className="auth-grid">
       <section className="auth-copy">
@@ -23,13 +41,9 @@ export default function LoginPage() {
         <p className="eyebrow">Acesso interno</p>
         <h1>Login da área interna protegida do Franklin.</h1>
         <p className="section-copy">
-          No MVP, o acesso é limitado a administradores e sócios internos. Clientes não fazem login
-          aqui e continuam acessando propostas por links públicos com token.
-        </p>
-        <p className="section-copy">
-          O modo de autenticação atual é um mock temporário para uso interno controlado. Ele existe
-          apenas para destravar a operação do MVP enquanto a autenticação definitiva ainda não foi
-          implementada.
+          {AUTH_MODE === "strict"
+            ? "O acesso é controlado por autenticação corporativa. Clientes continuam acessando propostas por links públicos com token."
+            : "No MVP, o acesso é limitado a administradores e sócios internos. Clientes não fazem login aqui e continuam acessando propostas por links públicos com token."}
         </p>
 
         <div className="pill-row">
@@ -41,17 +55,23 @@ export default function LoginPage() {
         <div className="auth-highlights">
           <article className="note-card auth-highlight">
             <strong>Perfis internos</strong>
-            <p>A área interna do Franklin no MVP suporta apenas sessões `ADMIN` e `PARTNER`.</p>
+            <p>A área interna do Franklin suporta apenas sessões ADMIN e PARTNER.</p>
           </article>
 
           <article className="note-card auth-highlight">
-            <strong>Modo temporário</strong>
-            <p>O login demo atual é provisório e não substitui um sistema definitivo de autenticação.</p>
+            <strong>
+              {AUTH_MODE === "strict" ? "Autenticação corporativa" : "Modo temporário"}
+            </strong>
+            <p>
+              {AUTH_MODE === "strict"
+                ? "O login usa um provedor OIDC/OAuth configurado pelo administrador."
+                : "O login demo atual é provisório e não substitui um sistema definitivo de autenticação."}
+            </p>
           </article>
 
           <article className="note-card auth-highlight">
             <strong>Limite de rota</strong>
-            <p>Tudo sob `/app` exige uma sessão interna autenticada antes da renderização.</p>
+            <p>Tudo sob /app exige uma sessão interna autenticada antes da renderização.</p>
           </article>
 
           <article className="note-card auth-highlight">
@@ -68,7 +88,10 @@ export default function LoginPage() {
       </section>
 
       <div className="auth-panel">
-        <SignInForm />
+        <SignInForm
+          oidcAvailable={oidcAvailable}
+          loginError={query?.error ?? null}
+        />
       </div>
     </main>
   );

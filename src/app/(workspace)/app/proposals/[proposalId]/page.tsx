@@ -6,7 +6,7 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { ProposalPublicLinkActions } from "@/components/workspace/proposal-public-link-actions";
 import { ProposalSentSuccess } from "@/components/workspace/proposal-sent-success";
 import { requireInternalSession } from "@/lib/auth/session";
-import { sendProposalDraftAction } from "@/lib/proposal-actions";
+import { publishProposalDraftAction } from "@/lib/proposal-actions";
 import { getInternalProposalDetail, type InternalProposalDetail } from "@/lib/proposal-store";
 import { getProposalStatusTone, type ProposalDisplayStatus } from "@/lib/proposal-status";
 import { formatCurrencyFromCents, formatDate, formatDateTime } from "@/lib/utils";
@@ -18,8 +18,10 @@ interface ProposalDetailPageProps {
   searchParams?: Promise<{
     created?: string;
     sent?: string;
+    published?: string;
     cancelled?: string;
     sendError?: string;
+    publishError?: string;
     cancelError?: string;
   }>;
 }
@@ -40,7 +42,7 @@ export default async function ProposalDetailPage({
     notFound();
   }
 
-  if (feedback?.sent === "1" && detail.status === "Enviada") {
+  if ((feedback?.published === "1" || feedback?.sent === "1") && detail.status === "Enviada") {
     return <ProposalSentSuccess proposal={detail} />;
   }
 
@@ -53,10 +55,10 @@ export default async function ProposalDetailPage({
               Voltar para propostas
             </Link>
             {detail.status === "Rascunho" ? (
-              <form action={sendProposalDraftAction} className="proposal-send-form-inline">
+              <form action={publishProposalDraftAction} className="proposal-send-form-inline">
                 <input name="proposalId" type="hidden" value={detail.id} />
                 <button className="button-primary" type="submit">
-                  Enviar proposta
+                  Publicar proposta
                 </button>
               </form>
             ) : detail.publicLink ? (
@@ -76,17 +78,17 @@ export default async function ProposalDetailPage({
         </section>
       ) : null}
 
-      {feedback?.sent === "1" ? (
+      {(feedback?.published === "1" || feedback?.sent === "1") ? (
         <section className="surface-card notice-panel">
-          <strong>Proposta enviada.</strong>
+          <strong>Proposta publicada.</strong>
           <p>O token público seguro agora está ativo e a rota voltada ao cliente já está disponível.</p>
         </section>
       ) : null}
 
-      {feedback?.sendError ? (
+      {(feedback?.publishError || feedback?.sendError) ? (
         <section className="surface-card notice-panel">
-          <strong>Não foi possível enviar a proposta.</strong>
-          <p>{mapSendErrorMessage(feedback.sendError)}</p>
+          <strong>Não foi possível publicar a proposta.</strong>
+          <p>{mapPublishErrorMessage(feedback.publishError ?? feedback.sendError ?? "")}</p>
         </section>
       ) : null}
 
@@ -195,13 +197,13 @@ export default async function ProposalDetailPage({
           </div>
 
           {detail.status === "Rascunho" ? (
-            <form action={sendProposalDraftAction} className="public-accept-form compact proposal-send-form">
+            <form action={publishProposalDraftAction} className="public-accept-form compact proposal-send-form">
               <input name="proposalId" type="hidden" value={detail.id} />
               <button className="button-primary proposal-send-button" type="submit">
-                Enviar link seguro da proposta
+                Publicar link seguro da proposta
               </button>
               <p className="builder-actions-note">
-                O envio emite o token público, marca a proposta como `SENT` e congela a janela de revisão.
+                A publicação emite o token público, marca a proposta como SENT e congela a janela de revisão.
               </p>
             </form>
           ) : detail.publicLink ? (
@@ -354,7 +356,7 @@ export default async function ProposalDetailPage({
   );
 }
 
-function mapSendErrorMessage(errorCode: string): string {
+function mapPublishErrorMessage(errorCode: string): string {
   switch (errorCode) {
     case "not_found":
       return "A proposta não foi encontrada ou não pertence à organização atual.";

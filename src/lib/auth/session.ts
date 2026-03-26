@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { SESSION_COOKIE_NAME } from "@/lib/auth/config";
+import { verifySessionPayload } from "@/lib/auth/session-crypto";
 import { isInternalRole, type InternalRole, type SessionData } from "@/lib/auth/types";
 
 function parseSession(rawValue: string): SessionData | null {
@@ -41,14 +42,18 @@ export async function getSession(): Promise<SessionData | null> {
   const cookieStore = await cookies();
   const cookieValue = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
-  if (cookieValue) {
-    const parsedSession = parseSession(cookieValue);
-
-    if (parsedSession) {
-      return parsedSession;
-    }
+  if (!cookieValue) {
+    return null;
   }
 
+  // Try signed format first (base64url.hmac)
+  const verifiedPayload = verifySessionPayload(cookieValue);
+
+  if (verifiedPayload) {
+    return parseSession(verifiedPayload);
+  }
+
+  // Reject unsigned cookies — do not fall back to raw JSON
   return null;
 }
 

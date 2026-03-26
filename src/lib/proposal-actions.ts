@@ -3,11 +3,12 @@
 import { redirect } from "next/navigation";
 
 import { requireInternalSession } from "@/lib/auth/session";
+import { getProposalErrorCode } from "@/lib/proposal-errors";
 import {
   cancelProposal,
-  createAndSendProposal,
+  createAndPublishProposal,
   createDraftProposal,
-  sendDraftProposal,
+  publishDraftProposal,
   type ProposalDraftSelection,
   type ProposalLeadSelection
 } from "@/lib/proposal-store";
@@ -38,35 +39,39 @@ export async function createProposalDraftAction(formData: FormData): Promise<voi
   redirect(`/app/proposals/${proposalId}?created=1`);
 }
 
-export async function sendProposalDraftAction(formData: FormData): Promise<void> {
+export async function publishProposalDraftAction(formData: FormData): Promise<void> {
   const session = await requireInternalSession();
   let proposalId = "";
 
   try {
-    proposalId = getRequiredString(formData.get("proposalId"), "O ID da proposta é obrigatório.");
-    const result = await sendDraftProposal({
+    proposalId = getRequiredString(formData.get("proposalId")) ?? "";
+    if (!proposalId) throw new Error("O ID da proposta é obrigatório.");
+    const result = await publishDraftProposal({
       proposalId,
       session
     });
 
     proposalId = result.proposalId;
   } catch (error) {
-    const errorCode = mapSendDraftErrorCode(error);
+    const errorCode = mapPublishDraftErrorCode(error);
     const fallbackPath = proposalId ? `/app/proposals/${proposalId}` : "/app/proposals";
-    redirect(`${fallbackPath}?sendError=${encodeURIComponent(errorCode)}`);
+    redirect(`${fallbackPath}?publishError=${encodeURIComponent(errorCode)}`);
   }
 
-  redirect(`/app/proposals/${proposalId}?sent=1`);
+  redirect(`/app/proposals/${proposalId}?published=1`);
 }
 
-export async function createAndSendProposalAction(formData: FormData): Promise<void> {
+/** @deprecated Use publishProposalDraftAction. Kept for backwards compatibility with existing forms. */
+export const sendProposalDraftAction = publishProposalDraftAction;
+
+export async function createAndPublishProposalAction(formData: FormData): Promise<void> {
   const session = await requireInternalSession();
   let proposalId: string | null = null;
 
   try {
     const leadSelection = parseJsonField<ProposalLeadSelection>(formData.get("leadSelection"));
     const selectedServices = parseJsonField<ProposalDraftSelection[]>(formData.get("selectedServices"));
-    const result = await createAndSendProposal({
+    const result = await createAndPublishProposal({
       session,
       leadSelection,
       selectedServices
@@ -74,23 +79,27 @@ export async function createAndSendProposalAction(formData: FormData): Promise<v
 
     proposalId = result.proposalId;
   } catch (error) {
-    const errorCode = mapCreateAndSendErrorCode(error);
+    const errorCode = mapCreateAndPublishErrorCode(error);
     redirect(`/app/proposals/new?error=${encodeURIComponent(errorCode)}`);
   }
 
   if (!proposalId) {
-    redirect("/app/proposals/new?error=send_failed");
+    redirect("/app/proposals/new?error=publish_failed");
   }
 
-  redirect(`/app/proposals/${proposalId}?sent=1`);
+  redirect(`/app/proposals/${proposalId}?published=1`);
 }
+
+/** @deprecated Use createAndPublishProposalAction. */
+export const createAndSendProposalAction = createAndPublishProposalAction;
 
 export async function cancelProposalAction(formData: FormData): Promise<void> {
   const session = await requireInternalSession();
   let proposalId = "";
 
   try {
-    proposalId = getRequiredString(formData.get("proposalId"), "O ID da proposta é obrigatório.");
+    proposalId = getRequiredString(formData.get("proposalId")) ?? "";
+    if (!proposalId) throw new Error("O ID da proposta é obrigatório.");
     const result = await cancelProposal({
       proposalId,
       session
@@ -107,7 +116,11 @@ export async function cancelProposalAction(formData: FormData): Promise<void> {
 }
 
 function parseJsonField<T>(value: FormDataEntryValue | null): T {
-  const rawValue = getRequiredString(value, "O payload obrigatório da proposta não foi enviado.");
+  const rawValue = getRequiredString(value);
+
+  if (!rawValue) {
+    throw new Error("O payload obrigatório da proposta não foi enviado.");
+  }
 
   try {
     return JSON.parse(rawValue) as T;
@@ -116,106 +129,42 @@ function parseJsonField<T>(value: FormDataEntryValue | null): T {
   }
 }
 
-function getRequiredString(value: FormDataEntryValue | null, message: string): string {
+function getRequiredString(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(message);
+    return null;
   }
 
   return value.trim();
 }
 
+const ERROR_CODE_MAP: Record<string, string> = {
+  NO_SERVICES: "no_services",
+  SERVICES_UNAVAILABLE: "services_unavailable",
+  LEAD_INCOMPLETE: "lead_incomplete",
+  MISSING_PAYLOAD: "missing_payload",
+  INVALID_PAYLOAD: "invalid_payload",
+  PROPOSAL_NOT_FOUND: "not_found",
+  INVALID_STATUS_FOR_PUBLISH: "invalid_status",
+  INVALID_STATUS_FOR_CANCEL: "invalid_status",
+  PROPOSAL_ID_REQUIRED: "missing_proposal_id"
+};
+
 function mapCreateDraftErrorCode(error: unknown): string {
-  const message = getErrorMessage(error);
-
-  if (message === "É necessário selecionar pelo menos um serviço do catálogo.") {
-    return "no_services";
-  }
-
-  if (message === "Um ou mais serviços selecionados do catálogo estão indisponíveis.") {
-    return "services_unavailable";
-  }
-
-  if (message === "Os dados do lead estão incompletos.") {
-    return "lead_incomplete";
-  }
-
-  if (message === "O payload obrigatório da proposta não foi enviado.") {
-    return "missing_payload";
-  }
-
-  if (message === "O payload da proposta é inválido.") {
-    return "invalid_payload";
-  }
-
-  return "create_failed";
+  const code = getProposalErrorCode(error);
+  return (code && ERROR_CODE_MAP[code]) ?? "create_failed";
 }
 
-function mapSendDraftErrorCode(error: unknown): string {
-  const message = getErrorMessage(error);
-
-  if (message === "Proposta não encontrada.") {
-    return "not_found";
-  }
-
-  if (message === "Apenas propostas em rascunho podem ser enviadas.") {
-    return "invalid_status";
-  }
-
-  if (message === "O ID da proposta é obrigatório.") {
-    return "missing_proposal_id";
-  }
-
-  return "send_failed";
+function mapPublishDraftErrorCode(error: unknown): string {
+  const code = getProposalErrorCode(error);
+  return (code && ERROR_CODE_MAP[code]) ?? "publish_failed";
 }
 
-function mapCreateAndSendErrorCode(error: unknown): string {
-  const message = getErrorMessage(error);
-
-  if (message === "É necessário selecionar pelo menos um serviço do catálogo.") {
-    return "no_services";
-  }
-
-  if (message === "Um ou mais serviços selecionados do catálogo estão indisponíveis.") {
-    return "services_unavailable";
-  }
-
-  if (message === "Os dados do lead estão incompletos.") {
-    return "lead_incomplete";
-  }
-
-  if (message === "O payload obrigatório da proposta não foi enviado.") {
-    return "missing_payload";
-  }
-
-  if (message === "O payload da proposta é inválido.") {
-    return "invalid_payload";
-  }
-
-  return "send_failed";
+function mapCreateAndPublishErrorCode(error: unknown): string {
+  const code = getProposalErrorCode(error);
+  return (code && ERROR_CODE_MAP[code]) ?? "publish_failed";
 }
 
 function mapCancelErrorCode(error: unknown): string {
-  const message = getErrorMessage(error);
-
-  if (message === "Proposta não encontrada.") {
-    return "not_found";
-  }
-
-  if (message === "Apenas propostas em aberto podem ser canceladas.") {
-    return "invalid_status";
-  }
-
-  if (message === "O ID da proposta é obrigatório.") {
-    return "missing_proposal_id";
-  }
-
-  return "cancel_failed";
-}
-
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return "";
+  const code = getProposalErrorCode(error);
+  return (code && ERROR_CODE_MAP[code]) ?? "cancel_failed";
 }
