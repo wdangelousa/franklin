@@ -24,8 +24,15 @@ interface EmailLayoutOptions {
   signature?: boolean;
 }
 
+function getLogoUrl(): string {
+  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim().replace(/\/$/, "");
+  if (baseUrl) return `${baseUrl}/logo.png`;
+  return brand.logoUrl;
+}
+
 export function emailLayout(options: EmailLayoutOptions): string {
   const { body, signature = true } = options;
+  const logoUrl = getLogoUrl();
 
   const signatureBlock = signature
     ? `
@@ -65,7 +72,7 @@ export function emailLayout(options: EmailLayoutOptions): string {
         <!-- HEADER: Logo -->
         <tr><td align="center" style="padding:28px 40px 20px;border-bottom:1px solid #f0ebe4;">
           <img
-            src="${esc(brand.logoUrl)}"
+            src="${esc(logoUrl)}"
             alt="${esc(brand.organizationName)}"
             height="36"
             style="display:block;height:36px;width:auto;border:0;outline:none;"
