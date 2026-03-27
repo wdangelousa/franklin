@@ -34,6 +34,7 @@ import { createProposalToken, decryptProposalToken } from "@/lib/proposal-token"
 import { ProposalError } from "@/lib/proposal-errors";
 import { localizeServiceCategory } from "@/lib/service-catalog";
 import { notifyProposalPublished } from "@/lib/notifications/notify";
+import { audit } from "@/lib/audit";
 
 // Imported from extracted modules
 import {
@@ -455,8 +456,15 @@ export async function publishDraftProposal(args: {
       expiresAt: result._notification.expiresAt,
       publishedByName: result._notification.publishedByName
     });
-  } catch {
-    // Swallow — audit log already recorded inside notifyProposalPublished
+  } catch (error) {
+    audit({
+      event: "notification.email.failed",
+      actorType: "system",
+      outcome: "error",
+      reasonCode: "NOTIFY_EXCEPTION",
+      proposalId: result.proposalId,
+      meta: { errorMessage: error instanceof Error ? error.message : "unknown" }
+    });
   }
 
   return { proposalId: result.proposalId };
@@ -613,8 +621,15 @@ export async function createAndPublishProposal(args: {
       expiresAt: result._notification.expiresAt,
       publishedByName: result._notification.publishedByName
     });
-  } catch {
-    // Swallow — audit log already recorded inside notifyProposalPublished
+  } catch (error) {
+    audit({
+      event: "notification.email.failed",
+      actorType: "system",
+      outcome: "error",
+      reasonCode: "NOTIFY_EXCEPTION",
+      proposalId: result.proposalId,
+      meta: { errorMessage: error instanceof Error ? error.message : "unknown" }
+    });
   }
 
   return { proposalId: result.proposalId };

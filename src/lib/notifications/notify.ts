@@ -36,6 +36,18 @@ import {
 export async function notifyProposalPublished(
   payload: ProposalPublishedPayload
 ): Promise<NotificationResult[]> {
+  audit({
+    event: "notification.email.requested",
+    actorType: "system",
+    outcome: "success",
+    proposalId: payload.proposalId,
+    meta: {
+      templateKey: "proposal_published",
+      hasClientEmail: payload.clientEmail ? "yes" : "no",
+      companyName: payload.companyName
+    }
+  });
+
   const results: NotificationResult[] = [];
 
   if (payload.clientEmail) {
