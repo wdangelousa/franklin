@@ -1,4 +1,5 @@
 import { brand } from "@/lib/brand";
+import { getPublicBaseUrl } from "@/lib/urls";
 
 /**
  * Shared email layout for all Onebridge Stalwart transactional emails.
@@ -25,9 +26,7 @@ interface EmailLayoutOptions {
 }
 
 function getLogoUrl(): string {
-  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim().replace(/\/$/, "");
-  if (baseUrl) return `${baseUrl}/logo.png`;
-  return brand.logoUrl;
+  return `${getPublicBaseUrl()}/logo.png`;
 }
 
 export function emailLayout(options: EmailLayoutOptions): string {

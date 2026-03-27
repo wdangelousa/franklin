@@ -35,6 +35,7 @@ import { ProposalError } from "@/lib/proposal-errors";
 import { localizeServiceCategory } from "@/lib/service-catalog";
 import { notifyProposalPublished } from "@/lib/notifications/notify";
 import { audit } from "@/lib/audit";
+import { getPublicBaseUrl } from "@/lib/urls";
 
 // Imported from extracted modules
 import {
@@ -444,7 +445,7 @@ export async function publishDraftProposal(args: {
 
   // Fire notification outside the transaction — email failure must not rollback.
   // Must await so the notification completes before redirect() aborts execution.
-  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim() || "http://localhost:3000";
+  const baseUrl = getPublicBaseUrl();
   try {
     await notifyProposalPublished({
       proposalId: result.proposalId,
@@ -609,7 +610,7 @@ export async function createAndPublishProposal(args: {
     };
   });
 
-  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim() || "http://localhost:3000";
+  const baseUrl = getPublicBaseUrl();
   try {
     await notifyProposalPublished({
       proposalId: result.proposalId,

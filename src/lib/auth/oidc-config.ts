@@ -54,7 +54,8 @@ export async function getOidcConfig(): Promise<{ config: OidcProviderConfig | nu
   }
 
   const scopes = process.env.FRANKLIN_OIDC_SCOPES?.trim() || "openid email profile";
-  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim() || "http://localhost:3000";
+  const { getPublicBaseUrl } = await import("@/lib/urls");
+  const baseUrl = getPublicBaseUrl();
   const redirectUri = `${baseUrl}/api/auth/callback`;
 
   try {
