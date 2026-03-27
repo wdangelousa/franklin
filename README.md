@@ -168,7 +168,36 @@ Each entry includes: `event`, `timestamp`, `actorType`, `outcome`, `ip`, `route`
 
 **Avoid in production:** `prisma db push` (may drop data) and `prisma migrate dev` (interactive).
 
+## Deployment under subpath
+
+Franklin is configured with `basePath: "/franklin"` in `next.config.ts`. The entire app is served under `/franklin`:
+
+- `https://onebridgestalwart.com/franklin/login`
+- `https://onebridgestalwart.com/franklin/app/dashboard`
+- `https://onebridgestalwart.com/franklin/p/{token}`
+
+**Vercel deployment:**
+
+1. Set `FRANKLIN_BASE_URL` to `https://onebridgestalwart.com/franklin` in environment variables.
+2. If using OIDC, set the callback URL in your provider to `https://onebridgestalwart.com/franklin/api/auth/callback`.
+3. If using MailerSend webhooks, set the webhook URL to `https://onebridgestalwart.com/franklin/api/webhooks/mailersend`.
+4. Deploy normally — Next.js handles the basePath routing automatically.
+
+**What basePath handles automatically:**
+- `<Link href>` and `redirect()` are prefixed with `/franklin`
+- Static assets are served from `/franklin/_next/...`
+- Middleware matcher paths are evaluated without the basePath prefix
+- `revalidatePath()` calls are prefixed automatically
+
+**What is handled manually:**
+- Cookie `path` is set to `/franklin` (scoped to the app)
+- `window.location.origin` usages add `/franklin` explicitly
+- The OIDC form action uses `/franklin/api/auth/login`
+- `FRANKLIN_BASE_URL` must include `/franklin` in the value
+
 ## Core routes
+
+All routes below are relative to the basePath (`/franklin`):
 
 | Route | Purpose |
 |---|---|

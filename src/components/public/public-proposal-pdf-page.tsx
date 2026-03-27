@@ -35,8 +35,8 @@ export function PublicProposalPdfPage({ proposal }: PublicProposalPdfPageProps) 
             <div>
               <strong>Snapshot da proposta aceita</strong>
               <p>
-                Esta cópia de entrega é renderizada no servidor a partir do snapshot imutável da
-                proposta aceita no Franklin e preparada para a entrega ao cliente da {brand.parentName}.
+                Esta cópia de entrega é renderizada a partir do snapshot imutável da
+                proposta aceita e preparada para a entrega ao cliente da {brand.organizationName}.
               </p>
             </div>
             <StatusPill tone="success">{proposal.statusLabel}</StatusPill>
@@ -89,9 +89,8 @@ export function PublicProposalPdfPage({ proposal }: PublicProposalPdfPageProps) 
         </div>
         <div className="public-text-stack">
           <p className="section-copy">
-            O PDF de entrega só é gerado após o aceite. O Franklin renderiza esta rota segura para
-            impressão no servidor, e um navegador headless pode exportá-la diretamente usando o
-            snapshot aceito, sem tocar no catálogo vivo.
+            O PDF de entrega só é gerado após o aceite. Esta rota segura é renderizada para
+            impressão no servidor a partir do snapshot aceito, sem depender do catálogo vivo.
           </p>
           <p className="section-copy">
             Rota de renderização: <strong>{pdfPlan.renderPath}</strong>
@@ -112,8 +111,8 @@ export function PublicProposalPdfPage({ proposal }: PublicProposalPdfPageProps) 
       <footer className="surface-card pdf-proposal-footer">
         <p className="eyebrow">Cópia de entrega</p>
         <p className="section-copy">
-          Gerado pelo Franklin para a {brand.parentName}. A indexação em buscadores continua
-          desabilitada e o documento é destinado apenas à entrega controlada ao cliente.
+          {brand.organizationName}. A indexação em buscadores está desabilitada
+          e o documento é destinado apenas à entrega controlada ao cliente.
         </p>
       </footer>
     </main>

@@ -3,7 +3,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { AUTH_MODE, getDemoAccountById, SESSION_COOKIE_NAME } from "@/lib/auth/config";
+import { AUTH_MODE, getDemoAccountById, SESSION_COOKIE_NAME, SESSION_COOKIE_PATH } from "@/lib/auth/config";
 import { AuthError } from "@/lib/auth/errors";
 import { signSessionPayload } from "@/lib/auth/session-crypto";
 import type { SessionData } from "@/lib/auth/types";
@@ -56,7 +56,7 @@ export async function signInAsDemoUser(formData: FormData): Promise<void> {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    path: "/",
+    path: SESSION_COOKIE_PATH,
     maxAge: 60 * 60 * 8
   });
 
@@ -83,6 +83,6 @@ export async function signOut(): Promise<void> {
   });
 
   const cookieStore = await cookies();
-  cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.delete({ name: SESSION_COOKIE_NAME, path: SESSION_COOKIE_PATH });
   redirect("/login");
 }

@@ -1,4 +1,5 @@
 import { audit } from "@/lib/audit";
+import { brand } from "@/lib/brand";
 import type { NotificationResult } from "@/lib/notifications/types";
 
 const MAILERSEND_API_URL = "https://api.mailersend.com/v1/email";
@@ -8,7 +9,7 @@ function getApiKey(): string | null {
 }
 
 function getFromAddress(): { email: string; name?: string } {
-  const raw = process.env.EMAIL_FROM?.trim() || "Franklin <noreply@example.com>";
+  const raw = process.env.EMAIL_FROM?.trim() || `${brand.senderName} <${brand.senderEmail}>`;
   const match = raw.match(/^(.+)\s*<(.+)>$/);
   if (match) {
     return { name: match[1].trim(), email: match[2].trim() };
@@ -17,8 +18,8 @@ function getFromAddress(): { email: string; name?: string } {
 }
 
 function getReplyTo(): { email: string } | undefined {
-  const email = process.env.EMAIL_REPLY_TO?.trim();
-  return email ? { email } : undefined;
+  const email = process.env.EMAIL_REPLY_TO?.trim() || brand.senderEmail;
+  return { email };
 }
 
 export interface SendEmailParams {

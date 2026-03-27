@@ -34,7 +34,7 @@ export function SignInForm({ oidcAvailable, loginError }: SignInFormProps) {
           </div>
         ) : null}
 
-        <form action="/api/auth/login" method="GET">
+        <form action="/franklin/api/auth/login" method="GET">
           <button className="button-primary auth-demo-button" type="submit">
             <strong>Entrar com provedor corporativo</strong>
             <span className="auth-demo-meta">OAuth / OIDC</span>

@@ -49,7 +49,7 @@ export function buildProposalContentSnapshot(args: {
     coverTagline: buildCoverTagline(args.companyName, serviceNames),
     onebridgeInstitutionalPresentation: [
       `${brand.parentName} atende fundadores, operadores e clientes internacionais que precisam de uma estrutura empresarial confiável nos Estados Unidos, uma postura clara de compliance e execução prática em vez de coordenação fragmentada entre fornecedores.`,
-      `${brand.platformName} é a camada operacional por trás dessa entrega. A proposta que você está revisando é um snapshot comercial fixo preparado para ${args.companyName}, separado do catálogo interno vivo usado pela equipe.`
+      `A proposta que você está revisando é um snapshot comercial fixo preparado para ${args.companyName}, separado do catálogo interno usado pela equipe da ${brand.organizationName}.`
     ],
     proposalIntroduction: [
       `Para ${args.companyName}, esta proposta restringe o escopo apenas aos serviços selecionados, para que o registro comercial corresponda exatamente ao que a ${brand.parentName} executará caso a proposta seja aceita.`,
@@ -71,7 +71,7 @@ export function buildProposalContentSnapshot(args: {
     ],
     acceptanceText: `Ao aceitar esta proposta, você confirma que os serviços selecionados, o preço e os termos refletem corretamente o escopo que deseja que a ${brand.parentName} execute para sua empresa.`,
     paymentIntro:
-      "As instruções de pagamento são enviadas após o aceite, como parte da sequência de onboarding. O Franklin primeiro registra o snapshot da proposta aceita e, depois, a equipe compartilha as etapas de pagamento e o checklist de kickoff.",
+      "As instruções de pagamento são enviadas após o aceite, como parte da sequência de onboarding. A equipe da Onebridge Stalwart compartilha as etapas de pagamento e o checklist de kickoff assim que o aceite for registrado.",
     closingParagraph:
       "Se este escopo reflete a estrutura com a qual você deseja seguir, aceite a proposta usando o botão seguro desta página e a equipe abrirá a sequência de onboarding."
   };

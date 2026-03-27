@@ -78,5 +78,7 @@ function toAbsolutePublicLink(publicLink: string): string {
   }
 
   const normalizedPath = publicLink.startsWith("/") ? publicLink : `/${publicLink}`;
-  return `${window.location.origin}${normalizedPath}`;
+  // basePath is not in the stored publicLink — add it for the absolute URL
+  const basePath = "/franklin";
+  return `${window.location.origin}${basePath}${normalizedPath}`;
 }

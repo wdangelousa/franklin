@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getOidcConfig } from "@/lib/auth/oidc-config";
-import { AUTH_MODE, SESSION_COOKIE_NAME } from "@/lib/auth/config";
+import { AUTH_MODE, SESSION_COOKIE_NAME, SESSION_COOKIE_PATH } from "@/lib/auth/config";
 import { signSessionPayload } from "@/lib/auth/session-crypto";
 import type { InternalRole, SessionData } from "@/lib/auth/types";
 import { AuthError } from "@/lib/auth/errors";
@@ -39,7 +39,7 @@ export async function initiateOidcLogin(): Promise<void> {
     httpOnly: true,
     sameSite: "lax" as const,
     secure: process.env.NODE_ENV === "production",
-    path: "/",
+    path: SESSION_COOKIE_PATH,
     maxAge: 600 // 10 minutes for the auth flow
   };
 
@@ -150,7 +150,7 @@ export async function handleOidcCallback(
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    path: "/",
+    path: SESSION_COOKIE_PATH,
     maxAge: 60 * 60 * 8
   });
 
