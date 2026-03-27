@@ -33,6 +33,7 @@ import {
 import { createProposalToken, decryptProposalToken } from "@/lib/proposal-token";
 import { ProposalError } from "@/lib/proposal-errors";
 import { localizeServiceCategory } from "@/lib/service-catalog";
+import { notifyProposalPublished } from "@/lib/notifications/notify";
 
 // Imported from extracted modules
 import {
@@ -348,7 +349,7 @@ export async function publishDraftProposal(args: {
 }): Promise<{ proposalId: string }> {
   const { organization, user } = await ensureInternalActor(args.session);
 
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const proposal = await tx.proposal.findFirst({
       where: {
         id: args.proposalId,
@@ -427,9 +428,38 @@ export async function publishDraftProposal(args: {
     });
 
     return {
-      proposalId: proposal.id
+      proposalId: proposal.id,
+      _notification: {
+        clientName: proposal.clientContactName,
+        clientEmail: proposal.clientContactEmail,
+        companyName: proposal.clientCompanyName,
+        proposalNumber: proposal.proposalNumber,
+        publicTokenValue: token.value,
+        expiresAt,
+        publishedByName: user.name
+      }
     };
   });
+
+  // Fire notification outside the transaction — email failure must not rollback.
+  // Must await so the notification completes before redirect() aborts execution.
+  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim() || "http://localhost:3000";
+  try {
+    await notifyProposalPublished({
+      proposalId: result.proposalId,
+      proposalNumber: result._notification.proposalNumber,
+      clientName: result._notification.clientName,
+      clientEmail: result._notification.clientEmail,
+      companyName: result._notification.companyName,
+      publicLink: `${baseUrl}/p/${result._notification.publicTokenValue}`,
+      expiresAt: result._notification.expiresAt,
+      publishedByName: result._notification.publishedByName
+    });
+  } catch {
+    // Swallow — audit log already recorded inside notifyProposalPublished
+  }
+
+  return { proposalId: result.proposalId };
 }
 
 /** @deprecated Use publishDraftProposal */
@@ -446,7 +476,7 @@ export async function createAndPublishProposal(args: {
 }): Promise<{ proposalId: string }> {
   const { organization, user } = await ensureInternalActor(args.session);
 
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const lead = await resolveProposalLead(tx, {
       organizationId: organization.id,
       ownerUserId: user.id,
@@ -558,9 +588,36 @@ export async function createAndPublishProposal(args: {
     });
 
     return {
-      proposalId: proposal.id
+      proposalId: proposal.id,
+      _notification: {
+        clientName: snapshotPreview.clientContactName,
+        clientEmail: snapshotPreview.clientContactEmail,
+        companyName: snapshotPreview.clientCompanyName,
+        proposalNumber,
+        publicTokenValue: token.value,
+        expiresAt,
+        publishedByName: user.name
+      }
     };
   });
+
+  const baseUrl = process.env.FRANKLIN_BASE_URL?.trim() || "http://localhost:3000";
+  try {
+    await notifyProposalPublished({
+      proposalId: result.proposalId,
+      proposalNumber: result._notification.proposalNumber,
+      clientName: result._notification.clientName,
+      clientEmail: result._notification.clientEmail,
+      companyName: result._notification.companyName,
+      publicLink: `${baseUrl}/p/${result._notification.publicTokenValue}`,
+      expiresAt: result._notification.expiresAt,
+      publishedByName: result._notification.publishedByName
+    });
+  } catch {
+    // Swallow — audit log already recorded inside notifyProposalPublished
+  }
+
+  return { proposalId: result.proposalId };
 }
 
 /** @deprecated Use createAndPublishProposal */

@@ -21,6 +21,7 @@ import {
 import { syncExpiredProposalById, syncExpiredProposalStatusInTransaction } from "@/lib/proposal-store-expiration";
 import { ProposalError } from "@/lib/proposal-errors";
 import { getUnitLabel } from "@/lib/proposal-draft";
+import { notifyProposalAccepted, notifyProposalRejected } from "@/lib/notifications/notify";
 
 type PrismaTx = Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown>
   ? T
@@ -325,7 +326,7 @@ export async function acceptProposalByToken(
 ): Promise<void> {
   const tokenHash = hashProposalToken(token);
 
-  await prisma.$transaction(async (tx) => {
+  const notificationData = await prisma.$transaction(async (tx) => {
     const tokenRecord = await tx.proposalPublicToken.findUnique({
       where: {
         tokenHash
@@ -431,7 +432,35 @@ export async function acceptProposalByToken(
     });
 
     await createProposalChecklist(proposal.id, tx);
+
+    return {
+      proposalId: proposal.id,
+      proposalNumber: proposal.proposalNumber,
+      clientName: proposal.clientContactName,
+      clientEmail: proposal.clientContactEmail,
+      companyName: proposal.clientCompanyName,
+      acceptedByName: meta?.acceptedByName,
+      acceptedAt
+    };
   });
+
+  // Fire notification outside the transaction.
+  // Must await so it completes before redirect() aborts execution.
+  if (notificationData) {
+    try {
+      await notifyProposalAccepted({
+        proposalId: notificationData.proposalId,
+        proposalNumber: notificationData.proposalNumber,
+        clientName: notificationData.clientName,
+        clientEmail: notificationData.clientEmail,
+        companyName: notificationData.companyName,
+        acceptedByName: notificationData.acceptedByName,
+        acceptedAt: notificationData.acceptedAt
+      });
+    } catch {
+      // Swallow — audit log already recorded inside notify
+    }
+  }
 }
 
 export async function rejectProposalByToken(
@@ -442,7 +471,7 @@ export async function rejectProposalByToken(
 ): Promise<void> {
   const tokenHash = hashProposalToken(token);
 
-  await prisma.$transaction(async (tx) => {
+  const notificationData = await prisma.$transaction(async (tx) => {
     const tokenRecord = await tx.proposalPublicToken.findUnique({
       where: {
         tokenHash
@@ -522,7 +551,33 @@ export async function rejectProposalByToken(
         lastUsedAt: rejectedAt
       }
     });
+
+    return {
+      proposalId: proposal.id,
+      proposalNumber: proposal.proposalNumber,
+      clientName: proposal.clientContactName,
+      clientEmail: proposal.clientContactEmail,
+      companyName: proposal.clientCompanyName,
+      rejectedReason: meta?.rejectedReason,
+      rejectedAt
+    };
   });
+
+  if (notificationData) {
+    try {
+      await notifyProposalRejected({
+        proposalId: notificationData.proposalId,
+        proposalNumber: notificationData.proposalNumber,
+        clientName: notificationData.clientName,
+        clientEmail: notificationData.clientEmail,
+        companyName: notificationData.companyName,
+        rejectedReason: notificationData.rejectedReason,
+        rejectedAt: notificationData.rejectedAt
+      });
+    } catch {
+      // Swallow — audit log already recorded inside notify
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

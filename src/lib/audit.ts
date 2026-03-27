@@ -28,7 +28,13 @@ export type AuditEvent =
   | "public.proposal.accepted"
   | "public.proposal.rejected"
   | "public.checklist.completed"
-  | "ratelimit.exceeded";
+  | "ratelimit.exceeded"
+  | "notification.email.requested"
+  | "notification.email.sent"
+  | "notification.email.failed"
+  | "notification.email.skipped"
+  | "notification.webhook.received"
+  | "notification.webhook.processed";
 
 export interface AuditEntry {
   event: AuditEvent;

@@ -13,8 +13,11 @@ Franklin is a Next.js and Prisma application for Onebridge's internal proposal w
 - Snapshot-based proposal items (catalog changes don't rewrite sent proposals)
 - Secure public token access with hash + encrypted recovery + token-level expiration
 - Distributed rate limiting (Redis/Upstash with in-memory fallback)
-- Structured audit logging for security events
+- Transactional email notifications via MailerSend (proposal published, accepted, rejected)
+- MailerSend webhook integration for delivery tracking
+- Structured audit logging for security and notification events
 - Post-acceptance client and internal checklists
+- Notification architecture prepared for WhatsApp (future)
 - Automated test suite (Vitest)
 
 ## Local development
@@ -178,6 +181,46 @@ Each entry includes: `event`, `timestamp`, `actorType`, `outcome`, `ip`, `route`
 | `/p/[token]` | Public client-facing proposal |
 | `/p/[token]/checklist` | Post-acceptance checklist |
 | `/p/[token]/pdf` | Accepted proposal PDF render |
+
+## Email notifications
+
+Franklin sends transactional emails via [MailerSend](https://www.mailersend.com) using the REST API directly (no SDK dependency).
+
+### Configuration
+
+| Variable | Required | Notes |
+|---|---|---|
+| `MAILERSEND_API_KEY` | Yes for email | MailerSend API key. If missing, emails are skipped with an audit log. |
+| `EMAIL_FROM` | No | Sender address, e.g. `Franklin <noreply@yourdomain.com>`. Default: `Franklin <noreply@example.com>`. Domain must be verified in MailerSend. |
+| `EMAIL_REPLY_TO` | No | Reply-to address for all emails. |
+| `EMAIL_INTERNAL_NOTIFICATIONS` | No | Recipient for internal notifications (accepted/rejected). |
+| `MAILERSEND_WEBHOOK_SECRET` | No | HMAC signing secret for webhook verification. |
+
+### Events that send email
+
+| Event | Recipient | Template |
+|---|---|---|
+| Proposal published | Client (`clientContactEmail`) | Link to proposal with expiration date |
+| Proposal accepted | Internal team (`EMAIL_INTERNAL_NOTIFICATIONS`) | Acceptance confirmation |
+| Proposal rejected | Internal team (`EMAIL_INTERNAL_NOTIFICATIONS`) | Rejection with optional reason |
+
+### Webhook
+
+Configure the MailerSend webhook to `{FRANKLIN_BASE_URL}/api/webhooks/mailersend`. The endpoint processes `activity.delivered`, `activity.hard_bounced`, `activity.soft_bounced`, and `activity.spam_complaint` events with audit logging. Signature verification uses HMAC-SHA256 when `MAILERSEND_WEBHOOK_SECRET` is set.
+
+### Architecture
+
+The notification system is channel-agnostic:
+- `src/lib/notifications/types.ts` — channel-independent payloads
+- `src/lib/notifications/notify.ts` — domain-level orchestrator
+- `src/lib/notifications/email/mailersend.ts` — MailerSend provider (fetch-based, no SDK)
+- `src/lib/notifications/email/templates/` — HTML templates
+
+Email failures never block the main business flow. All send attempts are logged via the audit system.
+
+### WhatsApp (future)
+
+The architecture supports adding WhatsApp as a second channel. The `NotificationChannel` type and provider interface are ready. Implementation deferred to a future sprint.
 
 ## PDF generation
 
