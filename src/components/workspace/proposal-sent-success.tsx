@@ -20,7 +20,7 @@ export function ProposalSentSuccess({ proposal }: ProposalSentSuccessProps) {
       const path = proposal.publicLink.startsWith("/")
         ? proposal.publicLink
         : `/${proposal.publicLink}`;
-      setAbsoluteLink(`${window.location.origin}/franklin${path}`);
+      setAbsoluteLink(`${window.location.origin}${path}`);
     }
   }, [proposal.publicLink]);
 

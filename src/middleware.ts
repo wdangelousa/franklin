@@ -103,7 +103,7 @@ async function handleWorkspaceAuth(request: NextRequest): Promise<NextResponse> 
       route
     });
     const response = redirectToLogin(request);
-    response.cookies.delete({ name: SESSION_COOKIE_NAME, path: "/franklin" });
+    response.cookies.delete(SESSION_COOKIE_NAME);
     return response;
   }
 
@@ -123,7 +123,7 @@ async function handleWorkspaceAuth(request: NextRequest): Promise<NextResponse> 
         role: parsed?.user?.role
       });
       const response = redirectToLogin(request);
-      response.cookies.delete({ name: SESSION_COOKIE_NAME, path: "/franklin" });
+      response.cookies.delete(SESSION_COOKIE_NAME);
       return response;
     }
   } catch {
@@ -135,7 +135,7 @@ async function handleWorkspaceAuth(request: NextRequest): Promise<NextResponse> 
       route
     });
     const response = redirectToLogin(request);
-    response.cookies.delete({ name: SESSION_COOKIE_NAME, path: "/franklin" });
+    response.cookies.delete(SESSION_COOKIE_NAME);
     return response;
   }
 
@@ -143,8 +143,7 @@ async function handleWorkspaceAuth(request: NextRequest): Promise<NextResponse> 
 }
 
 function redirectToLogin(request: NextRequest): NextResponse {
-  const basePath = "/franklin";
-  return NextResponse.redirect(new URL(`${basePath}/login`, request.url));
+  return NextResponse.redirect(new URL("/login", request.url));
 }
 
 // ---------------------------------------------------------------------------

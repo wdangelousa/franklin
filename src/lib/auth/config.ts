@@ -3,11 +3,7 @@ import { brand } from "@/lib/brand";
 
 export const SESSION_COOKIE_NAME = "franklin_session";
 
-/**
- * Cookie path must match the Next.js basePath so the cookie is scoped
- * to the app and not sent on requests outside /franklin.
- */
-export const SESSION_COOKIE_PATH = "/franklin";
+export const SESSION_COOKIE_PATH = "/";
 
 function resolveAuthMode(): AuthMode {
   const raw = process.env.FRANKLIN_AUTH_MODE?.trim().toLowerCase();
