@@ -1,34 +1,50 @@
+import type { ComponentType, SVGProps } from "react";
+
+import {
+  IconDashboard,
+  IconLeads,
+  IconProposals,
+  IconCatalog,
+  IconSettings,
+} from "@/components/ui/icons";
+
 export interface NavigationItem {
   href: string;
   label: string;
   description: string;
+  icon: ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 }
 
 export const workspaceNavigation: NavigationItem[] = [
   {
     href: "/app/dashboard",
     label: "Painel",
-    description: "Atividade atual de propostas e atalhos para o fluxo interno do dia."
+    description: "Atividade atual de propostas e atalhos para o fluxo interno do dia.",
+    icon: IconDashboard,
   },
   {
     href: "/app/leads",
     label: "Leads",
-    description: "Oportunidades qualificadas e acompanhamento de relacionamento."
+    description: "Oportunidades qualificadas e acompanhamento de relacionamento.",
+    icon: IconLeads,
   },
   {
     href: "/app/proposals",
     label: "Propostas",
-    description: "Status do builder, links públicos e propostas enviadas."
+    description: "Status do builder, links públicos e propostas enviadas.",
+    icon: IconProposals,
   },
   {
     href: "/app/catalog",
     label: "Catálogo",
-    description: "Serviços ativos e preços disponíveis hoje no builder de proposta."
+    description: "Serviços ativos e preços disponíveis hoje no builder de proposta.",
+    icon: IconCatalog,
   },
   {
     href: "/app/settings",
     label: "Configurações",
-    description: "Postura atual de acesso e limites operacionais do MVP."
+    description: "Postura atual de acesso e limites operacionais do MVP.",
+    icon: IconSettings,
   }
 ];
 

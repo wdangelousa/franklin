@@ -2,6 +2,8 @@
 
 import { useCallback, useState } from "react";
 
+import { IconCopy, IconExternalLink } from "@/components/ui/icons";
+
 interface PaymentInstructionsProps {
   totalFormatted: string;
   proposalNumber: string;
@@ -55,7 +57,7 @@ export function PaymentInstructions({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Solicitar link de pagamento
+            <IconExternalLink size={16} /> Solicitar link de pagamento
           </a>
         </div>
       </div>
@@ -82,7 +84,7 @@ function CopyZelleButton() {
 
   return (
     <button className="button-secondary" type="button" onClick={handleCopy}>
-      {copied ? "Copiado \u2713" : "Copiar email do Zelle"}
+      <IconCopy size={16} /> {copied ? "Copiado" : "Copiar email do Zelle"}
     </button>
   );
 }

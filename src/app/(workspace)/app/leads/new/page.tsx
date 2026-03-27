@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { IconArrowLeft } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
+import { StickyBottomBar } from "@/components/ui/sticky-bottom-bar";
 import { requireInternalSession } from "@/lib/auth/session";
 import { createLeadDraft } from "@/lib/lead-actions";
 import {
@@ -26,10 +28,10 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
       <PageHeader
         actions={
           <Link className="button-secondary" href="/app/leads">
-            Voltar para leads
+            <IconArrowLeft size={16} /> Voltar
           </Link>
         }
-        description="Este formulário de entrada é propositalmente enxuto. Ele captura o contato e a responsabilidade que o Franklin precisa antes de avançar para a proposta."
+        description="Capture o contato e a responsabilidade antes de avançar para a proposta."
         eyebrow="Novo lead"
         title="Criar lead"
       />
@@ -48,7 +50,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
             <h2>Apenas campos centrais do negócio</h2>
           </div>
 
-          <form action={createLeadDraft} className="lead-form-grid">
+          <form action={createLeadDraft} className="lead-form-grid" id="lead-form">
             <div className="two-column-grid">
               <label className="field">
                 <span>Nome completo</span>
@@ -111,6 +113,12 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
               </Link>
             </div>
           </form>
+
+          <StickyBottomBar>
+            <button className="button-primary" form="lead-form" type="submit">
+              Salvar lead
+            </button>
+          </StickyBottomBar>
         </article>
 
         <article className="surface-card notice-panel">

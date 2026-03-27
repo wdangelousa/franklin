@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { IconChevronRight } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { requireInternalSession } from "@/lib/auth/session";
@@ -25,49 +26,32 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
   const selectedStatus = parseStatusFilter(params?.status);
   const errorCode = params?.publishError ?? params?.sendError ?? null;
   const publishErrorMessage = errorCode ? mapPublishErrorMessage(errorCode) : null;
-  const proposals = await getInternalProposalList(session, {
-    status: selectedStatus ?? undefined
-  });
-  const lockedCount = proposals.filter((proposal) => proposal.isLocked).length;
+
+  const allProposals = await getInternalProposalList(session);
+  const proposals = selectedStatus
+    ? allProposals.filter((p) => p.status === selectedStatus)
+    : allProposals;
+
+  const statusCounts = new Map<string, number>();
+  for (const p of allProposals) {
+    statusCounts.set(p.status, (statusCounts.get(p.status) ?? 0) + 1);
+  }
 
   return (
     <div className="page-stack operations-page">
       <PageHeader
         actions={
-          <Link className="button-primary" href="/app/proposals/new">
-            Abrir builder de proposta
-          </Link>
+          <>
+            <StatusPill tone="accent">{allProposals.length} propostas</StatusPill>
+            <Link className="button-primary" href="/app/proposals/new">
+              Nova proposta
+            </Link>
+          </>
         }
-        description="Rascunhos, propostas enviadas, visualizações de cliente e aceites agora vêm de registros duráveis em Prisma, não mais de estado simulado."
+        description="Rascunhos, envios e aceites em um só lugar."
         eyebrow="Propostas"
-        title="Área de propostas"
+        title="Propostas"
       />
-
-      <section className="surface-card operations-hero">
-        <div className="operations-hero-copy">
-          <p className="eyebrow">Operação</p>
-          <h2>Encontre rápido o que precisa de ação.</h2>
-          <p className="section-copy">
-            A lista abaixo prioriza leitura operacional: status, vencimento, lead relacionado e
-            acesso imediato ao detalhe da proposta.
-          </p>
-        </div>
-
-        <div className="operations-hero-metrics">
-          <div className="summary-stat">
-            <span>Propostas visíveis</span>
-            <strong>{proposals.length}</strong>
-          </div>
-          <div className="summary-stat">
-            <span>Bloqueadas</span>
-            <strong>{lockedCount}</strong>
-          </div>
-          <div className="summary-stat">
-            <span>Filtro</span>
-            <strong>{selectedStatus ?? "Todos os status"}</strong>
-          </div>
-        </div>
-      </section>
 
       {publishErrorMessage ? (
         <section className="surface-card notice-panel">
@@ -87,29 +71,32 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
             className={`button-secondary${selectedStatus ? "" : " is-active"}`}
             href="/app/proposals"
           >
-            Todos os status
+            Todas ({allProposals.length})
           </Link>
-          {proposalDisplayStatuses.map((status) => (
-            <Link
-              key={status}
-              className={`button-secondary${selectedStatus === status ? " is-active" : ""}`}
-              href={`/app/proposals?status=${encodeURIComponent(status)}`}
-            >
-              {status}
-            </Link>
-          ))}
+          {proposalDisplayStatuses.map((status) => {
+            const count = statusCounts.get(status) ?? 0;
+            return (
+              <Link
+                key={status}
+                className={`button-secondary${selectedStatus === status ? " is-active" : ""}`}
+                href={`/app/proposals?status=${encodeURIComponent(status)}`}
+              >
+                {status} ({count})
+              </Link>
+            );
+          })}
         </div>
 
         {proposals.length > 0 ? (
           <div className="proposal-list">
             {proposals.map((proposal) => (
-              <article key={proposal.id} className="proposal-record">
+              <Link
+                key={proposal.id}
+                className="proposal-record"
+                href={`/app/proposals/${proposal.id}`}
+              >
                 <div className="proposal-record-main">
-                  <strong>
-                    <Link className="text-link" href={`/app/proposals/${proposal.id}`}>
-                      {proposal.title}
-                    </Link>
-                  </strong>
+                  <strong>{proposal.title}</strong>
                   <p>
                     {proposal.companyName} · {proposal.proposalNumber}
                   </p>
@@ -118,36 +105,24 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
                 <div className="proposal-record-meta">
                   <StatusPill tone={getProposalStatusTone(proposal.status)}>{proposal.status}</StatusPill>
                   {proposal.isLocked ? <StatusPill tone="neutral">Bloqueada</StatusPill> : null}
-                  <span>Atualizada em {formatDate(proposal.updatedAt)}</span>
-                  <span>
-                    {proposal.expiresAt ? `Expira em ${formatDate(proposal.expiresAt)}` : "Sem expiração"}
-                  </span>
-                  {proposal.leadId ? (
-                    <Link className="text-link" href={`/app/leads/${proposal.leadId}`}>
-                      Lead: {proposal.leadCompanyName ?? "Vinculado"}
-                    </Link>
-                  ) : (
-                    <span>Sem lead vinculado</span>
-                  )}
+                  <span>{formatDate(proposal.updatedAt)}</span>
                   <strong><span className="currency-value">{formatCurrencyFromCents(proposal.totalCents)}</span></strong>
-                  <Link className="button-secondary" href={`/app/proposals/${proposal.id}`}>
-                    Abrir
-                  </Link>
+                  <IconChevronRight size={18} />
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         ) : (
           <div className="builder-empty-state">
             <strong>
               {selectedStatus
-                ? `Nenhuma proposta com status ${selectedStatus}.`
+                ? `Nenhuma proposta com status "${selectedStatus}".`
                 : "Nenhuma proposta foi criada ainda."}
             </strong>
-            <p>
-              Comece pelo builder de proposta para criar o primeiro rascunho durável e, depois,
-              emitir o link público seguro a partir da página de detalhe.
-            </p>
+            <p>Use o builder para criar o primeiro rascunho.</p>
+            <Link className="button-primary" href="/app/proposals/new">
+              Criar primeira proposta
+            </Link>
           </div>
         )}
       </section>

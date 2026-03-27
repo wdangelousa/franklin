@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 
+import { IconArrowLeft, IconX } from "@/components/ui/icons";
 import { rejectPublicProposal } from "@/lib/public-proposal-actions";
 
 interface RejectProposalSectionProps {
@@ -11,6 +12,11 @@ interface RejectProposalSectionProps {
 
 export function RejectProposalSection({ token }: RejectProposalSectionProps) {
   const [expanded, setExpanded] = useState(false);
+
+  const collapse = useCallback(() => {
+    setExpanded(false);
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+  }, []);
 
   useEffect(() => {
     if (window.location.hash === "#rejeitar") {
@@ -26,6 +32,15 @@ export function RejectProposalSection({ token }: RejectProposalSectionProps) {
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  useEffect(() => {
+    if (!expanded) return undefined;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") collapse();
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [expanded, collapse]);
 
   return (
     <section
@@ -55,14 +70,11 @@ export function RejectProposalSection({ token }: RejectProposalSectionProps) {
           </form>
 
           <button
-            className="reject-section-back"
-            onClick={() => {
-              setExpanded(false);
-              window.history.replaceState(null, "", window.location.pathname + window.location.search);
-            }}
+            className="button-secondary reject-section-back"
+            onClick={collapse}
             type="button"
           >
-            Voltar
+            <IconArrowLeft size={16} /> Cancelar e voltar
           </button>
         </div>
       </div>
@@ -79,7 +91,7 @@ function RejectButton() {
       disabled={pending}
       type="submit"
     >
-      {pending ? "Registrando recusa…" : "Confirmar recusa"}
+      {pending ? "Registrando recusa…" : <><IconX size={16} /> Confirmar recusa</>}
     </button>
   );
 }

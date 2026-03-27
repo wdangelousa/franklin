@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
 
+import { IconSend } from "@/components/ui/icons";
 import { StatusPill } from "@/components/ui/status-pill";
 import type { InternalRole } from "@/lib/auth/types";
 import { formatLeadSourceLabel } from "@/lib/lead-labels";
@@ -777,7 +778,7 @@ function PublishNowButton({ disabled }: { disabled: boolean }) {
       formAction={createAndPublishProposalAction}
       type="submit"
     >
-      {pending ? "Publicando..." : "Publicar agora"}
+      {pending ? "Publicando..." : <><IconSend size={16} /> Publicar agora</>}
     </button>
   );
 }

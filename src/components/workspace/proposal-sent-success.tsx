@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { IconCopy, IconWhatsApp } from "@/components/ui/icons";
 import type { InternalProposalDetail } from "@/lib/proposal-store";
 
 interface ProposalSentSuccessProps {
@@ -90,7 +91,7 @@ export function ProposalSentSuccess({ proposal }: ProposalSentSuccessProps) {
             rel="noreferrer noopener"
             target="_blank"
           >
-            Enviar via WhatsApp
+            <IconWhatsApp size={18} /> Enviar via WhatsApp
           </a>
 
           <button
@@ -98,7 +99,7 @@ export function ProposalSentSuccess({ proposal }: ProposalSentSuccessProps) {
             onClick={handleCopy}
             type="button"
           >
-            {copyLabel}
+            <IconCopy size={16} /> {copyLabel}
           </button>
         </div>
 

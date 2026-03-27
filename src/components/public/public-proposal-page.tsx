@@ -5,6 +5,7 @@ import { PaymentInstructions } from "@/components/public/payment-instructions";
 import { PublicProposalSections } from "@/components/public/public-proposal-sections";
 import { RejectProposalSection } from "@/components/public/reject-proposal-section";
 import { BrandMark } from "@/components/ui/brand-mark";
+import { IconBuilding, IconCalendar, IconDollarSign, IconMail } from "@/components/ui/icons";
 import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
 import { getProposalPdfPlan } from "@/lib/proposal-pdf";
@@ -79,10 +80,6 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
           <div className="public-flow-card">
             <p className="eyebrow">Decisão</p>
             <h2>Resumo rápido para revisão</h2>
-            <p className="section-copy">
-              Use este bloco para confirmar destinatário, investimento e janela de revisão antes de
-              aceitar ou recusar a proposta.
-            </p>
           </div>
 
           <div className="section-head">
@@ -92,16 +89,16 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
 
           <div className="proposal-contact public-proposal-contact">
             <span>{formatContactTitle(snapshot.contactTitle)}</span>
-            <strong>{snapshot.companyName}</strong>
+            <strong><IconBuilding size={14} /> {snapshot.companyName}</strong>
             <a className="text-link" href={`mailto:${snapshot.contactEmail}`}>
-              {snapshot.contactEmail}
+              <IconMail size={14} /> {snapshot.contactEmail}
             </a>
             <span>{brand.location}</span>
           </div>
 
           <div className="totals-panel">
             <div className="total-row">
-              <span>Investimento</span>
+              <span><IconDollarSign size={14} /> Investimento</span>
               <strong><span className="currency-value">{formatCurrencyFromCents(proposal.totalInvestmentCents)}</span></strong>
             </div>
             <div className="total-row">
@@ -112,11 +109,11 @@ export function PublicProposalPage({ proposal, feedback }: PublicProposalPagePro
 
           <div className="public-proposal-meta-grid">
             <div className="detail-pair">
-              <p className="detail-label">Data de preparo</p>
+              <p className="detail-label"><IconCalendar size={14} /> Data de preparo</p>
               <strong>{formatDate(snapshot.preparedAt)}</strong>
             </div>
             <div className="detail-pair">
-              <p className="detail-label">Janela de revisão</p>
+              <p className="detail-label"><IconCalendar size={14} /> Janela de revisão</p>
               <strong>Até {formatDate(snapshot.expiresAt)}</strong>
             </div>
           </div>

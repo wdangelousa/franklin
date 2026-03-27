@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { IconChevronRight, IconPlus, IconUsers, IconProposals } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { requireInternalSession } from "@/lib/auth/session";
@@ -26,61 +27,26 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const params = searchParams ? await searchParams : undefined;
   const leadList = await getLeadList(session);
   const proposalReadyCount = leadList.filter((lead) => lead.stage === "Proposal").length;
-  const assignedPartnerCount = new Set(leadList.map((lead) => lead.assignedPartner)).size;
 
   return (
     <div className="page-stack leads-page">
       <PageHeader
         actions={
           <Link className="button-primary" href="/app/leads/new">
-            Criar lead
+            <IconPlus size={16} /> Criar lead
           </Link>
         }
-        description="A gestão de leads permanece propositalmente enxuta no Franklin. O foco é qualificação rápida, responsabilidade clara e caminho direto para a proposta."
+        description="Qualificação rápida e caminho direto para proposta."
         eyebrow="Leads"
-        title="Área de leads"
+        title="Leads"
       />
-
-      <section className="surface-card operations-hero">
-        <div className="operations-hero-copy">
-          <p className="eyebrow">Qualificação</p>
-          <h2>Contexto comercial antes da proposta.</h2>
-          <p className="section-copy">
-            Esta tela foi refinada para facilitar a leitura do estágio, da responsabilidade e do
-            próximo passo sem exigir navegação imediata para o detalhe.
-          </p>
-        </div>
-
-        <div className="operations-hero-metrics">
-          <div className="summary-stat">
-            <span>Leads ativos</span>
-            <strong>{leadList.length}</strong>
-          </div>
-          <div className="summary-stat">
-            <span>Prontos para proposta</span>
-            <strong>{proposalReadyCount}</strong>
-          </div>
-          <div className="summary-stat">
-            <span>Sócios responsáveis</span>
-            <strong>{assignedPartnerCount}</strong>
-          </div>
-        </div>
-      </section>
 
       {params?.created === "1" ? (
         <section className="surface-card notice-panel">
-          <div className="section-head">
-            <p className="eyebrow">Lead salvo</p>
-            <h2>Registro persistido com sucesso</h2>
-          </div>
-          <p className="section-copy">
-            O Franklin registrou{" "}
-            <strong>
-              {params.fullName || "o novo contato"}
-              {params.company ? ` em ${params.company}` : ""}
-            </strong>
-            . O lead já está disponível com relacionamento durável para propostas.
-          </p>
+          <strong>
+            Lead {params.fullName || "novo contato"}
+            {params.company ? ` em ${params.company}` : ""} salvo.
+          </strong>
           {params.leadId ? (
             <div className="inline-actions">
               <Link className="button-secondary" href={`/app/leads/${params.leadId}`}>
@@ -93,34 +59,34 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
 
       <section className="metric-grid">
         <article className="metric-card">
-          <p>Leads ativos</p>
+          <div className="pill-row">
+            <span className="icon-inline icon-muted"><IconUsers size={16} /></span>
+            <p>Leads ativos</p>
+          </div>
           <strong>{leadList.length}</strong>
-          <span>Contatos visíveis hoje em qualificação ou acompanhamento para proposta.</span>
+          <span>Contatos em qualificação ou acompanhamento.</span>
         </article>
 
         <article className="metric-card">
-          <p>Leads em proposta</p>
+          <div className="pill-row">
+            <span className="icon-inline icon-muted"><IconProposals size={16} /></span>
+            <p>Prontos para proposta</p>
+          </div>
           <strong>{proposalReadyCount}</strong>
-          <span>Leads já maduros o suficiente para avançar direto para um rascunho.</span>
-        </article>
-
-        <article className="metric-card">
-          <p>Sócios responsáveis</p>
-          <strong>{assignedPartnerCount}</strong>
-          <span>Responsáveis internos conduzindo conversas ativas até a criação da proposta.</span>
+          <span>Leads prontos para avançar para rascunho.</span>
         </article>
       </section>
 
       <section className="surface-card">
         <div className="section-head">
-          <p className="eyebrow">Lista</p>
-          <h2>Pipeline de leads orientado a proposta</h2>
+          <p className="eyebrow">Pipeline</p>
+          <h2>Leads atuais</h2>
         </div>
 
         <div className="lead-list lead-record-list">
           {leadList.length > 0 ? (
             leadList.map((lead) => (
-              <article key={lead.id} className="lead-row lead-record">
+              <Link key={lead.id} className="lead-row lead-record" href={`/app/leads/${lead.id}`}>
                 <div className="lead-row-primary">
                   <div className="lead-row-heading">
                     <div>
@@ -151,35 +117,28 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
                     <strong>{lead.assignedPartner}</strong>
                   </div>
                   <div>
-                    <p className="detail-label">Propostas relacionadas</p>
+                    <p className="detail-label">Propostas</p>
                     <strong>{lead.proposalCount}</strong>
                   </div>
                   <div>
-                    <p className="detail-label">Valor do lead</p>
+                    <p className="detail-label">Valor</p>
                     <strong>{formatCurrency(lead.estimatedValue)}</strong>
                   </div>
                 </div>
 
                 <div className="lead-row-footer">
                   <p className="lead-next-step">{lead.nextStep}</p>
-
-                  <div className="inline-actions">
-                    <Link className="button-secondary" href={`/app/proposals/new?leadId=${lead.id}`}>
-                      Nova proposta
-                    </Link>
-                    <Link className="button-primary" href={`/app/leads/${lead.id}`}>
-                      Abrir lead
-                    </Link>
-                  </div>
+                  <IconChevronRight size={18} />
                 </div>
-              </article>
+              </Link>
             ))
           ) : (
             <div className="builder-empty-state">
               <strong>Nenhum lead registrado ainda.</strong>
-              <p>
-                Crie o primeiro lead para iniciar o fluxo completo de proposta, envio e acompanhamento.
-              </p>
+              <p>Crie o primeiro lead para iniciar o fluxo de proposta.</p>
+              <Link className="button-primary" href="/app/leads/new">
+                <IconPlus size={16} /> Criar primeiro lead
+              </Link>
             </div>
           )}
         </div>

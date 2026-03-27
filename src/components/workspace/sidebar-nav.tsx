@@ -14,16 +14,25 @@ export function SidebarNav() {
 
   return (
     <nav className="sidebar-nav" aria-label="Workspace">
-      {workspaceNavigation.map((item) => (
-        <Link
-          key={item.href}
-          className={`sidebar-link${isActive(pathname, item.href) ? " is-active" : ""}`}
-          href={item.href}
-        >
-          <strong>{item.label}</strong>
-          <span>{item.description}</span>
-        </Link>
-      ))}
+      {workspaceNavigation.map((item) => {
+        const NavIcon = item.icon;
+        const active = isActive(pathname, item.href);
+        return (
+          <Link
+            key={item.href}
+            className={`sidebar-link${active ? " is-active" : ""}`}
+            href={item.href}
+          >
+            <div className="sidebar-link-heading">
+              <span className={`icon-inline icon-muted${active ? " is-active" : ""}`}>
+                <NavIcon size={18} />
+              </span>
+              <strong>{item.label}</strong>
+            </div>
+            <span>{item.description}</span>
+          </Link>
+        );
+      })}
     </nav>
   );
 }

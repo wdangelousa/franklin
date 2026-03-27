@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
+import { IconCheck } from "@/components/ui/icons";
 import { acceptPublicProposal } from "@/lib/public-proposal-actions";
 
 interface AcceptProposalFormProps {
@@ -24,6 +25,7 @@ export function AcceptProposalForm({
 }: AcceptProposalFormProps) {
   const [name, setName] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [confirming, setConfirming] = useState(false);
 
   const isReady = canAccept && name.trim().length > 0 && agreed;
 
@@ -67,7 +69,7 @@ export function AcceptProposalForm({
           className="signature-input"
           id={`name-${compact ? "compact" : "main"}`}
           name="acceptedByName"
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => { setName(e.target.value); setConfirming(false); }}
           placeholder="Digite seu nome completo"
           required
           type="text"
@@ -81,7 +83,7 @@ export function AcceptProposalForm({
           checked={agreed}
           className="signature-checkbox"
           name="agreedToTerms"
-          onChange={(e) => setAgreed(e.target.checked)}
+          onChange={(e) => { setAgreed(e.target.checked); setConfirming(false); }}
           required
           type="checkbox"
           value="1"
@@ -89,7 +91,30 @@ export function AcceptProposalForm({
         <span>Li e concordo com os termos desta proposta</span>
       </label>
 
-      <SubmitButton disabled={!isReady} />
+      {confirming ? (
+        <div className="accept-confirm-step">
+          <div className="accept-confirm-message" role="alert">
+            Ao confirmar, a proposta será aceita em nome de <strong>{name.trim()}</strong>. Esta ação não pode ser revertida.
+          </div>
+          <SubmitButton disabled={!isReady} />
+          <button
+            className="button-secondary"
+            onClick={() => setConfirming(false)}
+            type="button"
+          >
+            Voltar
+          </button>
+        </div>
+      ) : (
+        <button
+          className="button-primary public-accept-button"
+          disabled={!isReady}
+          onClick={(e) => { e.preventDefault(); setConfirming(true); }}
+          type="button"
+        >
+          <IconCheck size={16} /> Aceitar proposta
+        </button>
+      )}
 
       <a
         className="signature-reject-link"
@@ -116,7 +141,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
       disabled={disabled || pending}
       type="submit"
     >
-      {pending ? "Registrando aceite…" : "Aceitar proposta"}
+      {pending ? "Registrando aceite…" : <><IconCheck size={16} /> Confirmar aceite definitivo</>}
     </button>
   );
 }

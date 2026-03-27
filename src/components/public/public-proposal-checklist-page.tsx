@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { PaymentInstructions } from "@/components/public/payment-instructions";
 import { BrandMark } from "@/components/ui/brand-mark";
+import { IconCheck, IconClipboard } from "@/components/ui/icons";
 import { StatusPill } from "@/components/ui/status-pill";
 import { brand } from "@/lib/brand";
 import { getProposalPdfPlan } from "@/lib/proposal-pdf";
@@ -42,7 +43,7 @@ export function PublicProposalChecklistPage({
       <section className="checklist-hero">
         <article className="surface-card">
           <p className="eyebrow">{snapshot.proposalNumber}</p>
-          <h1>Checklist de documentos</h1>
+          <h1><IconClipboard size={24} /> Checklist de documentos</h1>
           <p className="proposal-summary">
             Itens de onboarding gerados a partir da proposta aceita. Marque cada item conforme
             for concluído.
@@ -165,7 +166,7 @@ export function PublicProposalChecklistPage({
                           <input type="hidden" name="itemId" value={item.id} />
                           <input type="hidden" name="completedBy" value={snapshot.contactName} />
                           <button className="button-secondary checklist-complete-button" type="submit">
-                            Marcar como concluído
+                            <IconCheck size={16} /> Marcar como concluído
                           </button>
                         </form>
                       )}

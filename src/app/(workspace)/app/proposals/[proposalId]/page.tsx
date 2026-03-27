@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { IconArrowLeft, IconSend } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
+import { StickyBottomBar } from "@/components/ui/sticky-bottom-bar";
 import { ProposalPublicLinkActions } from "@/components/workspace/proposal-public-link-actions";
 import { ProposalSentSuccess } from "@/components/workspace/proposal-sent-success";
 import { requireInternalSession } from "@/lib/auth/session";
@@ -52,13 +54,13 @@ export default async function ProposalDetailPage({
         actions={
           <div className="proposal-detail-header-actions">
             <Link className="button-secondary" href="/app/proposals">
-              Voltar para propostas
+              <IconArrowLeft size={16} /> Voltar
             </Link>
             {detail.status === "Rascunho" ? (
               <form action={publishProposalDraftAction} className="proposal-send-form-inline">
                 <input name="proposalId" type="hidden" value={detail.id} />
                 <button className="button-primary" type="submit">
-                  Publicar proposta
+                  <IconSend size={16} /> Publicar proposta
                 </button>
               </form>
             ) : detail.publicLink ? (
@@ -66,7 +68,7 @@ export default async function ProposalDetailPage({
             ) : null}
           </div>
         }
-        description="Este é o registro durável da proposta. Itens do snapshot, timestamps do ciclo de vida e entrega por token público agora vêm do Prisma."
+        description="Registro durável da proposta com snapshot, ciclo de vida e entrega pública."
         eyebrow="Detalhe da proposta"
         title={detail.title}
       />
@@ -351,6 +353,30 @@ export default async function ProposalDetailPage({
 
       {detail.status === "Aceita" && detail.checklistItems.length > 0 ? (
         <InternalChecklistSection items={detail.checklistItems} />
+      ) : null}
+
+      {detail.status === "Rascunho" ? (
+        <StickyBottomBar
+          summary={
+            <>
+              <span>Investimento</span>
+              <strong className="currency-value">{formatCurrencyFromCents(detail.totalCents)}</strong>
+            </>
+          }
+        >
+          <form action={publishProposalDraftAction} className="proposal-send-form-inline">
+            <input name="proposalId" type="hidden" value={detail.id} />
+            <button className="button-primary" type="submit">
+              <IconSend size={16} /> Publicar proposta
+            </button>
+          </form>
+        </StickyBottomBar>
+      ) : null}
+
+      {detail.status === "Enviada" && detail.publicLink ? (
+        <StickyBottomBar>
+          <ProposalPublicLinkActions publicLink={detail.publicLink} />
+        </StickyBottomBar>
       ) : null}
     </div>
   );

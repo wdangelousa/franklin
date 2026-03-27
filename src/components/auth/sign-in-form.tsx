@@ -2,6 +2,7 @@
 
 import { signInAsDemoUser } from "@/lib/auth/actions";
 import { AUTH_MODE, DEMO_ACCOUNTS, isDemoLoginAllowed } from "@/lib/auth/config";
+import { IconChevronRight } from "@/components/ui/icons";
 import { StatusPill } from "@/components/ui/status-pill";
 
 interface SignInFormProps {
@@ -37,7 +38,7 @@ export function SignInForm({ oidcAvailable, loginError }: SignInFormProps) {
         <form action="/api/auth/login" method="GET">
           <button className="button-primary auth-demo-button" type="submit">
             <strong>Entrar com provedor corporativo</strong>
-            <span className="auth-demo-meta">OAuth / OIDC</span>
+            <span className="auth-demo-meta">OAuth / OIDC <IconChevronRight size={14} /></span>
           </button>
         </form>
       </section>
@@ -104,7 +105,7 @@ export function SignInForm({ oidcAvailable, loginError }: SignInFormProps) {
               <button className="button-primary auth-demo-button" type="submit">
                 <strong>{account.name}</strong>
                 <span className="auth-demo-meta">
-                  {account.title} &middot; {account.role}
+                  {account.title} &middot; {account.role} <IconChevronRight size={14} />
                 </span>
               </button>
             </form>

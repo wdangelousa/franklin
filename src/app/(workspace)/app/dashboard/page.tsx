@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { IconFileText, IconCheckCircle, IconEdit, IconClock } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { requireInternalSession } from "@/lib/auth/session";
@@ -7,26 +8,28 @@ import { getDashboardSnapshot } from "@/lib/dashboard";
 import { getProposalStatusTone } from "@/lib/proposal-status";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
+const metricIcons = [IconFileText, IconCheckCircle, IconEdit, IconClock] as const;
+
 const dashboardShortcuts = [
   {
     href: "/app/leads",
     label: "Leads",
-    description: "Saia da atividade de propostas para o contexto do relacionamento e da próxima ação."
+    description: "Contexto de relacionamento e próxima ação."
   },
   {
     href: "/app/proposals",
     label: "Propostas",
-    description: "Revise rascunhos, propostas enviadas e rotas públicas de entrega."
+    description: "Rascunhos, envios e rotas públicas."
   },
   {
     href: "/app/catalog",
     label: "Catálogo",
-    description: "Confira os serviços ativos e os preços que o builder consegue usar hoje."
+    description: "Serviços ativos e preços do builder."
   },
   {
     href: "/app/settings",
     label: "Configurações",
-    description: "Revise o modo atual de acesso e os limites operacionais assumidos no MVP."
+    description: "Modo de acesso e limites do MVP."
   }
 ] as const;
 
@@ -38,18 +41,13 @@ export default async function DashboardPage() {
     <div className="page-stack dashboard-page">
       <PageHeader
         actions={
-          <>
-            <Link className="button-secondary" href="/app/proposals">
-              Abrir propostas
-            </Link>
-            <Link className="button-primary" href="/app/proposals/new">
-              Iniciar rascunho de proposta
-            </Link>
-          </>
+          <Link className="button-primary" href="/app/proposals/new">
+            Nova proposta
+          </Link>
         }
-        description="Uma visão executiva orientada a propostas para a equipe interna do Franklin. Os indicadores e a atividade recente agora vêm diretamente de dados persistidos no Prisma."
+        description="Indicadores e atividade recente de propostas."
         eyebrow="Painel"
-        title="Painel interno"
+        title="Painel"
       />
 
       {snapshot.isOffline ? (
@@ -62,67 +60,30 @@ export default async function DashboardPage() {
         </section>
       ) : null}
 
-      <section className="surface-card workspace-intro-card">
-        <div className="workspace-intro-copy">
-          <p className="eyebrow">Leitura rápida</p>
-          <h2>Primeiro entenda a carga do dia, depois aprofunde.</h2>
-          <p className="section-copy">
-            Esta área foi reorganizada para destacar prioridades imediatas, atalhos de ação e
-            leitura curta de status antes de entrar nos detalhes operacionais.
-          </p>
-        </div>
-
-        <div className="pill-row">
-          <StatusPill tone="accent">Fluxo consultivo</StatusPill>
-          <StatusPill tone="neutral">Leitura rápida</StatusPill>
-          <StatusPill tone="neutral">Ação direta</StatusPill>
-        </div>
-      </section>
-
-      <section className="surface-card dashboard-overview">
-        <div className="dashboard-overview-copy">
-          <p className="eyebrow">Central de propostas</p>
-          <h2>Feito para revisão interna rápida, não para relatório decorativo.</h2>
-          <p className="section-copy">
-            O painel do Franklin prioriza a carga atual de propostas, a movimentação recente e os
-            poucos sinais analíticos que mais importam em um workflow consultivo em estágio inicial.
-          </p>
-
-          <div className="pill-row">
-            <StatusPill tone="accent">Dados reais em Prisma</StatusPill>
-            <StatusPill tone="neutral">Contagem por status</StatusPill>
-            <StatusPill tone="neutral">Últimas 5 propostas</StatusPill>
-          </div>
-        </div>
-
-        <div className="dashboard-shortcuts">
-          {dashboardShortcuts.map((shortcut) => (
-            <Link key={shortcut.href} className="shortcut-card" href={shortcut.href}>
-              <strong>{shortcut.label}</strong>
-              <span>{shortcut.description}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       <section className="dashboard-metric-grid">
-        {snapshot.metrics.map((item) => (
-          <article
-            key={item.label}
-            className={`metric-card dashboard-metric-card dashboard-metric-card-${item.tone}`}
-          >
-            <StatusPill tone={item.tone}>{item.label}</StatusPill>
-            <strong>{item.value}</strong>
-            <span>{item.detail}</span>
-          </article>
-        ))}
+        {snapshot.metrics.map((item, index) => {
+          const MetricIcon = metricIcons[index % metricIcons.length];
+          return (
+            <article
+              key={item.label}
+              className={`metric-card dashboard-metric-card dashboard-metric-card-${item.tone}`}
+            >
+              <div className="pill-row">
+                <span className="icon-inline icon-muted"><MetricIcon size={16} /></span>
+                <StatusPill tone={item.tone}>{item.label}</StatusPill>
+              </div>
+              <strong>{item.value}</strong>
+              <span>{item.detail}</span>
+            </article>
+          );
+        })}
       </section>
 
       <section className="dashboard-layout">
         <article className="surface-card dashboard-panel dashboard-panel-large">
           <div className="section-head">
             <p className="eyebrow">Propostas recentes</p>
-            <h2>Última atividade interna</h2>
+            <h2>Última atividade</h2>
           </div>
 
           <div className="data-list">
@@ -152,7 +113,10 @@ export default async function DashboardPage() {
             ) : (
               <div className="builder-empty-state">
                 <strong>Nenhuma proposta registrada ainda.</strong>
-                <p>Crie a primeira proposta para ativar os blocos de atividade e status do painel.</p>
+                <p>Crie a primeira proposta para ativar o painel.</p>
+                <Link className="button-primary" href="/app/proposals/new">
+                  Criar primeira proposta
+                </Link>
               </div>
             )}
           </div>
@@ -184,6 +148,15 @@ export default async function DashboardPage() {
               ))}
             </div>
           </article>
+
+          <div className="dashboard-shortcuts">
+            {dashboardShortcuts.map((shortcut) => (
+              <Link key={shortcut.href} className="shortcut-card" href={shortcut.href}>
+                <strong>{shortcut.label}</strong>
+                <span>{shortcut.description}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </div>

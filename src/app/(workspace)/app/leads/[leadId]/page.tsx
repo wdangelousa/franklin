@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { IconArrowLeft, IconMail, IconPhone, IconBuilding, IconDollarSign } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { requireInternalSession } from "@/lib/auth/session";
@@ -35,14 +36,14 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
         actions={
           <>
             <Link className="button-secondary" href="/app/leads">
-              Voltar para leads
+              <IconArrowLeft size={16} /> Voltar
             </Link>
             <Link className="button-primary" href={`/app/proposals/new?leadId=${lead.id}`}>
               Iniciar proposta
             </Link>
           </>
         }
-        description="O detalhe do lead mantém o registro de qualificação enxuto: contexto do contato, responsabilidade, observações e propostas já ligadas a esta oportunidade."
+        description="Qualificação, responsabilidade e propostas vinculadas."
         eyebrow="Detalhe do lead"
         title={lead.company}
       />
@@ -74,15 +75,15 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
               <strong>{lead.fullName}</strong>
             </div>
             <div className="detail-pair">
-              <p className="detail-label">Empresa</p>
+              <p className="detail-label"><IconBuilding size={14} /> Empresa</p>
               <strong>{lead.company}</strong>
             </div>
             <div className="detail-pair">
-              <p className="detail-label">Email</p>
+              <p className="detail-label"><IconMail size={14} /> Email</p>
               <strong>{lead.email}</strong>
             </div>
             <div className="detail-pair">
-              <p className="detail-label">Telefone</p>
+              <p className="detail-label"><IconPhone size={14} /> Telefone</p>
               <strong>{lead.phone}</strong>
             </div>
             <div className="detail-pair">
@@ -98,7 +99,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
               <strong>{lead.nextStep}</strong>
             </div>
             <div className="detail-pair">
-              <p className="detail-label">Valor estimado</p>
+              <p className="detail-label"><IconDollarSign size={14} /> Valor estimado</p>
               <strong>{formatCurrency(lead.estimatedValue)}</strong>
             </div>
           </div>

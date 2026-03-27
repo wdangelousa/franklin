@@ -9,9 +9,9 @@ export default async function CatalogPage() {
   return (
     <div className="page-stack catalog-page">
       <PageHeader
-        description="Consulte os serviços ativos e os preços disponíveis hoje para montagem de propostas. O catálogo abaixo reflete a mesma base usada pelo builder e pelos snapshots enviados ao cliente."
+        description="Serviços e preços disponíveis para montagem de propostas."
         eyebrow="Catálogo"
-        title="Catálogo de serviços"
+        title="Catálogo"
       />
 
       {catalog.length > 0 ? (
