@@ -968,7 +968,11 @@ ul {
 .lead-detail-grid,
 .lead-form-layout {
   display: grid;
-  gap: 20px;
+  gap: 16px;
+}
+
+.lead-detail-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .detail-pair {
@@ -1294,6 +1298,12 @@ ul {
 .selected-item-grid {
   display: grid;
   gap: 16px;
+}
+
+@media (max-width: 760px) {
+  .lead-detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .proposal-record-meta {
