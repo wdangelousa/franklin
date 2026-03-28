@@ -1,5 +1,6 @@
 import { BrandMark } from "@/components/ui/brand-mark";
 import { brand } from "@/lib/brand";
+import { buildProposalChecklist } from "@/lib/proposal-checklist";
 import type { ResolvedPublicProposal } from "@/lib/public-proposals";
 import { formatCurrencyFromCents, formatDate, formatDateTime } from "@/lib/utils";
 
@@ -7,243 +8,206 @@ interface PublicProposalPdfPageProps {
   proposal: ResolvedPublicProposal;
 }
 
-const STANDARD_GENERAL_TERMS = [
-  "O início dos trabalhos está condicionado ao aceite formal desta proposta e à entrega dos documentos obrigatórios.",
-  "Alterações de escopo após o aceite requerem um aditivo escrito e aprovado por ambas as partes.",
-  "Esta proposta é confidencial e destinada exclusivamente ao destinatário identificado.",
-  "Os prazos estimados dependem da prontidão documental do cliente e dos tempos de resposta de terceiros."
-];
-
 export function PublicProposalPdfPage({ proposal }: PublicProposalPdfPageProps) {
   const { snapshot } = proposal;
-  const acceptedAt = proposal.lifecycle.acceptedAt ?? snapshot.acceptedAt ?? snapshot.preparedAt;
-  const documentDate = proposal.lifecycle.acceptedAt ?? snapshot.acceptedAt ?? snapshot.preparedAt;
-  const generalTerms = Array.from(new Set([...snapshot.generalTerms, ...STANDARD_GENERAL_TERMS]));
+  const checklist = buildProposalChecklist(snapshot);
 
   return (
-    <main className="proposal-shell pdf-proposal-shell" data-proposal-pdf-ready="true">
-      <header className="proposal-header pdf-proposal-header">
+    <main className="proposal-shell pdf-contract" data-proposal-pdf-ready="true">
+      <header className="pdf-contract-header">
         <BrandMark href={null} />
-
-        <article className="surface-card pdf-proposal-cover">
-          <p className="eyebrow">Confirmação de proposta aceita</p>
-          <h1>{snapshot.proposalNumber}</h1>
-          <p className="proposal-summary">
-            Documento contratual referente à proposta aceita para {snapshot.companyName}.
-          </p>
-
-          <div className="pdf-proposal-meta">
-            <div className="detail-pair">
-              <p className="detail-label">Proposta</p>
-              <strong>{snapshot.proposalNumber}</strong>
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Data</p>
-              <strong>{formatDate(documentDate)}</strong>
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Cliente</p>
-              <strong>{snapshot.companyName}</strong>
-            </div>
-            <div className="detail-pair">
-              <p className="detail-label">Investimento</p>
-              <strong>
-                <span className="currency-value">
-                  {formatCurrencyFromCents(proposal.totalInvestmentCents)}
-                </span>
-              </strong>
-            </div>
-          </div>
-        </article>
+        <div className="pdf-contract-ref">
+          <strong>{snapshot.proposalNumber}</strong>
+          <span>{formatDate(snapshot.preparedAt)}</span>
+        </div>
       </header>
 
-      <article className="surface-card">
-        <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">1</span>
-            <h2>Partes</h2>
+      <h1 className="pdf-contract-title">Confirmação de proposta aceita</h1>
+      <p className="pdf-contract-subtitle">{snapshot.title}</p>
+
+      <section className="pdf-contract-section">
+        <div className="pdf-contract-section-head">
+          <span className="pdf-contract-num">1</span>
+          <h2>Partes</h2>
+        </div>
+        <div className="pdf-contract-parties">
+          <div className="pdf-contract-party">
+            <p className="pdf-contract-party-label">Prestador</p>
+            <strong>{brand.legalName}</strong>
+            <p>{brand.location}</p>
+            <p>{brand.senderEmail}</p>
           </div>
-
-          <div className="pdf-parties-grid">
-            <div className="pdf-party-card">
-              <strong>Prestador</strong>
-              <p>{brand.legalName}</p>
-              <p>{brand.location}</p>
-              <p>{brand.senderEmail}</p>
-            </div>
-
-            <div className="pdf-party-card">
-              <strong>Cliente</strong>
-              <p>{snapshot.contactName}</p>
-              <p>{snapshot.companyName}</p>
-              <p>{snapshot.contactEmail || "Email não informado"}</p>
-            </div>
+          <div className="pdf-contract-party">
+            <p className="pdf-contract-party-label">Cliente</p>
+            <strong>{snapshot.contactName}</strong>
+            <p>{snapshot.companyName}</p>
+            <p>{snapshot.contactEmail}</p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">2</span>
-            <h2>Objeto</h2>
-          </div>
-
-          <p className="section-copy">
-            A presente proposta contempla os seguintes serviços para {snapshot.companyName}:
+      <section className="pdf-contract-section">
+        <div className="pdf-contract-section-head">
+          <span className="pdf-contract-num">2</span>
+          <h2>Objeto</h2>
+        </div>
+        {snapshot.proposalIntroduction.map((p) => (
+          <p key={p} className="pdf-contract-text">
+            {p}
           </p>
-        </section>
+        ))}
+      </section>
 
-        <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">3</span>
-            <h2>Serviços contratados</h2>
-          </div>
+      <section className="pdf-contract-section">
+        <div className="pdf-contract-section-head">
+          <span className="pdf-contract-num">3</span>
+          <h2>Serviços contratados</h2>
+        </div>
 
-          <table className="pdf-service-table">
-            <thead>
-              <tr>
-                <th>Serviço</th>
-                <th>Qtd.</th>
-                <th>Preço unitário</th>
-                <th>Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {snapshot.selectedServices.map((service) => (
-                <tr key={service.internalCode}>
-                  <td>
-                    <strong>{service.serviceName}</strong>
-                    {service.description ? (
-                      <p className="public-service-description">{service.description}</p>
-                    ) : null}
-                    {service.deliverables.length > 0 ? (
-                      <div className="public-service-deliverables">
-                        <p className="eyebrow">Inclui</p>
-                        <ul className="feature-list">
-                          {service.deliverables.map((deliverable) => (
-                            <li key={deliverable}>{deliverable}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : null}
-                    {service.specificClause ? (
-                      <div className="public-service-clause">
-                        <p>{service.specificClause}</p>
-                      </div>
-                    ) : null}
-                  </td>
-                  <td>{service.quantity}</td>
-                  <td>
+        <div className="pdf-contract-services">
+          {snapshot.selectedServices.map((service) => {
+            const hasDiscount = service.subtotalCents < service.quantity * service.unitPriceCents;
+
+            return (
+              <article key={service.internalCode} className="pdf-contract-service">
+                <div className="pdf-contract-service-header">
+                  <h3>{service.serviceName}</h3>
+                  <strong className="currency-value">
+                    {formatCurrencyFromCents(service.subtotalCents)}
+                  </strong>
+                </div>
+
+                {service.description ? (
+                  <p className="pdf-contract-service-desc">{service.description}</p>
+                ) : null}
+
+                <div className="pdf-contract-service-meta">
+                  <span>Quantidade: {service.quantity}</span>
+                  <span>
+                    Valor unitário:{" "}
                     <span className="currency-value">
                       {formatCurrencyFromCents(service.unitPriceCents)}
                     </span>
-                  </td>
-                  <td>
-                    <span className="currency-value">
-                      {formatCurrencyFromCents(service.subtotalCents)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    {hasDiscount ? " (c/ desconto)" : ""}
+                  </span>
+                </div>
 
-          <div className="pdf-service-total">
-            <strong>Total geral</strong>
-            <strong>
-              <span className="currency-value">
-                {formatCurrencyFromCents(proposal.totalInvestmentCents)}
-              </span>
-            </strong>
-          </div>
-        </section>
+                {service.deliverables.length > 0 ? (
+                  <div className="pdf-contract-deliverables">
+                    <p className="pdf-contract-small-label">Inclui:</p>
+                    <ul>
+                      {service.deliverables.map((d) => (
+                        <li key={d}>{d}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
 
+                {service.specificClause ? (
+                  <div className="pdf-contract-clause">
+                    <p>{service.specificClause}</p>
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="pdf-contract-total">
+          <span>Investimento total</span>
+          <strong className="currency-value">
+            {formatCurrencyFromCents(proposal.totalInvestmentCents)}
+          </strong>
+        </div>
+      </section>
+
+      <section className="pdf-contract-section">
+        <div className="pdf-contract-section-head">
+          <span className="pdf-contract-num">4</span>
+          <h2>Condições de pagamento</h2>
+        </div>
+        <p className="pdf-contract-text">{snapshot.investmentIntro}</p>
+        <p className="pdf-contract-text">{snapshot.paymentIntro}</p>
+      </section>
+
+      {snapshot.specificTerms.length > 0 ? (
         <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">4</span>
-            <h2>Condições de pagamento</h2>
-          </div>
-
-          <p className="section-copy">{snapshot.paymentIntro}</p>
-          <p className="section-copy">
-            <strong>Investimento total:</strong>{" "}
-            <span className="currency-value">
-              {formatCurrencyFromCents(proposal.totalInvestmentCents)}
-            </span>
-          </p>
-        </section>
-
-        <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">5</span>
+          <div className="pdf-contract-section-head">
+            <span className="pdf-contract-num">5</span>
             <h2>Termos específicos</h2>
           </div>
-
-          <ol className="pdf-terms-list">
+          <ol className="pdf-contract-terms">
             {snapshot.specificTerms.map((term) => (
               <li key={term}>{term}</li>
             ))}
           </ol>
         </section>
+      ) : null}
 
+      <section className="pdf-contract-section">
+        <div className="pdf-contract-section-head">
+          <span className="pdf-contract-num">6</span>
+          <h2>Condições gerais</h2>
+        </div>
+        <ol className="pdf-contract-terms">
+          {snapshot.generalTerms.map((term) => (
+            <li key={term}>{term}</li>
+          ))}
+          <li>
+            Alterações de escopo após o aceite requerem um aditivo escrito e aprovado por ambas as partes.
+          </li>
+        </ol>
+      </section>
+
+      {checklist.items.length > 0 ? (
         <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">6</span>
-            <h2>Condições gerais</h2>
-          </div>
-
-          <ol className="pdf-terms-list">
-            {generalTerms.map((term) => (
-              <li key={term}>{term}</li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">7</span>
+          <div className="pdf-contract-section-head">
+            <span className="pdf-contract-num">7</span>
             <h2>Documentos necessários</h2>
           </div>
-
-          <ul className="feature-list">
-            {snapshot.requiredDocuments.map((item) => (
-              <li key={item}>{item}</li>
+          <ul className="pdf-contract-docs">
+            {checklist.items.map((item) => (
+              <li key={item.id}>{item.title}</li>
             ))}
           </ul>
-
-          <div className="public-text-stack">
-            {snapshot.documentSubmissionInstructions.map((instruction) => (
-              <p key={instruction} className="section-copy">
-                {instruction}
-              </p>
-            ))}
-          </div>
+          {snapshot.documentSubmissionInstructions.length > 0 ? (
+            <div className="pdf-contract-instructions">
+              <p className="pdf-contract-small-label">Como enviar:</p>
+              {snapshot.documentSubmissionInstructions.map((instruction) => (
+                <p key={instruction} className="pdf-contract-text">
+                  {instruction}
+                </p>
+              ))}
+            </div>
+          ) : null}
         </section>
+      ) : null}
 
-        <section className="pdf-contract-section">
-          <div className="pdf-section-title">
-            <span className="pdf-section-number">8</span>
-            <h2>Registro do aceite</h2>
-          </div>
+      <section className="pdf-contract-section">
+        <div className="pdf-contract-section-head">
+          <span className="pdf-contract-num">8</span>
+          <h2>Registro do aceite</h2>
+        </div>
+        <div className="pdf-contract-acceptance">
+          <strong>
+            Proposta aceita em{" "}
+            {proposal.lifecycle.acceptedAt
+              ? formatDateTime(proposal.lifecycle.acceptedAt)
+              : "data registrada"}
+          </strong>
+          {proposal.snapshot.acceptedByName ? (
+            <p>Aceite registrado por: {proposal.snapshot.acceptedByName}</p>
+          ) : null}
+          <p>{snapshot.acceptanceText}</p>
+        </div>
+      </section>
 
-          <div className="pdf-acceptance-block">
-            <strong>Proposta aceita em {formatDateTime(acceptedAt)}</strong>
-            {snapshot.acceptedByName ? (
-              <p className="section-copy">
-                Aceite registrado por: {snapshot.acceptedByName}
-              </p>
-            ) : null}
-            <p className="section-copy">{snapshot.acceptanceText}</p>
-          </div>
-        </section>
-      </article>
-
-      <footer className="pdf-footer-legal">
+      <footer className="pdf-contract-footer">
         <p>
           {brand.legalName} · {brand.location}
         </p>
         <p>
-          Documento gerado automaticamente a partir da proposta aceita. Referência:{" "}
-          {snapshot.proposalNumber}
+          Documento gerado a partir da proposta aceita. Referência: {snapshot.proposalNumber}
         </p>
       </footer>
     </main>

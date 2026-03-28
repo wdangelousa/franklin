@@ -2429,18 +2429,75 @@ ul {
   position: static;
 }
 
+/* ── PDF contrato ── */
+
+.pdf-contract {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pdf-contract-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 20px;
+}
+
+.pdf-contract-ref {
+  text-align: right;
+}
+
+.pdf-contract-ref strong {
+  display: block;
+  font-size: 0.88rem;
+  letter-spacing: 0;
+}
+
+.pdf-contract-ref span {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.pdf-contract-title {
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  line-height: 1.1;
+  margin: 0 0 4px;
+}
+
+.pdf-contract-subtitle {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0 0 24px;
+}
+
 .pdf-contract-section {
-  display: grid;
-  gap: 12px;
   padding: 20px 0;
   border-bottom: 1px solid var(--line);
 }
 
-.pdf-contract-section:last-child {
+.pdf-contract-section:last-of-type {
   border-bottom: 0;
 }
 
-.pdf-section-number {
+.pdf-contract-section-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.pdf-contract-section-head h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.pdf-contract-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2451,127 +2508,287 @@ ul {
   color: var(--accent);
   font-size: 0.82rem;
   font-weight: 700;
+  flex: 0 0 auto;
 }
 
-.pdf-section-title {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+.pdf-contract-text {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 8px;
 }
 
-.pdf-section-title h2 {
-  font-size: 1.2rem;
-  margin: 0;
+.pdf-contract-text:last-child {
+  margin-bottom: 0;
 }
 
-.pdf-parties-grid {
+/* Partes */
+
+.pdf-contract-parties {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
-.pdf-party-card {
-  padding: 16px;
+.pdf-contract-party {
+  padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.5);
 }
 
-.pdf-party-card strong {
-  display: block;
-  margin-bottom: 4px;
-}
-
-.pdf-party-card p {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.pdf-acceptance-block {
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(47, 108, 85, 0.2);
-  background: rgba(47, 108, 85, 0.06);
-}
-
-.pdf-acceptance-block strong {
-  color: var(--success);
-  display: block;
-  margin-bottom: 8px;
-}
-
-.pdf-service-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.pdf-service-table th {
-  text-align: left;
-  padding: 10px 12px;
-  font-size: 0.78rem;
+.pdf-contract-party-label {
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--muted);
-  border-bottom: 1px solid var(--line);
-  font-family: inherit;
-  font-weight: 600;
+  font-weight: 700;
+  margin: 0 0 6px;
 }
 
-.pdf-service-table td {
-  padding: 12px;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.95rem;
-  vertical-align: top;
+.pdf-contract-party strong {
+  display: block;
+  margin-bottom: 2px;
 }
 
-.pdf-service-table tr:last-child td {
-  border-bottom: 0;
+.pdf-contract-party p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
-.pdf-service-total {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 12px;
-  border-top: 2px solid var(--accent);
-  font-size: 1.1rem;
+/* Serviços — cards empilhados, NÃO tabela */
+
+.pdf-contract-services {
+  display: grid;
+  gap: 12px;
 }
 
-.pdf-terms-list {
-  counter-reset: term;
-  list-style: none;
-  padding: 0;
+.pdf-contract-service {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 248, 241, 0.7));
   display: grid;
   gap: 10px;
 }
 
-.pdf-terms-list li {
+.pdf-contract-service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pdf-contract-service-header h3 {
+  font-size: 1.05rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.pdf-contract-service-header strong {
+  font-size: 1.05rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.pdf-contract-service-desc {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pdf-contract-service-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.pdf-contract-deliverables {
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.pdf-contract-deliverables ul {
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 4px;
+}
+
+.pdf-contract-deliverables li {
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.pdf-contract-deliverables li::marker {
+  color: var(--brand);
+}
+
+.pdf-contract-small-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.pdf-contract-clause {
+  padding: 10px 14px;
+  border-left: 3px solid var(--brand);
+  background: rgba(143, 95, 54, 0.04);
+  border-radius: 0;
+}
+
+.pdf-contract-clause p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Total */
+
+.pdf-contract-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0 0;
+  margin-top: 12px;
+  border-top: 2px solid var(--accent);
+  font-size: 1.1rem;
+}
+
+.pdf-contract-total span {
+  font-weight: 500;
+}
+
+.pdf-contract-total strong {
+  font-size: 1.2rem;
+}
+
+/* Termos — lista numerada */
+
+.pdf-contract-terms {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: term;
+  display: grid;
+  gap: 8px;
+}
+
+.pdf-contract-terms li {
   counter-increment: term;
   padding-left: 2rem;
   position: relative;
-  line-height: 1.65;
-  color: var(--text);
   font-size: 0.95rem;
+  line-height: 1.65;
 }
 
-.pdf-terms-list li::before {
+.pdf-contract-terms li::before {
   content: counter(term) ".";
   position: absolute;
   left: 0;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.pdf-footer-legal {
-  text-align: center;
-  padding: 20px 0;
+/* Documentos */
+
+.pdf-contract-docs {
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.pdf-contract-docs li {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pdf-contract-docs li::marker {
+  color: var(--brand);
+}
+
+.pdf-contract-instructions {
+  margin-top: 14px;
+  padding-top: 14px;
   border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.82rem;
 }
 
-@media (max-width: 760px) {
-  .pdf-parties-grid {
-    grid-template-columns: 1fr;
+/* Aceite */
+
+.pdf-contract-acceptance {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(47, 108, 85, 0.2);
+  background: rgba(47, 108, 85, 0.06);
+}
+
+.pdf-contract-acceptance strong {
+  display: block;
+  color: var(--success);
+  margin-bottom: 6px;
+}
+
+.pdf-contract-acceptance p {
+  margin: 0 0 4px;
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Rodapé */
+
+.pdf-contract-footer {
+  text-align: center;
+  padding: 20px 0 0;
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.pdf-contract-footer p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Tablet+ : partes lado a lado */
+
+@media (min-width: 768px) {
+  .pdf-contract {
+    padding: 28px 24px 48px;
+  }
+
+  .pdf-contract-parties {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Print */
+
+@media print {
+  .pdf-contract {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .pdf-contract-service,
+  .pdf-contract-party,
+  .pdf-contract-acceptance {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .pdf-contract-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 
