@@ -13,15 +13,33 @@ import { audit } from "@/lib/audit";
  * is emitted as a warning. The function never throws.
  */
 export function getPublicBaseUrl(): string {
+  console.log("[DEBUG base-url] FRANKLIN_BASE_URL:", process.env.FRANKLIN_BASE_URL ?? "(vazio)");
+  console.log(
+    "[DEBUG base-url] VERCEL_PROJECT_PRODUCTION_URL:",
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "(vazio)"
+  );
+  console.log("[DEBUG base-url] VERCEL_URL:", process.env.VERCEL_URL ?? "(vazio)");
+
   const explicit = process.env.FRANKLIN_BASE_URL?.trim().replace(/\/$/, "");
-  if (explicit) return explicit;
+  if (explicit) {
+    console.log("[DEBUG base-url] URL resolvida:", explicit);
+    return explicit;
+  }
 
   // Vercel injects these automatically — no configuration needed
   const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  if (vercelProd) return `https://${vercelProd}`;
+  if (vercelProd) {
+    const resolved = `https://${vercelProd}`;
+    console.log("[DEBUG base-url] URL resolvida:", resolved);
+    return resolved;
+  }
 
   const vercelUrl = process.env.VERCEL_URL?.trim();
-  if (vercelUrl) return `https://${vercelUrl}`;
+  if (vercelUrl) {
+    const resolved = `https://${vercelUrl}`;
+    console.log("[DEBUG base-url] URL resolvida:", resolved);
+    return resolved;
+  }
 
   if (process.env.NODE_ENV === "production") {
     audit({
@@ -35,5 +53,7 @@ export function getPublicBaseUrl(): string {
     });
   }
 
-  return "http://localhost:3000";
+  const resolved = "http://localhost:3000";
+  console.log("[DEBUG base-url] URL resolvida:", resolved);
+  return resolved;
 }

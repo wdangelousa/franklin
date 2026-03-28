@@ -98,6 +98,7 @@ export async function getPublicProposalRecordByToken(args: {
   recordView?: boolean;
 }): Promise<ProposalWithRelations | null> {
   const tokenHash = hashProposalToken(args.token);
+  console.log("[DEBUG token-lookup] Token hash calculado:", `${tokenHash.slice(0, 16)}...`);
   const tokenRecord = await prisma.proposalPublicToken.findUnique({
     where: {
       tokenHash
@@ -145,12 +146,38 @@ export async function getPublicProposalRecordByToken(args: {
     }
   });
 
+  console.log("[DEBUG token-lookup] Token record found:", tokenRecord !== null);
+  if (tokenRecord) {
+    console.log("[DEBUG token-lookup] Token revokedAt:", tokenRecord.revokedAt);
+    console.log("[DEBUG token-lookup] Token expiresAt:", tokenRecord.expiresAt);
+    console.log("[DEBUG token-lookup] Proposal ID:", tokenRecord.proposal?.id);
+    console.log("[DEBUG token-lookup] Proposal status:", tokenRecord.proposal?.status);
+  } else {
+    console.log("[DEBUG token-lookup] ⚠ Nenhum token com este hash no banco");
+    console.log("[DEBUG token-lookup] Isso indica que:");
+    console.log(
+      "[DEBUG token-lookup]   - O token no link é diferente do gerado (URL encoding? truncamento?)"
+    );
+    console.log(
+      "[DEBUG token-lookup]   - Ou o FRANKLIN_TOKEN_SECRET mudou desde a criação"
+    );
+  }
+
   if (!tokenRecord || tokenRecord.revokedAt) {
+    if (tokenRecord?.revokedAt) {
+      console.log("[DEBUG token-lookup] ⚠ Token está revogado — retornando null");
+    }
     return null;
   }
 
   // Check token-level expiration
   if (tokenRecord.expiresAt && tokenRecord.expiresAt < new Date()) {
+    console.log(
+      "[DEBUG token-lookup] ⚠ Token expirado:",
+      tokenRecord.expiresAt,
+      "< now:",
+      new Date()
+    );
     return null;
   }
 
@@ -251,6 +278,14 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
   }>;
 } {
   const activeToken = proposal.publicTokens.find((token) => !token.revokedAt) ?? null;
+  console.log("[DEBUG snapshot] Active token found:", activeToken !== null);
+  if (activeToken) {
+    const decrypted = decryptProposalToken(activeToken.tokenCiphertext);
+    console.log("[DEBUG snapshot] Token decryption succeeded:", decrypted !== null);
+    if (!decrypted) {
+      console.log("[DEBUG snapshot] ⚠ Token decryption FAILED — secret mismatch?");
+    }
+  }
   const selectedServices = proposal.items.map((item) => ({
     internalCode: item.serviceCodeSnapshot,
     serviceName: item.serviceNameSnapshot,

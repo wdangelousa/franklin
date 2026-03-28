@@ -26,7 +26,9 @@ interface EmailLayoutOptions {
 }
 
 function getLogoUrl(): string {
-  return `${getPublicBaseUrl()}/logo.png`;
+  const url = `${getPublicBaseUrl()}/logo.png`;
+  console.log("[DEBUG email-logo] Logo URL:", url);
+  return url;
 }
 
 export function emailLayout(options: EmailLayoutOptions): string {
