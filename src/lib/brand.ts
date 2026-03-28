@@ -14,8 +14,8 @@ export const brand = {
   productLabel: "Sistema operacional consultivo",
   tagline:
     "Infraestrutura premium de workflow para equipes consultivas que gerenciam leads, desenho de serviços e entrega de propostas.",
-  supportEmail: "samuel@onebridgestalwart.com",
-  location: "Nova York, NY",
+  supportEmail: "walter@onebridgestalwart.com",
+  location: "Orlando, FL",
   logoUrl: "https://onebridgestalwart.com/logo.png",
 
   /** Client-facing email sender identity. */
