@@ -14,6 +14,7 @@ import type {
   NotificationResult,
   ProposalPublishedPayload,
   ProposalAcceptedPayload,
+  ProposalAcceptedClientPayload,
   ProposalRejectedPayload
 } from "@/lib/notifications/types";
 import {
@@ -24,6 +25,10 @@ import {
   proposalAcceptedSubject,
   proposalAcceptedHtml
 } from "@/lib/notifications/email/templates/proposal-accepted";
+import {
+  proposalAcceptedClientSubject,
+  proposalAcceptedClientHtml
+} from "@/lib/notifications/email/templates/proposal-accepted-client";
 import {
   proposalRejectedSubject,
   proposalRejectedHtml
@@ -94,6 +99,28 @@ export async function notifyProposalAccepted(
       subject: proposalAcceptedSubject(payload),
       html: proposalAcceptedHtml(payload),
       templateKey: "proposal_accepted",
+      proposalId: payload.proposalId
+    });
+    results.push(result);
+  }
+
+  return results;
+}
+
+/**
+ * Notify the client that a proposal has been accepted and provide the PDF link.
+ */
+export async function notifyProposalAcceptedClient(
+  payload: ProposalAcceptedClientPayload
+): Promise<NotificationResult[]> {
+  const results: NotificationResult[] = [];
+
+  if (payload.clientEmail) {
+    const result = await sendEmail({
+      to: payload.clientEmail,
+      subject: proposalAcceptedClientSubject(payload),
+      html: proposalAcceptedClientHtml(payload),
+      templateKey: "proposal_accepted_client",
       proposalId: payload.proposalId
     });
     results.push(result);

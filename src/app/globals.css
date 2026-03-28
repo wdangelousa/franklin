@@ -2429,6 +2429,152 @@ ul {
   position: static;
 }
 
+.pdf-contract-section {
+  display: grid;
+  gap: 12px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pdf-contract-section:last-child {
+  border-bottom: 0;
+}
+
+.pdf-section-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.pdf-section-title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.pdf-section-title h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.pdf-parties-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pdf-party-card {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.pdf-party-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pdf-party-card p {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.pdf-acceptance-block {
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(47, 108, 85, 0.2);
+  background: rgba(47, 108, 85, 0.06);
+}
+
+.pdf-acceptance-block strong {
+  color: var(--success);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.pdf-service-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pdf-service-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.pdf-service-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+  vertical-align: top;
+}
+
+.pdf-service-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.pdf-service-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 12px;
+  border-top: 2px solid var(--accent);
+  font-size: 1.1rem;
+}
+
+.pdf-terms-list {
+  counter-reset: term;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.pdf-terms-list li {
+  counter-increment: term;
+  padding-left: 2rem;
+  position: relative;
+  line-height: 1.65;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.pdf-terms-list li::before {
+  content: counter(term) ".";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.pdf-footer-legal {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 760px) {
+  .pdf-parties-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pdf-proposal-grid .surface-card,
 .pdf-proposal-shell .surface-card,
 .selected-service-card,

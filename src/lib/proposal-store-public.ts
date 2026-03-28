@@ -21,7 +21,12 @@ import {
 import { syncExpiredProposalById, syncExpiredProposalStatusInTransaction } from "@/lib/proposal-store-expiration";
 import { ProposalError } from "@/lib/proposal-errors";
 import { getUnitLabel } from "@/lib/proposal-draft";
-import { notifyProposalAccepted, notifyProposalRejected } from "@/lib/notifications/notify";
+import {
+  notifyProposalAccepted,
+  notifyProposalAcceptedClient,
+  notifyProposalRejected
+} from "@/lib/notifications/notify";
+import { getPublicBaseUrl } from "@/lib/urls";
 
 type PrismaTx = Parameters<typeof prisma.$transaction>[0] extends (tx: infer T) => Promise<unknown>
   ? T
@@ -251,6 +256,7 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
   preparedAt: string;
   sentAt: string;
   expiresAt: string;
+  acceptedByName: string | null;
   acceptedAt: string | null;
   rejectedAt: string | null;
   cancelledAt: string | null;
@@ -333,6 +339,7 @@ export function buildPublicProposalSnapshotFromRecord(proposal: ProposalWithRela
     preparedAt: proposal.createdAt.toISOString(),
     sentAt: proposal.sentAt?.toISOString() ?? proposal.createdAt.toISOString(),
     expiresAt: proposal.expiresAt?.toISOString() ?? addDays(proposal.createdAt, 14).toISOString(),
+    acceptedByName: proposal.acceptedByName ?? null,
     acceptedAt: proposal.acceptedAt?.toISOString() ?? null,
     rejectedAt: proposal.rejectedAt?.toISOString() ?? null,
     cancelledAt: proposal.cancelledAt?.toISOString() ?? null,
@@ -491,6 +498,44 @@ export async function acceptProposalByToken(
         companyName: notificationData.companyName,
         acceptedByName: notificationData.acceptedByName,
         acceptedAt: notificationData.acceptedAt
+      });
+    } catch {
+      // Swallow — audit log already recorded inside notify
+    }
+  }
+
+  // Notify the client with acceptance confirmation and PDF link
+  if (notificationData && notificationData.clientEmail) {
+    try {
+      const baseUrl = getPublicBaseUrl();
+      const acceptedTokenRecord = await prisma.proposalPublicToken.findUnique({
+        where: { tokenHash },
+        select: { tokenCiphertext: true }
+      });
+      const decryptedToken = acceptedTokenRecord
+        ? decryptProposalToken(acceptedTokenRecord.tokenCiphertext)
+        : null;
+      const pdfLink = `${baseUrl}/p/${decryptedToken ?? token}/pdf`;
+
+      const totalCents = await prisma.proposalItem.aggregate({
+        where: { proposalId: notificationData.proposalId },
+        _sum: { subtotalCents: true }
+      });
+      const totalFormatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "USD"
+      }).format((totalCents._sum.subtotalCents ?? 0) / 100);
+
+      await notifyProposalAcceptedClient({
+        proposalId: notificationData.proposalId,
+        proposalNumber: notificationData.proposalNumber,
+        clientName: notificationData.clientName,
+        clientEmail: notificationData.clientEmail,
+        companyName: notificationData.companyName,
+        acceptedByName: notificationData.acceptedByName,
+        acceptedAt: notificationData.acceptedAt,
+        pdfLink,
+        totalFormatted
       });
     } catch {
       // Swallow — audit log already recorded inside notify

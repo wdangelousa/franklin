@@ -42,6 +42,18 @@ export interface ProposalAcceptedPayload {
   acceptedAt: Date;
 }
 
+export interface ProposalAcceptedClientPayload {
+  proposalId: string;
+  proposalNumber: string;
+  clientName: string;
+  clientEmail: string;
+  companyName: string;
+  acceptedByName?: string;
+  acceptedAt: Date;
+  pdfLink: string;
+  totalFormatted: string;
+}
+
 export interface ProposalRejectedPayload {
   proposalId: string;
   proposalNumber: string;

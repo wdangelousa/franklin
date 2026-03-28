@@ -47,6 +47,7 @@ export interface PublicProposalSnapshot {
   preparedAt: string;
   sentAt: string;
   expiresAt: string;
+  acceptedByName?: string | null;
   acceptedAt?: string | null;
   rejectedAt?: string | null;
   cancelledAt?: string | null;
@@ -111,6 +112,7 @@ export async function getPublicProposalSnapshotByToken(
     preparedAt: mapped.preparedAt,
     sentAt: mapped.sentAt,
     expiresAt: mapped.expiresAt,
+    acceptedByName: mapped.acceptedByName,
     acceptedAt: mapped.acceptedAt,
     rejectedAt: mapped.rejectedAt,
     cancelledAt: mapped.cancelledAt,
