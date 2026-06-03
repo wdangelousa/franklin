@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Comercial · Stone · Onebridge Stalwart LLC</title>
+
+<!-- ============================================================= -->
+<!-- LOGO: substituir por logo oficial PNG/SVG no bloco .brand-mark -->
+<!--      (capa P1 e encerramento P11). Ver comentários finais.      -->
+<!-- ============================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================= */
+/* VARIÁVEIS DE MARCA                                             */
+/* ============================================================= */
+:root{
+  --ink:#2B2A26;
+  --navy:#1F3251;
+  --gold:#A8853B;
+  --stone:#ECE7DD;
+  --taupe:#D8D0C2;
+  --mute:#8A847A;
+  --line:#D9D3C8;
+  --paper:#FBFAF7;
+
+  --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ============================================================= */
+/* RESET / BASE                                                  */
+/* ============================================================= */
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+body{
+  background:#cfcabd;            /* fundo neutro para visualização em tela */
+  font-family:var(--sans);
+  color:var(--ink);
+  line-height:1.6;
+  font-size:11pt;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+p{ font-weight:400; }
+strong{ font-weight:600; color:var(--navy); }
+em{ font-style:italic; }
+
+/* ============================================================= */
+/* PÁGINA A4                                                     */
+/* ============================================================= */
+.page{
+  position:relative;
+  width:210mm;
+  min-height:297mm;
+  height:297mm;
+  margin:10mm auto;
+  padding:22mm;
+  background:var(--paper);
+  box-shadow:0 6px 28px rgba(0,0,0,.18);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  page-break-after:always;
+  break-after:page;
+}
+.page:last-of-type{ page-break-after:auto; break-after:auto; }
+
+/* ============================================================= */
+/* COMPONENTES REAPROVEITÁVEIS                                   */
+/* ============================================================= */
+
+/* Marcador de seção: "01 — SUMÁRIO EXECUTIVO" */
+.marker{
+  font-family:var(--sans);
+  font-size:8.5pt;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  gap:.7em;
+}
+.marker .num{ color:var(--navy); }
+.marker .dash{ color:var(--mute); font-weight:400; }
+
+/* Metadados em caixa-alta */
+.meta{
+  font-family:var(--sans);
+  font-size:8pt;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--mute);
+}
+
+/* Lead / manifesto em serifa itálico */
+.lead{
+  font-family:var(--serif);
+  font-weight:300;
+  font-style:italic;
+  font-size:26pt;
+  line-height:1.18;
+  color:var(--navy);
+  letter-spacing:.01em;
+}
+
+/* Títulos display */
+.h-display{
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.08;
+  color:var(--ink);
+  letter-spacing:.005em;
+}
+.h1{ font-size:46pt; font-weight:300; }
+.h2{ font-size:34pt; }
+.h3{ font-size:26pt; }
+
+/* Filete fino */
+.rule{
+  border:0;
+  border-top:1px solid var(--line);
+  width:100%;
+}
+.rule-short{ width:64px; border-top:1px solid var(--gold); }
+
+/* Ponto decorativo dourado */
+.dot{ color:var(--gold); }
+
+/* Painel */
+.panel{
+  background:var(--stone);
+  border:1px solid var(--taupe);
+  padding:26px 30px;
+}
+
+/* Corpo de texto agrupado */
+.body-copy p{ margin-bottom:13px; color:var(--ink); }
+.body-copy p:last-child{ margin-bottom:0; }
+.body-copy{ max-width:148mm; }
+
+/* Lista de linhas com filete + ponto dourado (sem ícones) */
+.linelist{ list-style:none; }
+.linelist li{
+  display:flex;
+  align-items:baseline;
+  gap:.8em;
+  padding:11px 0;
+  border-bottom:1px solid var(--line);
+  font-size:10.5pt;
+  color:var(--ink);
+}
+.linelist li:last-child{ border-bottom:0; }
+.linelist li .dot{ font-size:7pt; transform:translateY(-1px); }
+
+/* Pilares numerados */
+.pillar{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:24px;
+  padding:18px 0;
+  break-inside:avoid;
+}
+.pillar .pn{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:40pt;
+  line-height:1;
+  color:var(--taupe);
+}
+.pillar h4{
+  font-family:var(--sans);
+  font-size:11.5pt;
+  font-weight:600;
+  color:var(--navy);
+  margin-bottom:5px;
+  letter-spacing:.01em;
+}
+.pillar p{ font-size:10pt; color:var(--ink); }
+
+/* Bloco de preço em prosa */
+.price-block{
+  padding:16px 0;
+  border-top:1px solid var(--line);
+  break-inside:avoid;
+}
+.price-block h4{
+  font-family:var(--sans);
+  font-size:11pt;
+  font-weight:600;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+.price-block .vals{
+  font-size:10pt;
+  color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.price-block .vals .sep{ color:var(--gold); padding:0 .3em; }
+
+/* Timeline minimalista */
+.timeline{ list-style:none; position:relative; margin-left:6px; }
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:4px; top:6px; bottom:6px;
+  width:1px;
+  background:var(--line);
+}
+.timeline li{
+  position:relative;
+  padding:0 0 26px 30px;
+  break-inside:avoid;
+}
+.timeline li:last-child{ padding-bottom:0; }
+.timeline li::before{
+  content:"";
+  position:absolute;
+  left:0; top:5px;
+  width:9px; height:9px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 3px var(--paper);
+}
+.timeline .when{
+  font-family:var(--sans);
+  font-size:8.5pt;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--navy);
+  margin-bottom:3px;
+}
+.timeline .what{ font-size:10.5pt; color:var(--ink); }
+
+/* Passos numerados */
+.step{
+  display:grid;
+  grid-template-columns:54px 1fr;
+  gap:22px;
+  align-items:baseline;
+  padding:16px 0;
+  border-bottom:1px solid var(--line);
+  break-inside:avoid;
+}
+.step:last-of-type{ border-bottom:0; }
+.step .sn{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:32pt;
+  line-height:1;
+  color:var(--taupe);
+}
+.step p{ font-size:11pt; color:var(--ink); align-self:center; }
+
+/* Bloco de termos */
+.term{
+  padding:16px 0;
+  border-top:1px solid var(--line);
+  break-inside:avoid;
+}
+.term h4{
+  font-family:var(--sans);
+  font-size:11pt;
+  font-weight:600;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+.term p{ font-size:9.8pt; color:var(--ink); line-height:1.55; }
+
+/* Nota itálica */
+.note{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:12pt;
+  line-height:1.5;
+  color:var(--mute);
+}
+
+/* Marca textual + SVG */
+.brand-mark{ display:flex; align-items:center; gap:14px; }
+.brand-mark .glyph{ flex:none; }
+.brand-mark .wordmark{
+  font-family:var(--sans);
+  font-size:11pt;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--navy);
+  line-height:1.1;
+}
+
+/* ============================================================= */
+/* CABEÇALHO / RODAPÉ (a partir da pág. 2)                       */
+/* ============================================================= */
+.runhead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:26px;
+}
+.runhead .l{
+  font-family:var(--sans);
+  font-size:8pt;
+  font-weight:600;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--navy);
+}
+.runhead .r{
+  font-family:var(--sans);
+  font-size:8pt;
+  font-weight:500;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--mute);
+}
+.runfoot{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  margin-top:auto;
+}
+.runfoot span{
+  font-family:var(--sans);
+  font-size:7.5pt;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--mute);
+}
+
+/* Área de conteúdo principal da página (entre head e foot) */
+.content{ flex:1 1 auto; display:flex; flex-direction:column; }
+
+/* Utilidades */
+.mt-a{ margin-top:auto; }
+.mt-1{ margin-top:14px; }
+.mt-2{ margin-top:24px; }
+.mt-3{ margin-top:38px; }
+.mt-4{ margin-top:54px; }
+.mb-1{ margin-bottom:14px; }
+.mb-2{ margin-bottom:24px; }
+.mb-3{ margin-bottom:38px; }
+.two-col{ column-count:2; column-gap:34px; }
+.two-col .prop{ break-inside:avoid; margin-bottom:18px; }
+
+/* ============================================================= */
+/* P1 — CAPA                                                     */
+/* ============================================================= */
+.cover{ justify-content:space-between; }
+.cover-top{ display:flex; justify-content:space-between; align-items:flex-start; }
+.hero-panel{
+  position:relative;
+  height:88mm;
+  margin:14mm 0;
+  border:1px solid var(--taupe);
+  background:
+    /* veios de pedra sutilíssimos */
+    linear-gradient(115deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 30%),
+    radial-gradient(120% 90% at 20% 15%, rgba(255,255,255,.5), rgba(255,255,255,0) 55%),
+    radial-gradient(140% 120% at 85% 90%, rgba(31,50,81,.06), rgba(31,50,81,0) 60%),
+    linear-gradient(135deg, var(--stone) 0%, var(--taupe) 100%);
+  overflow:hidden;
+}
+/* veio diagonal de mármore (linha dourada quase imperceptível) */
+.hero-panel::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(118deg, transparent 0 46%, rgba(168,133,59,.16) 46.4% 47%, transparent 47.4% 100%),
+    linear-gradient(122deg, transparent 0 61%, rgba(43,42,38,.05) 61.3% 61.7%, transparent 62% 100%);
+}
+.hero-panel .hero-cap{
+  position:absolute;
+  left:30px; bottom:26px;
+  display:flex; align-items:center; gap:.7em;
+}
+.cover-title{ max-width:165mm; }
+
+/* ============================================================= */
+/* BOTÃO IMPRIMIR (some na impressão)                            */
+/* ============================================================= */
+.no-print{
+  position:fixed;
+  right:18px; bottom:18px;
+  z-index:99;
+}
+.no-print button{
+  font-family:var(--sans);
+  font-size:9pt;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--paper);
+  background:var(--navy);
+  border:0;
+  padding:13px 20px;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(31,50,81,.35);
+  transition:background .2s;
+}
+.no-print button:hover{ background:var(--gold); }
+
+/* ============================================================= */
+/* @PAGE / IMPRESSÃO                                             */
+/* ============================================================= */
+@page{ size:A4; margin:0; }
+
+@media print{
+  html,body{ background:#fff; }
+  .no-print{ display:none !important; }
+  .page{
+    margin:0;
+    box-shadow:none;
+    width:210mm;
+    height:297mm;
+    page-break-after:always;
+    break-after:page;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+}
+
+/* ============================================================= */
+/* RESPONSIVO (apenas tela)                                      */
+/* ============================================================= */
+@media screen and (max-width:800px){
+  .page{ width:100%; min-height:auto; height:auto; padding:24px; }
+  .h1{ font-size:30pt; } .h2{ font-size:24pt; } .h3{ font-size:20pt; }
+  .lead{ font-size:19pt; } .pillar .pn{ font-size:30pt; }
+  .two-col{ column-count:1; }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================================
+     P1 — CAPA  (sem cabeçalho/rodapé)
+     ============================================================= -->
+<section class="page cover">
+
+  <div class="cover-top">
+    <span class="meta">Proposta Comercial</span>
+    <!-- substituir por logo oficial PNG/SVG -->
+    <div class="brand-mark">
+      <span class="glyph">
+        <!-- marca geométrica: três traços ascendentes -->
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <line x1="6"  y1="26" x2="6"  y2="18" stroke="#1F3251" stroke-width="2"/>
+          <line x1="14" y1="26" x2="14" y2="12" stroke="#1F3251" stroke-width="2"/>
+          <line x1="22" y1="26" x2="22" y2="6"  stroke="#A8853B" stroke-width="2"/>
+          <line x1="3"  y1="30" x2="29" y2="30" stroke="#1F3251" stroke-width="1"/>
+        </svg>
+      </span>
+      <span class="wordmark">Onebridge<br>Stalwart</span>
+    </div>
+  </div>
+
+  <!-- HERO: painel de pedra (CSS, sem foto) -->
+  <div class="hero-panel">
+    <div class="hero-cap">
+      <span class="dot">●</span>
+      <span class="meta" style="color:var(--navy)">Estrutura · Compliance · Confiança</span>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <hr class="rule-short mb-2">
+    <h1 class="h-display h1 cover-title">Proteção de Marca e Compliance Operacional nos&nbsp;EUA</h1>
+
+    <div class="mt-4">
+      <span class="meta">Preparada para</span>
+      <p style="font-family:var(--serif); font-size:21pt; color:var(--navy); margin-top:4px;">Stone <span style="color:var(--gold); font-weight:300;">·</span> Mármore &amp; Granito</p>
+    </div>
+
+    <hr class="rule mt-3 mb-1">
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+      <span class="meta">Ref. [REF] · [DATA]</span>
+      <span class="meta">Documento confidencial · válido por 30 dias</span>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- =============================================================
+     P2 — 01 SUMÁRIO EXECUTIVO
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">01</span><span class="dash">—</span><span>Sumário Executivo</span></div>
+
+    <p class="lead mt-3" style="max-width:150mm;">A entrada nos Estados Unidos não falha por falta de ambição — falha por falta de estrutura.</p>
+
+    <hr class="rule-short mt-3 mb-3">
+
+    <div class="body-copy">
+      <p>A Stone busca expandir sua operação de mármore e granito para o mercado norte-americano. Esta proposta apresenta uma estrutura integrada para proteger sua marca, manter sua empresa regular e oferecer um ponto único de coordenação administrativa nos Estados Unidos.</p>
+      <p>O objetivo é simples: <strong>previsibilidade</strong>. Que a Stone saiba, a cada etapa, quem é o responsável, qual o custo e qual o prazo — antes de cada providência, e não depois.</p>
+      <p>A Onebridge atua como ponte entre a realidade brasileira e os requisitos americanos, centralizando obrigações societárias, fiscais, prestadores externos e prazos anuais em uma só coordenação.</p>
+    </div>
+
+    <div class="panel mt-a" style="margin-top:auto;">
+      <span class="meta">A Assinatura Onebridge</span>
+      <p style="font-family:var(--serif); font-size:15pt; color:var(--navy); line-height:1.4; margin-top:8px;">Business Structuring <span class="dot">·</span> Corporate Compliance <span class="dot">·</span> U.S. Administrative Support</p>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>02</span></div>
+</section>
+
+
+<!-- =============================================================
+     P3 — 02 A EMPRESA
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">02</span><span class="dash">—</span><span>A Empresa</span></div>
+
+    <h2 class="h-display h2 mt-2 mb-3" style="max-width:140mm;">Uma ponte entre dois sistemas.</h2>
+
+    <div class="body-copy">
+      <p>A <strong>Onebridge Stalwart LLC</strong> é sediada na Flórida e dedicada ao apoio a empreendedores brasileiros que estruturam e operam negócios nos Estados Unidos. Nossa atuação concentra-se exatamente no ponto onde a maioria das operações cross-border encontra dificuldade: a tradução entre o sistema jurídico e fiscal brasileiro e os requisitos americanos.</p>
+      <p>Trabalhamos lado a lado com o escritório do Dr. Walter Gomes D'Angelo (OAB/PE 23.359), responsável jurídico das matérias, e com profissionais fiscais e attorneys licenciados nos Estados Unidos, acionados conforme a exigência de cada etapa. Para tradução, notarização e apostilamento, contamos com a Promobidocs Services LLC — tradutores certificados (ATA/ATIF) e Notary Public da Flórida (comissão nº HH635800).</p>
+    </div>
+
+    <div class="mt-3">
+      <span class="meta" style="color:var(--gold)">Áreas de Atuação</span>
+      <ul class="linelist mt-1">
+        <li><span class="dot">●</span><span>Estruturação societária — LLC, C-Corp, Foundation</span></li>
+        <li><span class="dot">●</span><span>Compliance corporativo e fiscal recorrente</span></li>
+        <li><span class="dot">●</span><span>Imigração de investidores e profissionais — L-1, EB-1, EB-2 NIW, O-1</span></li>
+        <li><span class="dot">●</span><span>Registro de marca</span></li>
+        <li><span class="dot">●</span><span>Suporte administrativo contínuo nos Estados Unidos</span></li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>03</span></div>
+</section>
+
+
+<!-- =============================================================
+     P4 — 03 OBJETIVO DA STONE
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">03</span><span class="dash">—</span><span>Objetivo da Stone</span></div>
+
+    <h2 class="h-display h2 mt-2 mb-3">O ponto de partida.</h2>
+
+    <div class="body-copy">
+      <p>A Stone pretende estabelecer e operar uma estrutura nos Estados Unidos para sustentar sua expansão no setor de pedras naturais. Isso impõe quatro frentes simultâneas: proteger a marca, manter a empresa regular, cumprir as obrigações fiscais e dispor de apoio administrativo local contínuo.</p>
+      <p>O setor traz particularidades que orientam o desenho desta proposta e que ajustaremos em conjunto à medida que o modelo de operação se consolidar:</p>
+    </div>
+
+    <div class="mt-2">
+      <div class="term" style="border-top:1px solid var(--line);">
+        <h4>— Importação</h4>
+        <p>Blocos e chapas envolvem classificação aduaneira (HTS), direitos de importação e, conforme a origem, possíveis antidumping e countervailing duties.</p>
+      </div>
+      <div class="term">
+        <h4>— Sales tax e nexus</h4>
+        <p>A venda de produto físico gera obrigação de sales tax, que varia por estado e por presença física. Operar em mais de um estado pode criar nexus múltiplo.</p>
+      </div>
+      <div class="term">
+        <h4>— Modelo de canal</h4>
+        <p>Importação e revenda, showroom/varejo e distribuição B2B têm exigências distintas, que dimensionam bookkeeping, sales tax e payroll.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>04</span></div>
+</section>
+
+
+<!-- =============================================================
+     P5 — 04 ESCOPO DE SERVIÇOS
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">04</span><span class="dash">—</span><span>Escopo de Serviços</span></div>
+
+    <h2 class="h-display h2 mt-2 mb-2">Quatro pilares, uma coordenação.</h2>
+    <hr class="rule-short mb-1">
+
+    <div class="mt-1">
+      <div class="pillar">
+        <span class="pn">01</span>
+        <div>
+          <h4>Registro de Marca · USPTO</h4>
+          <p>Coordenação completa do processo: análise de escopo, definição de classes, protocolo e acompanhamento, em conjunto com attorney licenciado, exigência obrigatória para requerente estrangeiro.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pn">02</span>
+        <div>
+          <h4>Manutenção Anual</h4>
+          <p>Annual Report, Franchise Tax ou obrigação estadual equivalente, renovação de Registered Agent, controle de prazos e organização dos registros societários essenciais.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pn">03</span>
+        <div>
+          <h4>Tax Return</h4>
+          <p>Preparada por profissional fiscal responsável, conforme o tipo societário, com a Onebridge na coordenação documental e na interface com o contador.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pn">04</span>
+        <div>
+          <h4>U.S. Administrative Representative</h4>
+          <p>Ponto de contato administrativo nos EUA: triagem de comunicações, calendário de obrigações, coordenação com prestadores e alertas antecipados de cada prazo.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>05</span></div>
+</section>
+
+
+<!-- =============================================================
+     P6 — 05 VALOR ESTRATÉGICO
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">05</span><span class="dash">—</span><span>Valor Estratégico</span></div>
+
+    <p class="lead mt-3" style="max-width:152mm;">Valor não está no documento. Está na ausência de surpresas.</p>
+
+    <hr class="rule mt-3 mb-3">
+
+    <div class="two-col">
+      <div class="prop">
+        <p><strong>Centralização</strong> — um único ponto coordena marca, compliance, fiscal e administrativo. A Stone deixa de gerir múltiplos prestadores isolados.</p>
+      </div>
+      <div class="prop">
+        <p><strong>Previsibilidade</strong> — toda obrigação relevante é comunicada com antecedência: prazo, providência e documentos exigidos.</p>
+      </div>
+      <div class="prop">
+        <p><strong>Transparência de custo</strong> — taxas oficiais, attorney fees e custos de terceiros são apresentados em estimativa fechada antes de qualquer protocolo. Nada é contratado sem aprovação.</p>
+      </div>
+      <div class="prop">
+        <p><strong>Proteção</strong> — marca registrada, empresa em good standing e calendário fiscal sob controle reduzem risco e preservam o ativo construído.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>06</span></div>
+</section>
+
+
+<!-- =============================================================
+     P7 — 06 INVESTIMENTO
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">06</span><span class="dash">—</span><span>Investimento</span></div>
+
+    <p class="note mt-2 mb-2" style="max-width:155mm;">Os valores correspondem aos honorários de coordenação da Onebridge. Taxas oficiais, attorney fees e custos de terceiros são apresentados separadamente, em estimativa fechada, para aprovação prévia.</p>
+
+    <div>
+      <div class="price-block">
+        <h4>Registro de Marca · USPTO</h4>
+        <p class="vals">Primeira classe US$ 2,300 <span class="sep">·</span> Classe adicional US$ 500 / classe</p>
+      </div>
+      <div class="price-block">
+        <h4>Manutenção Anual <span style="font-weight:400; color:var(--mute);">(compliance + Registered Agent)</span></h4>
+        <p class="vals">Flórida US$ 660 <span class="sep">·</span> Wyoming US$ 660 <span class="sep">·</span> Delaware LLC US$ 1,010 <span class="sep">·</span> Delaware Corporation US$ 1,010</p>
+      </div>
+      <div class="price-block">
+        <h4>Tax Return</h4>
+        <p class="vals">LLC/S-Corp US$ 850 <span class="sep">·</span> C-Corp US$ 1,100 <span class="sep">·</span> Individual US$ 450</p>
+      </div>
+      <div class="price-block">
+        <h4>U.S. Administrative Representative</h4>
+        <p class="vals">US$ 200/mês <span class="sep">·</span> condição especial US$ 157,50/mês <span style="color:var(--mute);">(mínimo de 12 meses)</span></p>
+      </div>
+      <div class="price-block">
+        <h4>Serviços contábeis complementares <span style="font-weight:400; color:var(--mute);">(opcionais)</span></h4>
+        <p class="vals">Bookkeeping a partir de US$ 350/mês <span class="sep">·</span> Sales Tax Report US$ 200/mês <span class="sep">·</span> Payroll a partir de US$ 250/mês</p>
+      </div>
+    </div>
+
+    <div class="panel mt-2">
+      <span class="meta" style="color:var(--gold)">Composição Estimada</span>
+      <p style="font-family:var(--serif); font-style:italic; font-size:12pt; color:var(--mute); line-height:1.4; margin:6px 0 14px; max-width:150mm;">1 marca / 1 classe + manutenção anual + tax return + administrative representative em condição especial, 12 meses</p>
+      <p class="vals" style="font-size:11.5pt; color:var(--navy); font-weight:600;">Florida LLC US$ 5,700 <span class="sep">·</span> Wyoming LLC US$ 5,700 <span class="sep">·</span> Delaware LLC US$ 6,050 <span class="sep">·</span> Delaware C-Corp US$ 6,300</p>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>07</span></div>
+</section>
+
+
+<!-- =============================================================
+     P8 — 07 PROCESSO E CRONOGRAMA
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">07</span><span class="dash">—</span><span>Processo e Cronograma</span></div>
+
+    <h2 class="h-display h2 mt-2 mb-3" style="max-width:150mm;">Da contratação à operação regular.</h2>
+
+    <ul class="timeline mt-2">
+      <li>
+        <div class="when">Semana 1</div>
+        <div class="what">Onboarding e organização documental da empresa.</div>
+      </li>
+      <li>
+        <div class="when">Semana 1–2</div>
+        <div class="what">Definição das classes da marca.</div>
+      </li>
+      <li>
+        <div class="when">Semana 2</div>
+        <div class="what">Início do registro da marca e montagem do calendário anual de obrigações.</div>
+      </li>
+      <li>
+        <div class="when">Contínuo</div>
+        <div class="what">Ativação do suporte administrativo mensal.</div>
+      </li>
+    </ul>
+
+    <p class="note mt-a" style="margin-top:auto; max-width:155mm;">Os prazos podem variar conforme envio de documentos, aprovações da Stone, exigências de terceiros e complexidade do caso.</p>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>08</span></div>
+</section>
+
+
+<!-- =============================================================
+     P9 — 08 TERMOS, PREMISSAS E CONDIÇÕES
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">08</span><span class="dash">—</span><span>Termos, Premissas e Condições</span></div>
+
+    <h2 class="h-display h2 mt-2 mb-2">Clareza antes do compromisso.</h2>
+
+    <div class="mt-1">
+      <div class="term">
+        <h4>Limites da atuação</h4>
+        <p>A Onebridge não atua como officer, director, manager, sócia, attorney, CPA, enrolled agent ou representante legal ilimitada. Não estão incluídos assinatura de contratos, movimentação bancária, decisões comerciais, representação formal perante autoridades ou emissão de parecer jurídico ou tributário americano.</p>
+      </div>
+      <div class="term">
+        <h4>Custos de terceiros</h4>
+        <p>Não inclusos: taxas governamentais e do USPTO, honorários de attorney, CPA ou tax preparer, multas, courier, traduções, certificações, apostilamentos e procedimentos extraordinários. Nada é contratado sem aprovação prévia da Stone.</p>
+      </div>
+      <div class="term">
+        <h4>Responsabilidades do cliente</h4>
+        <p>A Stone deve fornecer tempestivamente documentos, informações, aprovações e pagamentos. A Onebridge não responde por atrasos ou multas decorrentes de ausência de resposta ou de documentos.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>09</span></div>
+</section>
+
+
+<!-- =============================================================
+     P10 — 09 PRÓXIMOS PASSOS
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content">
+
+    <div class="marker"><span class="num">09</span><span class="dash">—</span><span>Próximos Passos</span></div>
+
+    <h2 class="h-display h2 mt-2 mb-3">Como começamos.</h2>
+
+    <div>
+      <div class="step">
+        <span class="sn">01</span>
+        <p>Aprovação desta proposta e definição do estado e tipo societário.</p>
+      </div>
+      <div class="step">
+        <span class="sn">02</span>
+        <p>Reunião de onboarding e abertura do checklist documental.</p>
+      </div>
+      <div class="step">
+        <span class="sn">03</span>
+        <p>Início do registro de marca e ativação do compliance anual.</p>
+      </div>
+    </div>
+
+    <div class="mt-a" style="margin-top:auto;">
+      <hr class="rule mb-2">
+      <p class="lead" style="font-size:20pt; max-width:155mm;">Para avançar, basta confirmar o aceite. Em seguida, agendamos o onboarding e iniciamos a organização da operação americana da Stone.</p>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>10</span></div>
+</section>
+
+
+<!-- =============================================================
+     P11 — ENCERRAMENTO / CONTATO
+     ============================================================= -->
+<section class="page">
+  <div class="runhead"><span class="l">Onebridge Stalwart</span><span class="r">Proposta · Stone</span></div>
+  <div class="content" style="justify-content:center;">
+
+    <div style="margin:auto 0;">
+      <span class="meta" style="color:var(--gold)">Encerramento</span>
+      <h1 class="h-display h1 mt-2" style="max-width:150mm;">Obrigada pela confiança.</h1>
+      <p class="body-copy mt-3" style="font-size:13pt; max-width:140mm;">Estamos à disposição para construir, com a Stone, uma base sólida e previsível para sua operação nos Estados Unidos.</p>
+    </div>
+
+    <div class="mt-a" style="margin-top:auto;">
+      <hr class="rule mb-3">
+      <!-- substituir por logo oficial PNG/SVG -->
+      <div class="brand-mark mb-2">
+        <span class="glyph">
+          <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+            <line x1="6"  y1="26" x2="6"  y2="18" stroke="#1F3251" stroke-width="2"/>
+            <line x1="14" y1="26" x2="14" y2="12" stroke="#1F3251" stroke-width="2"/>
+            <line x1="22" y1="26" x2="22" y2="6"  stroke="#A8853B" stroke-width="2"/>
+            <line x1="3"  y1="30" x2="29" y2="30" stroke="#1F3251" stroke-width="1"/>
+          </svg>
+        </span>
+        <span class="wordmark">Onebridge Stalwart LLC</span>
+      </div>
+      <p class="meta" style="line-height:2;">
+        [ENDEREÇO — FLÓRIDA]<br>
+        [E-MAIL] · [TELEFONE / WHATSAPP] · [WEBSITE]
+      </p>
+      <p style="font-family:var(--serif); font-style:italic; font-size:14pt; color:var(--gold); margin-top:14px;">Business Structuring · Corporate Compliance · U.S. Administrative Support</p>
+    </div>
+
+  </div>
+  <div class="runfoot"><span>Confidencial</span><span>11</span></div>
+</section>
+
+
+<!-- Botão imprimir (some na impressão) -->
+<div class="no-print">
+  <button onclick="window.print()">Imprimir / Salvar PDF</button>
+</div>
+
+<!-- =============================================================
+     NOTAS DE ENTREGA
+     -------------------------------------------------------------
+     (1) ONDE TROCAR O LOGO:
+         Há dois placeholders de marca, ambos sinalizados pelo
+         comentário "substituir por logo oficial PNG/SVG":
+           · P1 — CAPA  → bloco .brand-mark (canto superior direito)
+           · P11 — ENCERRAMENTO → bloco .brand-mark (rodapé do texto)
+         Substitua o <svg> (marca geométrica) e/ou o texto .wordmark
+         por <img src="logo.svg" alt="Onebridge Stalwart"> mantendo
+         a altura ~34px para preservar o alinhamento.
+
+     (2) ONDE PREENCHER [REF], [DATA] E CONTATOS:
+           · [REF] e [DATA]  → P1 — CAPA, linha de metadados
+             ("Ref. [REF] · [DATA]").
+           · Contatos → P11 — ENCERRAMENTO, bloco final:
+             [ENDEREÇO — FLÓRIDA], [E-MAIL], [TELEFONE / WHATSAPP],
+             [WEBSITE]. Use Localizar/Substituir pelos colchetes.
+
+     (3) COMO EXPORTAR PARA PDF:
+           · Abra o arquivo no Chrome ou Edge.
+           · Ctrl/Cmd + P (ou o botão "Imprimir / Salvar PDF").
+           · Destino: "Salvar como PDF".
+           · Tamanho do papel: A4 · Margens: "Nenhuma" (None).
+           · Ative "Gráficos de segundo plano" / "Background graphics"
+             para preservar painéis e cores.
+           · Salvar. Resultado: 11 páginas A4, uma por seção.
+     ============================================================= -->
+
+</body>
+</html>
