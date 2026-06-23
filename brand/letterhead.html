@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneBridge Stalwart — Timbrado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  @page { size: A4; margin: 0; }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ob-fog);
+    font-family: var(--ob-font-sans);
+    color: var(--ob-text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Barra de ações (some na impressão) */
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; gap: 12px; align-items: center; justify-content: center;
+    padding: 14px; background: var(--ob-ink); color: var(--ob-on-ink);
+    font-size: var(--ob-text-sm);
+  }
+  .toolbar button {
+    font-family: var(--ob-font-sans); font-weight: 600; font-size: var(--ob-text-sm);
+    background: var(--ob-lime); color: var(--ob-on-lime); border: 0;
+    border-radius: var(--ob-radius-pill); padding: 9px 20px; cursor: pointer;
+  }
+
+  /* Folha A4 */
+  .sheet {
+    width: 210mm; min-height: 297mm;
+    margin: 24px auto; background: var(--ob-paper);
+    box-shadow: var(--ob-shadow-lg);
+    position: relative;
+    display: flex; flex-direction: column;
+    padding: 26mm 22mm 30mm;
+  }
+
+  /* Detalhe de marca: faixa vertical limão à esquerda */
+  .sheet::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 6mm; background: var(--ob-lime);
+  }
+
+  /* Cabeçalho */
+  .lh-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding-bottom: 8mm; border-bottom: 1px solid var(--ob-line);
+  }
+  .lh-header img { height: 13mm; width: auto; display: block; }
+  .lh-contact {
+    text-align: right; font-size: 9pt; color: var(--ob-muted); line-height: 1.6;
+  }
+  .lh-contact strong { color: var(--ob-ink); font-weight: 600; }
+
+  /* Meta (data / destinatário) */
+  .lh-meta {
+    display: flex; justify-content: space-between; gap: 24px;
+    margin-top: 9mm; font-size: 10pt; color: var(--ob-text-soft);
+  }
+  .lh-meta .eyebrow {
+    font-size: 7.5pt; text-transform: uppercase; letter-spacing: .16em;
+    color: var(--ob-muted); font-weight: 700; margin: 0 0 3px;
+  }
+
+  /* Corpo */
+  .lh-body { margin-top: 9mm; flex: 1; font-size: 10.5pt; line-height: 1.7; color: var(--ob-text-soft); }
+  .lh-body h1 {
+    font-family: var(--ob-font-display); font-size: 17pt; font-weight: 700;
+    color: var(--ob-ink); margin: 0 0 6mm; letter-spacing: -0.01em;
+  }
+  .lh-body p { margin: 0 0 4mm; max-width: 62ch; }
+  .lh-placeholder { color: var(--ob-muted); font-style: italic; }
+
+  /* Assinatura */
+  .lh-sign { margin-top: 12mm; font-size: 10pt; }
+  .lh-sign .line { width: 64mm; border-top: 1px solid var(--ob-line-strong); padding-top: 3px; margin-bottom: 4px; }
+  .lh-sign strong { font-family: var(--ob-font-display); color: var(--ob-ink); }
+  .lh-sign span { color: var(--ob-muted); }
+
+  /* Rodapé */
+  .lh-footer {
+    position: absolute; left: 22mm; right: 22mm; bottom: 16mm;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 5mm; border-top: 1px solid var(--ob-line);
+    font-size: 8pt; color: var(--ob-muted);
+  }
+  .lh-footer .mark { height: 6mm; opacity: .9; }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet { margin: 0; box-shadow: none; width: auto; min-height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span>Timbrado A4 — preencha o corpo e</span>
+  <button onclick="window.print()">Imprimir / Salvar PDF</button>
+</div>
+
+<div class="sheet">
+
+  <header class="lh-header">
+    <img src="assets/logo.png" alt="OneBridge Stalwart">
+    <div class="lh-contact">
+      <strong>OneBridge Stalwart LLC</strong><br>
+      Orlando, FL · EUA<br>
+      onebridgestalwart.com<br>
+      contato@onebridgestalwart.com
+    </div>
+  </header>
+
+  <div class="lh-meta">
+    <div>
+      <p class="eyebrow">Para</p>
+      ‹Nome do destinatário›<br>
+      ‹Empresa / referência›
+    </div>
+    <div style="text-align:right">
+      <p class="eyebrow">Data</p>
+      Orlando, ‹dia› de ‹mês› de ‹ano›
+    </div>
+  </div>
+
+  <main class="lh-body">
+    <h1>‹Título do documento›</h1>
+    <p>Prezado(a) ‹nome›,</p>
+    <p class="lh-placeholder">Substitua este bloco pelo conteúdo da carta ou documento. O timbrado mantém
+      margens, tipografia e identidade já configuradas — basta escrever. Use parágrafos curtos,
+      tom consultivo e objetivo, priorizando contexto, ação e próximos passos.</p>
+    <p class="lh-placeholder">A faixa vertical em verde-limão à esquerda e o logo no topo são os
+      elementos fixos da marca. Não altere posições nem cores.</p>
+  </main>
+
+  <div class="lh-sign">
+    <div class="line"></div>
+    <strong>‹Nome do responsável›</strong><br>
+    <span>‹Cargo› · OneBridge Stalwart</span>
+  </div>
+
+  <footer class="lh-footer">
+    <span>OneBridge Stalwart LLC · Orlando, FL · onebridgestalwart.com</span>
+    <img class="mark" src="assets/logomark.png" alt="">
+  </footer>
+
+</div>
+
+</body>
+</html>

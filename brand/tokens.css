@@ -1,0 +1,105 @@
+/* ============================================================================
+   OneBridge Stalwart — Design Tokens
+   ----------------------------------------------------------------------------
+   Fonte única de verdade da identidade visual. Importe este arquivo em qualquer
+   peça digital (timbrado, one-pager, web) e use as variáveis abaixo. Nunca
+   escreva valores de cor/medida "na mão" — sempre referencie um token.
+
+   Uso:  <link rel="stylesheet" href="tokens.css">
+         color: var(--ob-ink);  background: var(--ob-lime);
+   ========================================================================== */
+
+:root {
+  /* ---- Marca / Cores institucionais -------------------------------------- */
+  --ob-ink:        #1C1E29; /* Azul-tinta da marca. Logo, títulos, fundos escuros. */
+  --ob-ink-900:    #14151E; /* Tinta mais profunda. Faixas escuras, footer.        */
+  --ob-ink-700:    #2A2D3B; /* Superfície escura elevada (cards sobre fundo ink).  */
+
+  --ob-lime:       #C8E64E; /* Acento principal. CTAs, destaques, sinais de ação.  */
+  --ob-lime-deep:  #B4D63A; /* Estado hover/pressionado do acento.                 */
+  --ob-lime-soft:  #EEF6D2; /* Fundo suave do acento (badges, realces em claro).   */
+
+  /* ---- Neutros / Superfícies --------------------------------------------- */
+  --ob-paper:      #FFFFFF; /* Fundo base (papel).                                 */
+  --ob-mist:       #F4F6F3; /* Seção clara alternada / fundo de bloco.             */
+  --ob-fog:        #ECEEEA; /* Superfície neutra mais densa.                       */
+  --ob-line:       #E2E5E0; /* Linhas, divisores e bordas em fundo claro.          */
+  --ob-line-strong:#CDD2CC; /* Bordas com mais presença.                           */
+
+  /* ---- Texto ------------------------------------------------------------- */
+  --ob-text:       #1C1E29; /* Texto principal.                                    */
+  --ob-text-soft:  #3C4150; /* Texto de corpo longo (um pouco mais leve).          */
+  --ob-muted:      #6B7280; /* Texto secundário, legendas, metadados.              */
+  --ob-on-ink:     #FFFFFF; /* Texto sobre fundo escuro (ink).                     */
+  --ob-on-ink-mut: rgba(255,255,255,0.66); /* Secundário sobre fundo escuro.       */
+  --ob-on-lime:    #1C1E29; /* Texto sobre o acento limão (sempre tinta escura).   */
+
+  /* ---- Cores funcionais (status) ----------------------------------------- */
+  --ob-success:    #2F8A5B;
+  --ob-success-soft:#E4F2EA;
+  --ob-warning:    #B7791F;
+  --ob-warning-soft:#F6ECD6;
+  --ob-danger:     #C2453B;
+  --ob-danger-soft:#F7E4E2;
+  --ob-info:       #2C6E8F;
+
+  /* ---- Tipografia -------------------------------------------------------- */
+  --ob-font-display: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --ob-font-sans:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+                     Helvetica, Arial, sans-serif;
+  --ob-font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Escala tipográfica (base 16px) */
+  --ob-text-xs:   0.75rem;  /* 12px — eyebrow, legendas               */
+  --ob-text-sm:   0.875rem; /* 14px — metadados, captions             */
+  --ob-text-base: 1rem;     /* 16px — corpo                           */
+  --ob-text-md:   1.125rem; /* 18px — corpo destacado / lead          */
+  --ob-text-lg:   1.375rem; /* 22px — subtítulos                      */
+  --ob-text-xl:   1.75rem;  /* 28px — h3                              */
+  --ob-text-2xl:  2.25rem;  /* 36px — h2                              */
+  --ob-text-3xl:  3rem;     /* 48px — h1                              */
+  --ob-text-4xl:  4rem;     /* 64px — display / hero                  */
+
+  --ob-leading-tight: 1.05;
+  --ob-leading-snug:  1.25;
+  --ob-leading-body:  1.6;
+
+  --ob-tracking-tight: -0.02em;
+  --ob-tracking-flat:   0em;
+  --ob-tracking-wide:   0.08em; /* eyebrow / caixa alta */
+  --ob-tracking-eyebrow:0.16em;
+
+  --ob-weight-regular: 400;
+  --ob-weight-medium:  500;
+  --ob-weight-semibold:600;
+  --ob-weight-bold:    700;
+  --ob-weight-extra:   800;
+
+  /* ---- Espaçamento (escala de 4px) --------------------------------------- */
+  --ob-space-1:  4px;
+  --ob-space-2:  8px;
+  --ob-space-3:  12px;
+  --ob-space-4:  16px;
+  --ob-space-5:  20px;
+  --ob-space-6:  24px;
+  --ob-space-8:  32px;
+  --ob-space-10: 40px;
+  --ob-space-12: 48px;
+  --ob-space-16: 64px;
+  --ob-space-20: 80px;
+
+  /* ---- Raio de canto ----------------------------------------------------- */
+  --ob-radius-sm:  8px;
+  --ob-radius-md:  12px;
+  --ob-radius-lg:  20px;
+  --ob-radius-xl:  28px;
+  --ob-radius-pill:999px;
+
+  /* ---- Sombras ----------------------------------------------------------- */
+  --ob-shadow-sm: 0 1px 2px rgba(28,30,41,0.06), 0 1px 3px rgba(28,30,41,0.08);
+  --ob-shadow-md: 0 8px 24px rgba(28,30,41,0.08);
+  --ob-shadow-lg: 0 24px 56px rgba(28,30,41,0.12);
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --ob-container: 1120px;
+}

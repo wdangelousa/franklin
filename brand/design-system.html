@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneBridge Stalwart — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--ob-font-sans);
+    color: var(--ob-text);
+    background: var(--ob-mist);
+    line-height: var(--ob-leading-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--ob-font-display); margin: 0; letter-spacing: var(--ob-tracking-tight); }
+  a { color: inherit; }
+
+  .wrap { max-width: var(--ob-container); margin: 0 auto; padding: 0 24px; }
+
+  /* Topo */
+  .masthead { background: var(--ob-ink); color: var(--ob-on-ink); padding: 56px 0 64px; }
+  .masthead img { height: 40px; display: block; margin-bottom: 40px; }
+  .masthead h1 { font-size: var(--ob-text-4xl); line-height: var(--ob-leading-tight); font-weight: 700; max-width: 16ch; }
+  .masthead p { color: var(--ob-on-ink-mut); font-size: var(--ob-text-md); max-width: 60ch; margin-top: 20px; }
+
+  /* Seção */
+  section { padding: 64px 0; border-bottom: 1px solid var(--ob-line); }
+  .eyebrow {
+    font-size: var(--ob-text-xs); text-transform: uppercase; font-weight: 700;
+    letter-spacing: var(--ob-tracking-eyebrow); color: var(--ob-muted); margin: 0 0 12px;
+  }
+  section > .wrap > h2 { font-size: var(--ob-text-2xl); font-weight: 700; margin-bottom: 8px; }
+  .section-lead { color: var(--ob-muted); max-width: 64ch; margin: 0 0 36px; }
+
+  /* Grid de cores */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; }
+  .swatch { border-radius: var(--ob-radius-md); overflow: hidden; border: 1px solid var(--ob-line); background: var(--ob-paper); box-shadow: var(--ob-shadow-sm); }
+  .swatch .chip { height: 92px; display: flex; align-items: flex-end; padding: 10px; }
+  .swatch .meta { padding: 12px 14px; }
+  .swatch .name { font-weight: 600; font-size: var(--ob-text-sm); }
+  .swatch .val { font-family: var(--ob-font-mono); font-size: var(--ob-text-xs); color: var(--ob-muted); margin-top: 2px; }
+  .swatch .role { font-size: var(--ob-text-xs); color: var(--ob-muted); margin-top: 8px; line-height: 1.45; }
+
+  /* Tipografia */
+  .type-row { display: grid; grid-template-columns: 130px 1fr; gap: 24px; align-items: baseline; padding: 18px 0; border-top: 1px solid var(--ob-line); }
+  .type-row:first-of-type { border-top: 0; }
+  .type-tag { font-family: var(--ob-font-mono); font-size: var(--ob-text-xs); color: var(--ob-muted); }
+  .d4 { font-family: var(--ob-font-display); font-size: var(--ob-text-4xl); font-weight: 700; line-height: 1; letter-spacing: var(--ob-tracking-tight); }
+  .d3 { font-family: var(--ob-font-display); font-size: var(--ob-text-3xl); font-weight: 700; line-height: 1.05; letter-spacing: var(--ob-tracking-tight); }
+  .d2 { font-family: var(--ob-font-display); font-size: var(--ob-text-2xl); font-weight: 700; }
+  .d1 { font-family: var(--ob-font-display); font-size: var(--ob-text-xl); font-weight: 600; }
+  .body { font-size: var(--ob-text-base); max-width: 60ch; color: var(--ob-text-soft); }
+  .small { font-size: var(--ob-text-sm); color: var(--ob-muted); }
+  .eyebrow-demo { font-size: var(--ob-text-xs); text-transform: uppercase; font-weight: 700; letter-spacing: var(--ob-tracking-eyebrow); color: var(--ob-lime-deep); }
+
+  /* Logo */
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 16px; }
+  .logo-cell { border: 1px solid var(--ob-line); border-radius: var(--ob-radius-md); padding: 32px; display: flex; align-items: center; justify-content: center; min-height: 150px; }
+  .logo-cell.dark { background: var(--ob-ink); }
+  .logo-cell.lime { background: var(--ob-lime); }
+  .logo-cell.paper { background: var(--ob-paper); }
+  .logo-cell img { max-width: 100%; max-height: 64px; }
+  .logo-cell.mark img { max-height: 84px; }
+  .caption { text-align: center; font-size: var(--ob-text-xs); color: var(--ob-muted); margin-top: 8px; }
+
+  /* Botões */
+  .btn { font-family: var(--ob-font-sans); display: inline-flex; align-items: center; gap: 8px; border: 1px solid transparent; border-radius: var(--ob-radius-pill); padding: 13px 26px; font-size: var(--ob-text-sm); font-weight: 600; cursor: pointer; transition: transform .15s ease, background .15s ease; text-decoration: none; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--ob-lime); color: var(--ob-on-lime); }
+  .btn-primary:hover { background: var(--ob-lime-deep); }
+  .btn-ink { background: var(--ob-ink); color: var(--ob-on-ink); }
+  .btn-outline { background: transparent; color: var(--ob-ink); border-color: var(--ob-line-strong); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+  /* Badges / pills */
+  .pill { display: inline-flex; align-items: center; border-radius: var(--ob-radius-pill); padding: 6px 14px; font-size: var(--ob-text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: var(--ob-tracking-wide); }
+  .pill-lime { background: var(--ob-lime-soft); color: #5d6b16; }
+  .pill-success { background: var(--ob-success-soft); color: var(--ob-success); }
+  .pill-warning { background: var(--ob-warning-soft); color: var(--ob-warning); }
+  .pill-danger { background: var(--ob-danger-soft); color: var(--ob-danger); }
+  .pill-ink { background: var(--ob-ink); color: var(--ob-on-ink); }
+
+  /* Cards demo */
+  .demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 20px; }
+  .card { background: var(--ob-paper); border: 1px solid var(--ob-line); border-radius: var(--ob-radius-lg); padding: 28px; box-shadow: var(--ob-shadow-sm); }
+  .card h3 { font-size: var(--ob-text-lg); font-weight: 600; margin-bottom: 8px; }
+  .card p { color: var(--ob-muted); font-size: var(--ob-text-sm); margin: 0; }
+  .card-ink { background: var(--ob-ink); color: var(--ob-on-ink); border-color: transparent; }
+  .card-ink p { color: var(--ob-on-ink-mut); }
+  .stat { font-family: var(--ob-font-display); font-size: var(--ob-text-3xl); font-weight: 700; letter-spacing: var(--ob-tracking-tight); }
+  .stat-lime { color: var(--ob-lime); }
+
+  /* Radius + shadow demo */
+  .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 18px; }
+  .token-box { background: var(--ob-paper); border: 1px solid var(--ob-line); padding: 22px; text-align: center; }
+  .token-box .b { height: 56px; background: var(--ob-fog); margin-bottom: 12px; }
+  .token-box .lbl { font-family: var(--ob-font-mono); font-size: var(--ob-text-xs); color: var(--ob-muted); }
+
+  footer { background: var(--ob-ink-900); color: var(--ob-on-ink-mut); padding: 40px 0; font-size: var(--ob-text-sm); }
+  footer strong { color: var(--ob-on-ink); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <img src="assets/logo-white.png" alt="OneBridge Stalwart">
+    <p class="eyebrow" style="color:var(--ob-lime)">Design System</p>
+    <h1>A linguagem visual da OneBridge Stalwart</h1>
+    <p>Tokens, tipografia, logo e componentes para construir qualquer peça digital —
+       timbrado, assinatura de e-mail, apresentações e web — com consistência total.</p>
+  </div>
+</header>
+
+<!-- CORES -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">01 — Fundamentos</p>
+    <h2>Paleta de cores</h2>
+    <p class="section-lead">A marca é construída sobre o azul-tinta <code>#1C1E29</code> do logo e o
+      verde-limão de ação. Neutros quentes-frios dão respiro; cores funcionais sinalizam status.</p>
+
+    <h3 style="font-size:var(--ob-text-lg);margin:0 0 16px;">Marca</h3>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#1C1E29;color:#fff">ink</div><div class="meta"><div class="name">Ink</div><div class="val">--ob-ink · #1C1E29</div><div class="role">Cor do logo. Títulos, fundos escuros, texto principal.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#14151E;color:#fff">ink-900</div><div class="meta"><div class="name">Ink 900</div><div class="val">--ob-ink-900 · #14151E</div><div class="role">Faixas escuras, footer, profundidade.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#C8E64E;color:#1C1E29">lime</div><div class="meta"><div class="name">Lime</div><div class="val">--ob-lime · #C8E64E</div><div class="role">Acento de ação: CTAs e destaques. Texto sempre ink.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#B4D63A;color:#1C1E29">lime-deep</div><div class="meta"><div class="name">Lime Deep</div><div class="val">--ob-lime-deep · #B4D63A</div><div class="role">Estado hover/pressionado do acento.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#EEF6D2;color:#5d6b16">lime-soft</div><div class="meta"><div class="name">Lime Soft</div><div class="val">--ob-lime-soft · #EEF6D2</div><div class="role">Realce suave em fundo claro, badges.</div></div></div>
+    </div>
+
+    <h3 style="font-size:var(--ob-text-lg);margin:36px 0 16px;">Neutros</h3>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#FFFFFF;color:#1C1E29;border-bottom:1px solid #E2E5E0">paper</div><div class="meta"><div class="name">Paper</div><div class="val">--ob-paper · #FFFFFF</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#F4F6F3;color:#1C1E29">mist</div><div class="meta"><div class="name">Mist</div><div class="val">--ob-mist · #F4F6F3</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#ECEEEA;color:#1C1E29">fog</div><div class="meta"><div class="name">Fog</div><div class="val">--ob-fog · #ECEEEA</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#E2E5E0;color:#1C1E29">line</div><div class="meta"><div class="name">Line</div><div class="val">--ob-line · #E2E5E0</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#6B7280;color:#fff">muted</div><div class="meta"><div class="name">Muted</div><div class="val">--ob-muted · #6B7280</div></div></div>
+    </div>
+
+    <h3 style="font-size:var(--ob-text-lg);margin:36px 0 16px;">Funcionais</h3>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#2F8A5B;color:#fff">success</div><div class="meta"><div class="name">Success</div><div class="val">--ob-success · #2F8A5B</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#B7791F;color:#fff">warning</div><div class="meta"><div class="name">Warning</div><div class="val">--ob-warning · #B7791F</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#C2453B;color:#fff">danger</div><div class="meta"><div class="name">Danger</div><div class="val">--ob-danger · #C2453B</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#2C6E8F;color:#fff">info</div><div class="meta"><div class="name">Info</div><div class="val">--ob-info · #2C6E8F</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPOGRAFIA -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">02 — Fundamentos</p>
+    <h2>Tipografia</h2>
+    <p class="section-lead"><strong>Sora</strong> para títulos e números (presença geométrica, ar fintech premium).
+      <strong>Inter</strong> para corpo e interface (leitura longa, estável). Ambas livres (Google Fonts).</p>
+
+    <div class="type-row"><div class="type-tag">Display / 64<br>Sora 700</div><div><div class="d4">Ative seu legado</div></div></div>
+    <div class="type-row"><div class="type-tag">H1 / 48<br>Sora 700</div><div><div class="d3">Seus ativos protegidos</div></div></div>
+    <div class="type-row"><div class="type-tag">H2 / 36<br>Sora 700</div><div><div class="d2">Ponte segura Brasil–EUA</div></div></div>
+    <div class="type-row"><div class="type-tag">H3 / 28<br>Sora 600</div><div><div class="d1">Diversificação estratégica</div></div></div>
+    <div class="type-row"><div class="type-tag">Eyebrow / 12<br>Inter 700 · caps</div><div><div class="eyebrow-demo">Ambiente atual</div></div></div>
+    <div class="type-row"><div class="type-tag">Corpo / 16<br>Inter 400</div><div><div class="body">Ajudamos brasileiros a estruturar e expandir seu patrimônio com estratégias de proteção, sucessão e crescimento nos Estados Unidos.</div></div></div>
+    <div class="type-row"><div class="type-tag">Small / 14<br>Inter 400</div><div><div class="small">Texto de apoio, legendas e metadados.</div></div></div>
+  </div>
+</section>
+
+<!-- LOGO -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">03 — Marca</p>
+    <h2>Logo &amp; uso</h2>
+    <p class="section-lead">Use a versão tinta sobre fundos claros e a versão branca sobre fundos escuros.
+      Preserve uma margem de respiro mínima igual à altura do símbolo. Nunca distorça, recolora fora da paleta ou aplique sombras.</p>
+    <div class="logo-grid">
+      <div><div class="logo-cell paper"><img src="assets/logo.png" alt="logo tinta"></div><div class="caption">Principal · tinta sobre claro</div></div>
+      <div><div class="logo-cell dark"><img src="assets/logo-white.png" alt="logo branco"></div><div class="caption">Branco · sobre escuro</div></div>
+      <div><div class="logo-cell mark paper"><img src="assets/logomark.png" alt="símbolo"></div><div class="caption">Símbolo · ícone/avatar</div></div>
+      <div><div class="logo-cell mark lime"><img src="assets/logomark.png" alt="símbolo sobre limão"></div><div class="caption">Símbolo · sobre acento</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTÕES -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">04 — Componentes</p>
+    <h2>Botões</h2>
+    <p class="section-lead">Primário em limão para a ação principal; tinta para ação secundária forte; contorno para apoio.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#">Começar agora →</a>
+      <a class="btn btn-ink" href="#">Agendar consulta</a>
+      <a class="btn btn-outline" href="#">Saber mais</a>
+    </div>
+  </div>
+</section>
+
+<!-- BADGES -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">05 — Componentes</p>
+    <h2>Badges / status pills</h2>
+    <p class="section-lead">Compactas, caixa alta, sempre como sinal rápido de estado.</p>
+    <div class="btn-row">
+      <span class="pill pill-lime">Destaque</span>
+      <span class="pill pill-success">Concluído</span>
+      <span class="pill pill-warning">Pendente</span>
+      <span class="pill pill-danger">Atenção</span>
+      <span class="pill pill-ink">Institucional</span>
+    </div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">06 — Componentes</p>
+    <h2>Cards &amp; números</h2>
+    <p class="section-lead">Cantos generosos, borda sutil, sombra difusa. Cards escuros para blocos institucionais.</p>
+    <div class="demo-grid">
+      <div class="card"><div class="stat">+100M</div><h3 style="margin-top:6px">R$ transferidos</h3><p>Para os EUA com estrutura e segurança.</p></div>
+      <div class="card"><div class="stat">+200</div><h3 style="margin-top:6px">Empresas abertas</h3><p>Operação consultiva ponta a ponta.</p></div>
+      <div class="card card-ink"><div class="stat stat-lime">+80</div><h3 style="margin-top:6px">Clientes atendidos</h3><p>Sucessão, proteção e expansão internacional.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RAIO / SOMBRA -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">07 — Fundamentos</p>
+    <h2>Raio &amp; sombra</h2>
+    <div class="token-grid" style="margin-bottom:32px">
+      <div class="token-box"><div class="b" style="border-radius:8px"></div><div class="lbl">sm · 8px</div></div>
+      <div class="token-box"><div class="b" style="border-radius:12px"></div><div class="lbl">md · 12px</div></div>
+      <div class="token-box"><div class="b" style="border-radius:20px"></div><div class="lbl">lg · 20px</div></div>
+      <div class="token-box"><div class="b" style="border-radius:28px"></div><div class="lbl">xl · 28px</div></div>
+      <div class="token-box"><div class="b" style="border-radius:999px"></div><div class="lbl">pill</div></div>
+    </div>
+    <div class="token-grid">
+      <div class="token-box" style="box-shadow:var(--ob-shadow-sm)"><div class="lbl">shadow-sm</div></div>
+      <div class="token-box" style="box-shadow:var(--ob-shadow-md)"><div class="lbl">shadow-md</div></div>
+      <div class="token-box" style="box-shadow:var(--ob-shadow-lg)"><div class="lbl">shadow-lg</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <strong>OneBridge Stalwart LLC</strong> · Orlando, FL · onebridgestalwart.com<br>
+    Design System v1.0 — fonte: <code>tokens.css</code>
+  </div>
+</footer>
+
+</body>
+</html>
