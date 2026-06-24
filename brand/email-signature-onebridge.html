@@ -3,19 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OneBridge Stalwart — Assinatura de e-mail (pronta)</title>
+<title>OneBridge Stalwart — Assinatura de e-mail (opções)</title>
 <style>
-  /* Estilos SÓ desta página de preview. A assinatura (caixa branca) usa
-     apenas estilos inline + tabela, porque clientes de e-mail ignoram CSS externo. */
+  /* Estilos SÓ desta página. As assinaturas usam apenas estilos inline + tabela. */
   body { margin:0; background:#F4F6F3; font-family:"Inter",system-ui,Segoe UI,Arial,sans-serif; color:#1C1E29; line-height:1.6; }
-  .page { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 90px; }
   h1 { font-family:"Sora",system-ui,sans-serif; font-size: 26px; margin: 0 0 6px; }
   .lead { color:#6B7280; margin: 0 0 28px; }
+  .rec { background:#EEF6D2; border-radius:12px; padding:14px 18px; font-size:14px; color:#5d6b16; margin: 0 0 32px; }
+  .rec strong { color:#3f4a10; }
+  .opt { background:#fff; border:1px solid #E2E5E0; border-radius:16px; padding:32px; box-shadow:0 8px 24px rgba(28,30,41,.08); margin-bottom:24px; }
+  .opt.best { border:2px solid #C8E64E; }
+  .opt h2 { font-family:"Sora",sans-serif; font-size:18px; margin:0 0 4px; display:flex; align-items:center; gap:10px; }
+  .tag { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; background:#C8E64E; color:#1C1E29; padding:3px 10px; border-radius:999px; }
+  .opt .desc { color:#6B7280; font-size:13px; margin:0 0 22px; }
+  .sigbox { border-top:1px dashed #E2E5E0; padding-top:24px; }
+  .btn { font-family:"Inter",Arial,sans-serif; font-weight:700; font-size:13px; background:#1C1E29; color:#fff; border:0; border-radius:999px; padding:10px 20px; cursor:pointer; margin-top:20px; }
+  .btn.copied { background:#2F8A5B; }
+  .status { font-size:13px; color:#6B7280; margin-left:10px; }
   .label { font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:#6B7280; font-weight:700; margin: 36px 0 12px; }
-  .preview { background:#fff; border:1px solid #E2E5E0; border-radius:16px; padding:36px; box-shadow:0 8px 24px rgba(28,30,41,.08); }
-  .btn { font-family:"Inter",Arial,sans-serif; font-weight:700; font-size:14px; background:#C8E64E; color:#1C1E29; border:0; border-radius:999px; padding:11px 22px; cursor:pointer; }
-  .btn.copied { background:#2F8A5B; color:#fff; }
-  .hint { font-size:13px; color:#6B7280; margin-top:14px; }
   code { font-family:"IBM Plex Mono",monospace; background:#ECEEEA; padding:2px 6px; border-radius:6px; font-size:13px; }
   ol { color:#3C4150; font-size:14px; } ol li { margin-bottom:6px; }
 </style>
@@ -23,27 +29,31 @@
 <body>
 <div class="page">
 
-  <h1>Assinatura de e-mail — OneBridge Stalwart</h1>
-  <p class="lead">Pronta para usar. Clique em <strong>Copiar assinatura</strong> e cole no Gmail, Outlook ou Apple Mail.</p>
+  <h1>Assinatura de e-mail — qual logo usar?</h1>
+  <p class="lead">Duas opções com o design system aplicado. Escolha, clique em <strong>Copiar</strong> e cole no seu e-mail.</p>
 
-  <div class="label">Assinatura</div>
-  <div class="preview">
-    <div id="sig">
+  <div class="rec">
+    <strong>Recomendação:</strong> use a <strong>Opção A (wordmark no topo)</strong> como assinatura principal —
+    o nome "ONEBRIDGE STALWART" aparece por extenso e fica mais reconhecível para quem recebe pela 1ª vez.
+    Guarde a <strong>Opção B (só o símbolo)</strong> para respostas rápidas/internas.
+  </div>
 
-      <!-- ===================== ASSINATURA (copiável) ===================== -->
-      <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1C1E29;">
-        <tr>
-          <td valign="top" style="padding:0 22px 0 0;">
-            <img src="https://onebridgestalwart.com/logomark.png" alt="OneBridge Stalwart" width="58" height="59" style="display:block;width:58px;height:auto;border:0;outline:none;">
-          </td>
-          <td style="padding:0;width:3px;background:#C8E64E;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
-          <td valign="top" style="padding:0 0 0 22px;">
-            <div style="font-family:'Sora','Segoe UI',Arial,sans-serif;font-size:17px;font-weight:700;color:#1C1E29;line-height:1.2;">
-              Samuel Almeida
-            </div>
-            <div style="font-size:13px;color:#6B7280;padding-top:2px;">
-              Consultor de Internacionalização · OneBridge Stalwart
-            </div>
+  <!-- ============================ OPÇÃO A ============================ -->
+  <div class="opt best">
+    <h2>Opção A — Wordmark no topo <span class="tag">Recomendada</span></h2>
+    <p class="desc">Logo horizontal completo, fina régua limão e dados abaixo. Institucional e claro.</p>
+    <div class="sigbox">
+      <div id="sigA">
+        <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1C1E29;">
+          <tr><td style="padding:0 0 14px;">
+            <img src="https://onebridgestalwart.com/logo.png" alt="OneBridge Stalwart" width="200" height="50" style="display:block;width:200px;height:auto;border:0;outline:none;">
+          </td></tr>
+          <tr><td style="padding:0 0 14px;">
+            <div style="width:60px;height:3px;background:#C8E64E;border-radius:3px;font-size:0;line-height:0;">&nbsp;</div>
+          </td></tr>
+          <tr><td>
+            <div style="font-family:'Sora','Segoe UI',Arial,sans-serif;font-size:16px;font-weight:700;color:#1C1E29;line-height:1.2;">Samuel Almeida</div>
+            <div style="font-size:13px;color:#6B7280;padding-top:2px;">Consultor de Internacionalização · OneBridge Stalwart</div>
             <div style="padding-top:12px;font-size:13px;line-height:1.9;color:#1C1E29;">
               <a href="mailto:samuel@onebridgestalwart.com" style="color:#1C1E29;text-decoration:none;">samuel@onebridgestalwart.com</a><br>
               <a href="tel:+13210000000" style="color:#1C1E29;text-decoration:none;">+1 (321) 000-0000</a>
@@ -52,66 +62,83 @@
               <span style="color:#6B7280;">Orlando, FL · EUA</span>
             </div>
             <div style="padding-top:14px;">
-              <a href="https://onebridgestalwart.com" style="display:inline-block;background:#C8E64E;color:#1C1E29;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;padding:8px 16px;border-radius:999px;">
-                Agendar consulta &rarr;
-              </a>
+              <a href="https://onebridgestalwart.com" style="display:inline-block;background:#C8E64E;color:#1C1E29;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;padding:8px 16px;border-radius:999px;">Agendar consulta &rarr;</a>
             </div>
-          </td>
-        </tr>
-      </table>
-      <!-- =================== FIM DA ASSINATURA =========================== -->
-
+          </td></tr>
+        </table>
+      </div>
+      <button class="btn" data-target="sigA">Copiar Opção A</button>
+      <span class="status" data-status="sigA"></span>
     </div>
   </div>
 
-  <p style="margin-top:18px;">
-    <button class="btn" id="copyBtn">Copiar assinatura</button>
-    <span class="hint" id="status"></span>
-  </p>
-
-  <div class="label">Como instalar</div>
-  <ol>
-    <li><strong>Gmail:</strong> Configurações (⚙) → Ver todas as configurações → Geral → Assinatura → criar nova → colar (Ctrl/Cmd+V) → Salvar.</li>
-    <li><strong>Outlook:</strong> Arquivo → Opções → Email → Assinaturas → nova → colar.</li>
-    <li><strong>Apple Mail:</strong> Mail → Configurações → Assinaturas → colar (deixe "Usar a fonte padrão da mensagem" desmarcado).</li>
-  </ol>
+  <!-- ============================ OPÇÃO B ============================ -->
+  <div class="opt">
+    <h2>Opção B — Símbolo na lateral</h2>
+    <p class="desc">Só o símbolo + barra limão vertical + dados ao lado. Compacta e moderna.</p>
+    <div class="sigbox">
+      <div id="sigB">
+        <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1C1E29;">
+          <tr>
+            <td valign="top" style="padding:0 22px 0 0;">
+              <img src="https://onebridgestalwart.com/logomark.png" alt="OneBridge Stalwart" width="58" height="59" style="display:block;width:58px;height:auto;border:0;outline:none;">
+            </td>
+            <td style="padding:0;width:3px;background:#C8E64E;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
+            <td valign="top" style="padding:0 0 0 22px;">
+              <div style="font-family:'Sora','Segoe UI',Arial,sans-serif;font-size:17px;font-weight:700;color:#1C1E29;line-height:1.2;">Samuel Almeida</div>
+              <div style="font-size:13px;color:#6B7280;padding-top:2px;">Consultor de Internacionalização · OneBridge Stalwart</div>
+              <div style="padding-top:12px;font-size:13px;line-height:1.9;color:#1C1E29;">
+                <a href="mailto:samuel@onebridgestalwart.com" style="color:#1C1E29;text-decoration:none;">samuel@onebridgestalwart.com</a><br>
+                <a href="tel:+13210000000" style="color:#1C1E29;text-decoration:none;">+1 (321) 000-0000</a>
+                <span style="color:#C8D0C9;">&nbsp;|&nbsp;</span>
+                <a href="https://onebridgestalwart.com" style="color:#1C1E29;text-decoration:none;">onebridgestalwart.com</a><br>
+                <span style="color:#6B7280;">Orlando, FL · EUA</span>
+              </div>
+              <div style="padding-top:14px;">
+                <a href="https://onebridgestalwart.com" style="display:inline-block;background:#C8E64E;color:#1C1E29;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;padding:8px 16px;border-radius:999px;">Agendar consulta &rarr;</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <button class="btn" data-target="sigB">Copiar Opção B</button>
+      <span class="status" data-status="sigB"></span>
+    </div>
+  </div>
 
   <div class="label">Antes de usar</div>
   <ol>
     <li>Troque <code>Samuel Almeida</code>, o cargo e o telefone <code>+1 (321) 000-0000</code> pelos dados reais.</li>
-    <li>Garanta que <code>logomark.png</code> esteja publicado em <code>onebridgestalwart.com</code> (e-mail só carrega imagem por URL pública).</li>
+    <li>O logo é carregado de <code>onebridgestalwart.com</code> — garanta que <code>logo.png</code> e <code>logomark.png</code> estejam publicados lá (e-mail só carrega imagem por URL pública).</li>
+    <li>Cole no Gmail (Configurações → Assinatura), Outlook ou Apple Mail.</li>
   </ol>
 
 </div>
 
 <script>
-  // Copia a assinatura formatada (rich text), não o código — é o que os clientes de e-mail esperam.
-  document.getElementById('copyBtn').addEventListener('click', async function () {
-    const el = document.getElementById('sig');
-    try {
-      const html = el.innerHTML;
-      const blob = new Blob([html], { type: 'text/html' });
-      const text = el.innerText;
-      await navigator.clipboard.write([
-        new ClipboardItem({ 'text/html': blob, 'text/plain': new Blob([text], { type: 'text/plain' }) })
-      ]);
-      mark();
-    } catch (e) {
-      // Fallback: seleciona para cópia manual
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      try { document.execCommand('copy'); mark(); }
-      catch (_) { document.getElementById('status').textContent = 'Selecione a assinatura e copie com Ctrl/Cmd+C.'; }
-    }
+  document.querySelectorAll('.btn').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      const id = btn.getAttribute('data-target');
+      const el = document.getElementById(id);
+      const statusEl = document.querySelector('[data-status="' + id + '"]');
+      try {
+        const blob = new Blob([el.innerHTML], { type: 'text/html' });
+        const text = new Blob([el.innerText], { type: 'text/plain' });
+        await navigator.clipboard.write([ new ClipboardItem({ 'text/html': blob, 'text/plain': text }) ]);
+        mark(btn, statusEl);
+      } catch (e) {
+        const range = document.createRange(); range.selectNodeContents(el);
+        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        try { document.execCommand('copy'); mark(btn, statusEl); }
+        catch (_) { statusEl.textContent = 'Selecione a assinatura e copie com Ctrl/Cmd+C.'; }
+      }
+    });
   });
-  function mark() {
-    const b = document.getElementById('copyBtn');
-    b.textContent = '✓ Copiado'; b.classList.add('copied');
-    document.getElementById('status').textContent = 'Agora cole no editor de assinatura do seu e-mail.';
-    setTimeout(function(){ b.textContent = 'Copiar assinatura'; b.classList.remove('copied'); }, 2500);
+  function mark(btn, statusEl) {
+    const original = btn.textContent;
+    btn.textContent = '✓ Copiado'; btn.classList.add('copied');
+    statusEl.textContent = 'Cole no editor de assinatura do seu e-mail.';
+    setTimeout(function () { btn.textContent = original; btn.classList.remove('copied'); }, 2500);
   }
 </script>
 </body>
