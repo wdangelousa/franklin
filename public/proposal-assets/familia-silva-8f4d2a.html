@@ -1,0 +1,3879 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#191b24">
+  <title>Proposta Família Silva | Onebridge</title>
+  <meta name="description" content="Proposta confidencial de arquitetura patrimonial, societária e fiscal Brasil-Estados Unidos.">
+  <style>
+    @font-face {
+      font-family: "Geist";
+      src: url("/proposal-assets/familia-silva/geist-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Geist Mono";
+      src: url("/proposal-assets/familia-silva/geist-mono-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    :root {
+      --font-geist-sans: "Geist", Arial, sans-serif;
+      --font-geist-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+    }
+@import "tailwindcss";
+
+:root {
+  --ink: #151923;
+  --ink-soft: #303745;
+  --muted: #667080;
+  --line: #dbe1e8;
+  --paper: #ffffff;
+  --mist: #f2f6fa;
+  --mist-deep: #e8eef4;
+  --lime: #d4f238;
+  --lime-dark: #9ab700;
+  --navy: #11151f;
+  --white: #ffffff;
+  --orange: #ffb85c;
+  --shadow: 0 22px 70px rgba(25, 35, 50, 0.1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #e9edf2;
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-feature-settings: "ss01" 1, "cv02" 1;
+}
+button, a { font: inherit; }
+a { color: inherit; text-decoration: none; }
+button { border: 0; }
+
+.content-shell { width: min(1160px, calc(100% - 72px)); margin: 0 auto; }
+.proposal-document { padding: 24px 0; }
+.proposal-page { width: min(1440px, calc(100% - 48px)); min-height: calc(100vh - 48px); margin: 0 auto 24px; position: relative; padding: 94px 0 84px; overflow: hidden; box-shadow: 0 18px 55px rgba(27, 36, 49, .10); }
+.proposal-page:last-child { margin-bottom: 0; }
+.page-content { position: relative; }
+
+.brand { width: 154px; flex: 0 0 auto; line-height: 0; }
+.brand img { display: block; width: 100%; height: auto; }
+.brand.mark-only { width: 34px; }
+
+.print-button, .primary-button {
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.print-button { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.print-button:hover, .primary-button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(20, 26, 35, .12); }
+.print-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.print-button.compact { min-width: 72px; min-height: 40px; padding: 0 14px; background: var(--ink); color: white; border-color: var(--ink); box-shadow: 0 10px 30px rgba(17, 21, 31, .2); }
+.primary-button { background: var(--ink); color: white; }
+.primary-button span { font-size: 17px; }
+.primary-button.lime { background: var(--lime); color: var(--ink); }
+
+.page-marker { position: absolute; right: -2px; top: 0; display: flex; align-items: center; gap: 10px; color: #9099a6; }
+.page-marker span { font-family: var(--font-geist-mono); font-size: 11px; font-weight: 700; color: var(--ink); }
+.page-marker i { display: block; width: 46px; height: 1px; background: var(--line); }
+.page-marker small { text-transform: uppercase; letter-spacing: .14em; font-size: 8px; }
+.proposal-footer { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); width: min(1160px, calc(100% - 72px)); display: flex; align-items: center; justify-content: space-between; color: #a0a8b4; font-size: 8px; text-transform: uppercase; letter-spacing: .12em; }
+.proposal-footer .brand { display: block; width: 78px; opacity: .72; }
+.proposal-footer strong { font-family: var(--font-geist-mono); color: #707986; }
+
+.eyebrow { margin: 0 0 14px; color: var(--lime-dark); text-transform: uppercase; letter-spacing: .18em; font-size: 10px; font-weight: 750; }
+.section-heading { margin-bottom: 46px; }
+.section-heading h2 { margin: 0; font-size: clamp(38px, 4.2vw, 64px); line-height: 1.02; letter-spacing: -.055em; font-weight: 580; }
+.split-heading { display: grid; grid-template-columns: 1.3fr .7fr; gap: 80px; align-items: end; }
+.split-heading > p, .architecture-heading > p { margin: 0 0 6px; color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 430px; }
+
+/* Hero */
+.hero-page { background: var(--paper); padding-top: 40px; }
+.hero-page::after { content: ""; position: absolute; width: 650px; height: 650px; right: -240px; top: -240px; border: 1px solid #eef1f4; border-radius: 50%; }
+.cover-header { min-height: 58px; position: relative; z-index: 3; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 22px; }
+.cover-header > div:last-child { display: grid; justify-items: end; gap: 5px; text-align: right; }
+.cover-header span { color: #9aa3af; font-size: 7px; text-transform: uppercase; letter-spacing: .15em; }
+.cover-header strong { color: #626c79; font-size: 9px; font-weight: 570; }
+.cover-header .print-button { margin-top: 8px; }
+.hero-grid { min-height: calc(100vh - 285px); display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 74px; }
+.hero-copy { position: relative; z-index: 2; }
+.hero-copy h1 { margin: 0; max-width: 830px; font-size: clamp(54px, 6.2vw, 91px); line-height: .91; letter-spacing: -.067em; font-weight: 570; }
+.hero-copy h1 span { display: block; color: #6c7481; }
+.hero-intro { margin: 30px 0 0; max-width: 730px; font-size: 17px; line-height: 1.65; color: var(--muted); }
+.hero-promise { margin-top: 27px; padding-left: 20px; border-left: 3px solid var(--lime); display: grid; gap: 3px; font-size: 12px; color: #68717f; }
+.hero-promise strong { color: var(--ink); }
+.hero-visual { position: relative; min-height: 520px; display: flex; align-items: center; justify-content: center; }
+.hero-seal { position: relative; width: 430px; aspect-ratio: 1; border-radius: 50%; background: var(--mist); display: flex; align-items: center; justify-content: center; }
+.orbit { position: absolute; border: 1px solid #cbd3dc; border-radius: 50%; }
+.orbit-one { inset: 42px; }
+.orbit-two { inset: 92px; border-style: dashed; }
+.seal-core { width: 142px; height: 142px; border-radius: 50%; background: white; color: var(--ink); border: 1px solid #d6dde5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; box-shadow: var(--shadow); }
+.seal-core .brand.mark-only { width: 52px; }
+.seal-core small { font-family: var(--font-geist-mono); font-size: 7px; letter-spacing: .14em; color: #727c89; }
+.seal-note { position: absolute; background: white; border: 1px solid var(--line); border-radius: 999px; padding: 8px 13px; font-size: 9px; font-weight: 650; box-shadow: 0 8px 25px rgba(25,35,50,.07); }
+.note-one { top: 48px; left: 160px; }
+.note-two { right: -12px; top: 210px; }
+.note-three { bottom: 62px; left: 17px; }
+.hero-caption { position: absolute; bottom: 11px; right: 10px; display: grid; gap: 7px; font-size: 9px; color: #7b8593; }
+.hero-caption strong { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 11px; }
+.hero-caption i { width: 46px; height: 1px; background: var(--lime-dark); }
+.hero-bottom { position: absolute; left: 50%; transform: translateX(-50%); bottom: 60px; display: flex; justify-content: space-between; padding-top: 17px; border-top: 1px solid var(--line); color: #7e8794; font-size: 9px; text-transform: uppercase; letter-spacing: .13em; }
+.hero-page .proposal-footer { display: none; }
+
+/* Moment */
+.moment-page { background: var(--mist); }
+.moment-statement { display: grid; grid-template-columns: 100px 1fr; gap: 24px; padding: 32px 0; border-top: 1px solid #cfd7e0; border-bottom: 1px solid #cfd7e0; }
+.statement-number { font-family: var(--font-geist-mono); color: var(--lime-dark); font-size: 12px; }
+.moment-statement p { margin: 0; max-width: 900px; font-size: 21px; line-height: 1.45; letter-spacing: -.025em; }
+.presence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #d7dee6; margin-top: 30px; border: 1px solid #d7dee6; }
+.presence-grid article { background: var(--mist); padding: 26px; min-height: 180px; }
+.presence-index { color: var(--lime-dark); font-family: var(--font-geist-mono); font-size: 10px; }
+.presence-grid p { margin: 28px 0 7px; color: #87909d; font-size: 9px; text-transform: uppercase; letter-spacing: .13em; }
+.presence-grid h3 { margin: 0 0 8px; font-size: 20px; font-weight: 580; letter-spacing: -.03em; }
+.presence-grid small { color: var(--muted); font-size: 11px; line-height: 1.55; }
+.objective-band { margin-top: 30px; background: var(--ink); color: white; padding: 30px 34px; border-radius: 4px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 50px; align-items: center; }
+.objective-band .eyebrow { margin-bottom: 8px; color: var(--lime); }
+.objective-band h3 { margin: 0; max-width: 610px; font-size: 21px; line-height: 1.35; font-weight: 520; }
+.compact-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
+.compact-list li { display: flex; align-items: center; gap: 8px; color: #c7cdd6; font-size: 10px; }
+.check { flex: 0 0 17px; height: 17px; border-radius: 50%; background: rgba(212,242,56,.14); color: var(--lime-dark); display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
+.objective-band .check { color: var(--lime); }
+
+/* Architecture */
+.architecture-page { background: white; }
+.architecture-heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; }
+.diagram-legend { display: flex; gap: 22px; padding-bottom: 6px; color: #6d7683; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
+.diagram-legend span { display: flex; align-items: center; gap: 8px; }
+.diagram-legend i { width: 32px; height: 1px; display: inline-block; border-top: 1px solid var(--ink); }
+.diagram-legend .dashed-line { border-top-style: dashed; border-color: #9aa4b1; }
+.org-chart { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(270px, .8fr); gap: 22px; align-items: stretch; }
+.patrimonial-lane, .operational-lane { border: 1px solid var(--line); border-radius: 8px; background: #fbfcfd; padding: 24px; position: relative; }
+.lane-label { display: flex; align-items: center; gap: 10px; color: #747e8c; font-size: 8px; text-transform: uppercase; letter-spacing: .15em; }
+.lane-label span { color: var(--lime-dark); font-family: var(--font-geist-mono); font-weight: 750; }
+.tree-top, .tree-mid { width: 54%; margin: 16px auto 0; position: relative; z-index: 2; }
+.tree-mid { width: 46%; margin-top: 0; }
+.org-node { min-height: 118px; border-radius: 5px; padding: 15px 17px; background: white; border: 1px solid var(--line); box-shadow: 0 8px 26px rgba(23,31,43,.055); position: relative; }
+.org-node.foundation { background: var(--ink); color: white; border-color: var(--ink); box-shadow: 0 15px 35px rgba(17,21,31,.17); }
+.org-node.holding { border-top: 3px solid var(--lime-dark); }
+.node-topline { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.node-icon { width: 25px; height: 25px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--mist); color: var(--ink); font-family: var(--font-geist-mono); font-size: 8px; font-weight: 700; }
+.foundation .node-icon { background: var(--lime); }
+.node-badge { border-radius: 99px; padding: 5px 7px; background: #f0f3f6; color: #78818e; font-size: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
+.foundation .node-badge { background: rgba(255,255,255,.09); color: #d9dfe7; }
+.org-node > p { margin: 13px 0 3px; color: #8a94a1; font-size: 6px; text-transform: uppercase; letter-spacing: .11em; }
+.foundation > p { color: #aeb6c1; }
+.org-node h3 { margin: 0 0 4px; font-size: 13px; letter-spacing: -.025em; font-weight: 640; }
+.org-node > small { color: #717b88; font-size: 7px; }
+.foundation > small { color: #c3c9d1; }
+.tree-connector.vertical { height: 32px; position: relative; }
+.tree-connector.vertical::before { content: ""; position: absolute; left: 50%; top: 0; height: 100%; border-left: 1px solid var(--ink); }
+.tree-connector.vertical span { position: absolute; width: 5px; height: 5px; background: var(--lime); border-radius: 50%; left: calc(50% - 2px); top: calc(50% - 2px); z-index: 2; }
+.tree-connector.branch { height: 37px; width: 68%; margin: 0 auto; position: relative; border-bottom: 1px solid var(--ink); }
+.tree-connector.branch::before { content: ""; position: absolute; top: 0; left: 50%; height: 100%; border-left: 1px solid var(--ink); }
+.tree-connector.branch span, .tree-connector.branch i, .tree-connector.branch b { position: absolute; width: 1px; height: 10px; background: var(--ink); bottom: -10px; }
+.tree-connector.branch span { left: 0; }
+.tree-connector.branch i { left: 50%; }
+.tree-connector.branch b { right: 0; background: none; border-left: 1px dashed #99a3af; }
+.tree-connector.branch em { position: absolute; width: 5px; height: 5px; background: var(--lime); border-radius: 50%; left: calc(50% - 2px); top: 12px; }
+.tree-children { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 9px; }
+.tree-children .org-node { min-height: 113px; box-shadow: none; }
+.tree-children .future { border-style: dashed; background: #f7f9fb; }
+.future .node-icon { background: var(--ink); color: white; }
+.operational-lane { background: var(--mist); display: flex; flex-direction: column; }
+.operation-path { margin-top: 28px; display: grid; justify-items: center; }
+.operation-path .org-node { width: 90%; }
+.operation-path .org-node.person { min-height: 103px; }
+.operation-path .org-node.operational { min-height: 142px; background: white; border: 1px solid var(--orange); box-shadow: 0 10px 30px rgba(255,184,92,.12); }
+.operational .node-icon { background: #fff0dc; color: #965500; }
+.operational .node-badge { background: #fff0dc; color: #965500; }
+.operation-link { height: 39px; position: relative; width: 90%; }
+.operation-link::before { content: ""; position: absolute; left: 50%; top: 0; height: 100%; border-left: 1px solid #9b6e36; }
+.operation-link i { position: absolute; left: calc(50% - 2px); top: 17px; width: 5px; height: 5px; border-radius: 50%; background: var(--orange); }
+.operation-note { margin-top: auto; padding: 14px; display: grid; grid-template-columns: 24px 1fr; gap: 10px; background: #fff7ed; border: 1px solid #f4d8b6; border-radius: 4px; }
+.operation-note > span { width: 21px; height: 21px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; }
+.operation-note p { margin: 0; color: #6e5c47; font-size: 8px; line-height: 1.45; }
+.architecture-disclaimer { margin-top: 19px; padding: 17px 21px; display: flex; align-items: center; gap: 26px; background: var(--ink); color: white; border-radius: 4px; }
+.architecture-disclaimer strong { color: var(--lime); font-size: 10px; white-space: nowrap; }
+.architecture-disclaimer p { margin: 0; color: #c7cdd5; font-size: 9px; }
+
+/* Entities */
+.entities-page { background: var(--mist); }
+.entity-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.entity-card { background: white; border: 1px solid #dbe1e8; padding: 30px; min-height: 470px; position: relative; }
+.foundation-card { background: var(--ink); color: white; border-color: var(--ink); }
+.entity-card-head { display: flex; align-items: center; justify-content: space-between; }
+.entity-card-head span { font-family: var(--font-geist-mono); color: var(--lime-dark); font-size: 10px; }
+.foundation-card .entity-card-head span { color: var(--lime); }
+.entity-card-head p { margin: 0; color: #858f9b; font-size: 8px; text-transform: uppercase; letter-spacing: .12em; }
+.entity-card h3 { margin: 30px 0 13px; font-size: 34px; line-height: 1.05; letter-spacing: -.045em; font-weight: 570; }
+.entity-summary { margin: 0 0 23px; max-width: 420px; color: #707a87; font-size: 12px; line-height: 1.55; }
+.foundation-card .entity-summary { color: #b4bbc5; }
+.entity-card ul, .track-card ul, .scope-price ul, .deliverables-panel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.entity-card li, .track-card li, .scope-price li, .deliverables-panel li { display: flex; align-items: flex-start; gap: 10px; font-size: 10px; line-height: 1.45; color: #4d5664; }
+.foundation-card li { color: #c3c9d1; }
+.entity-role { position: absolute; bottom: 30px; left: 30px; right: 30px; padding-top: 17px; border-top: 1px solid #e1e5ea; display: flex; justify-content: space-between; align-items: center; }
+.foundation-card .entity-role { border-color: #343a45; }
+.entity-role span { color: #8b94a0; font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.entity-role strong { font-size: 11px; }
+.tax-note { margin-top: 22px; border: 1px solid #ccd4de; padding: 20px 24px; display: grid; grid-template-columns: 180px 1fr; gap: 20px; align-items: start; }
+.tax-note span { color: var(--lime-dark); font-size: 9px; text-transform: uppercase; letter-spacing: .12em; font-weight: 750; }
+.tax-note p { margin: 0; color: #606a77; font-size: 10px; line-height: 1.55; }
+
+/* Operation */
+.operation-page { background: white; }
+.two-track { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.track-card { border: 1px solid var(--line); padding: 29px; min-height: 500px; display: flex; flex-direction: column; }
+.e2-track { background: var(--ink); color: white; border-color: var(--ink); }
+.brazil-track { background: var(--mist); }
+.track-label { display: flex; align-items: center; gap: 10px; color: #8b95a1; font-size: 8px; text-transform: uppercase; letter-spacing: .12em; }
+.track-label span { width: 31px; height: 31px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--orange); color: var(--ink); font-family: var(--font-geist-mono); font-size: 8px; font-weight: 750; }
+.brazil-track .track-label span { background: var(--lime); }
+.track-card h3 { margin: 27px 0 12px; font-size: 28px; line-height: 1.08; letter-spacing: -.04em; font-weight: 570; }
+.track-card > p { margin: 0 0 22px; color: #717b88; font-size: 11px; line-height: 1.55; }
+.e2-track > p, .e2-track li { color: #b8c0ca; }
+.guardrail { margin-top: auto; padding: 17px; background: #272c36; border-left: 2px solid var(--orange); }
+.guardrail strong { color: var(--orange); font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
+.guardrail p { margin: 7px 0 0; color: #c6ccd4; font-size: 9px; line-height: 1.5; }
+.document-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 6px; margin: 14px 0 24px; }
+.document-flow span { min-height: 42px; padding: 8px; background: white; border: 1px solid #dce2e8; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 7px; font-weight: 650; }
+.document-flow i { color: #9ba4b0; font-style: normal; font-size: 10px; }
+.document-flow b { grid-column: 1 / -1; height: 1px; background: #dce2e8; }
+.responsibility-split { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.responsibility-split div { background: white; padding: 14px; border-top: 2px solid var(--lime-dark); }
+.responsibility-split strong { font-size: 10px; }
+.responsibility-split p { margin: 6px 0 0; color: #6e7885; font-size: 8px; line-height: 1.5; }
+
+/* Timeline */
+.timeline-page { background: var(--mist); }
+.month-timeline { display: grid; grid-template-columns: repeat(4, 1fr); position: relative; margin-top: 36px; }
+.month-timeline::before { content: ""; position: absolute; left: 9%; right: 9%; top: 24px; height: 1px; background: #cbd3dc; }
+.month-timeline article { position: relative; padding: 0 22px 25px; border-right: 1px solid #d8dfe7; }
+.month-timeline article:last-child { border-right: 0; }
+.month-number { width: 49px; height: 49px; margin-bottom: 22px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--font-geist-mono); font-size: 10px; position: relative; z-index: 2; box-shadow: 0 0 0 7px var(--mist); }
+.month-timeline article:last-child .month-number { background: var(--lime); color: var(--ink); }
+.month-timeline article > span { color: var(--lime-dark); font-size: 8px; text-transform: uppercase; letter-spacing: .13em; font-weight: 750; }
+.month-timeline h3 { margin: 8px 0; font-size: 19px; letter-spacing: -.03em; }
+.month-timeline p { margin: 0; color: #697381; font-size: 9px; line-height: 1.55; }
+.deliverables-panel { margin-top: 35px; background: white; border: 1px solid #dbe1e8; padding: 31px 34px; display: grid; grid-template-columns: .75fr 1.25fr; gap: 50px; align-items: center; }
+.deliverables-panel .eyebrow { margin-bottom: 9px; }
+.deliverables-panel h3 { margin: 0; font-size: 23px; line-height: 1.25; letter-spacing: -.035em; }
+.deliverables-panel ul { grid-template-columns: 1fr 1fr; gap: 12px 18px; }
+
+/* Investment */
+.investment-page { background: white; }
+.investment-heading { display: grid; grid-template-columns: 1fr .65fr; gap: 80px; align-items: end; }
+.investment-heading > p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+.investment-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; }
+.scope-price { border: 1px solid var(--line); padding: 27px 30px; min-height: 272px; position: relative; }
+.scope-price > span { color: #7b8592; font-size: 8px; text-transform: uppercase; letter-spacing: .13em; }
+.scope-price > strong { display: block; margin: 15px 0 21px; font-size: 39px; letter-spacing: -.05em; font-weight: 560; }
+.scope-price > strong small, .total-panel strong small { font-size: .4em; letter-spacing: 0; color: #8c95a1; font-weight: 600; }
+.scope-price ul { grid-template-columns: 1fr 1fr; gap: 8px; }
+.scope-price > p { color: #697381; font-size: 10px; line-height: 1.6; max-width: 360px; }
+.total-panel { margin-top: 18px; display: grid; grid-template-columns: 1.25fr .75fr; background: var(--ink); color: white; }
+.total-panel > div { padding: 27px 31px; }
+.total-panel > div:first-child { border-right: 1px solid #363c48; }
+.total-panel span { display: block; color: #8f98a5; font-size: 8px; text-transform: uppercase; letter-spacing: .14em; }
+.total-panel > div > strong { display: block; margin-top: 7px; font-size: 42px; letter-spacing: -.055em; font-weight: 560; }
+.total-panel .installment { display: flex; flex-direction: column; justify-content: center; }
+.total-panel .installment strong { font-size: 24px; color: var(--lime); }
+.total-panel .installment small { margin-top: 4px; color: #959eaa; font-size: 8px; }
+.payment-note { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 18px 2px; border-bottom: 1px solid var(--line); }
+.payment-note p { margin: 0; color: #697381; font-size: 9px; line-height: 1.5; }
+.included-note { margin-top: 17px; display: grid; grid-template-columns: 180px 1fr; gap: 20px; }
+.included-note span { color: var(--lime-dark); font-size: 8px; text-transform: uppercase; letter-spacing: .12em; font-weight: 750; }
+.included-note p { margin: 0; color: #646e7c; font-size: 9px; line-height: 1.55; }
+
+/* Implementation */
+.implementation-page { background: var(--mist); }
+.deadline-card { min-width: 230px; background: var(--ink); color: white; padding: 21px; display: grid; }
+.deadline-card span { color: #a5adb8; font-size: 8px; text-transform: uppercase; letter-spacing: .13em; }
+.deadline-card strong { margin: 8px 0 2px; color: var(--lime); font-size: 26px; letter-spacing: -.04em; }
+.deadline-card small { color: #8d96a3; font-size: 8px; }
+.implementation-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 25px; }
+.steps-list { display: grid; }
+.steps-list div { min-height: 46px; display: grid; grid-template-columns: 45px 1fr; align-items: center; border-bottom: 1px solid #d5dce4; }
+.steps-list span { font-family: var(--font-geist-mono); color: var(--lime-dark); font-size: 9px; }
+.steps-list p { margin: 0; font-size: 10px; font-weight: 560; }
+.scope-guardrails { background: white; border: 1px solid #dbe1e8; padding: 25px; }
+.scope-guardrails h3 { margin: 0; font-size: 22px; line-height: 1.22; letter-spacing: -.035em; }
+.scope-guardrails > p { margin: 9px 0 20px; color: #707a87; font-size: 9px; }
+.guardrail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.guardrail-grid span { padding: 10px; background: var(--mist); color: #626c79; font-size: 8px; border-left: 2px solid var(--lime-dark); }
+.exclusions { margin-top: 22px; padding: 16px 0; border-top: 1px solid #d4dce4; border-bottom: 1px solid #d4dce4; display: grid; grid-template-columns: 170px 1fr; gap: 20px; }
+.exclusions span { color: var(--lime-dark); font-size: 8px; text-transform: uppercase; letter-spacing: .13em; font-weight: 750; }
+.exclusions p { margin: 0; color: #6c7683; font-size: 8px; line-height: 1.55; }
+.final-cta { margin-top: 23px; padding: 27px 30px; background: var(--ink); color: white; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.final-cta .eyebrow { color: var(--lime); margin-bottom: 7px; }
+.final-cta h2 { margin: 0; max-width: 680px; font-size: 25px; letter-spacing: -.04em; font-weight: 560; }
+.final-cta p { margin: 8px 0 0; color: #9ea7b3; font-size: 9px; }
+.final-cta > div:last-child { display: flex; gap: 10px; }
+.final-cta .print-button { color: white; border-color: #454b56; }
+
+@media (max-width: 1120px) {
+  .hero-grid { grid-template-columns: 1fr .7fr; gap: 25px; }
+  .hero-seal { width: 340px; }
+  .tree-top { width: 68%; }
+  .tree-mid { width: 58%; }
+  .tree-connector.branch { width: 64%; }
+}
+
+@media (max-width: 820px) {
+  .content-shell, .proposal-footer { width: min(100% - 36px, 620px); }
+  .proposal-document { padding: 0; }
+  .proposal-page { width: 100%; min-height: auto; margin: 0; padding: 84px 0 76px; box-shadow: none; }
+  .page-marker { display: none; }
+  .section-heading h2 { font-size: 39px; }
+  .split-heading, .investment-heading { grid-template-columns: 1fr; gap: 18px; }
+  .hero-grid { min-height: auto; grid-template-columns: 1fr; }
+  .hero-page { padding-top: 28px; }
+  .cover-header { margin-bottom: 35px; }
+  .hero-copy h1 { font-size: 53px; }
+  .hero-visual { min-height: 420px; }
+  .hero-seal { width: 360px; }
+  .hero-bottom { position: static; transform: none; margin-top: 55px; }
+  .hero-page { padding-bottom: 70px; }
+  .presence-grid, .entity-comparison, .two-track, .investment-grid, .implementation-grid { grid-template-columns: 1fr; }
+  .objective-band, .deliverables-panel { grid-template-columns: 1fr; gap: 24px; }
+  .org-chart { grid-template-columns: 1fr; }
+  .month-timeline { grid-template-columns: 1fr 1fr; gap: 25px 0; }
+  .month-timeline::before { display: none; }
+  .month-timeline article:nth-child(2) { border-right: 0; }
+  .entity-card, .track-card { min-height: 480px; }
+  .total-panel { grid-template-columns: 1fr; }
+  .total-panel > div:first-child { border-right: 0; border-bottom: 1px solid #363c48; }
+  .final-cta { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 540px) {
+  .cover-header .brand { width: 124px; }
+  .cover-header > div:last-child { max-width: 160px; }
+  .hero-copy h1 { font-size: 43px; }
+  .hero-intro { font-size: 15px; }
+  .hero-seal { width: 286px; }
+  .note-one { left: 102px; top: 27px; }
+  .note-two { right: -10px; top: 135px; }
+  .note-three { bottom: 35px; }
+  .hero-bottom { gap: 12px; flex-wrap: wrap; }
+  .moment-statement { grid-template-columns: 40px 1fr; }
+  .moment-statement p { font-size: 17px; }
+  .presence-grid { grid-template-columns: 1fr; }
+  .compact-list, .deliverables-panel ul, .scope-price ul { grid-template-columns: 1fr; }
+  .architecture-heading { align-items: flex-start; flex-direction: column; }
+  .tree-top, .tree-mid { width: 92%; }
+  .tree-connector.branch { height: 25px; width: 75%; }
+  .tree-children { grid-template-columns: 1fr; }
+  .tree-children .org-node { margin-bottom: 7px; }
+  .tree-connector.branch { border-bottom: 0; }
+  .tree-connector.branch span, .tree-connector.branch i, .tree-connector.branch b { display: none; }
+  .architecture-disclaimer { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .month-timeline { grid-template-columns: 1fr; }
+  .month-timeline article { border-right: 0; }
+  .document-flow { grid-template-columns: 1fr; }
+  .document-flow i { transform: rotate(90deg); text-align: center; }
+  .document-flow b { display: none; }
+  .responsibility-split, .payment-note, .guardrail-grid { grid-template-columns: 1fr; }
+  .tax-note, .included-note, .exclusions { grid-template-columns: 1fr; gap: 8px; }
+  .final-cta > div:last-child { flex-direction: column; width: 100%; }
+  .final-cta .primary-button, .final-cta .print-button { width: 100%; }
+}
+
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  html, body { width: 210mm; background: white; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .proposal-document { padding: 0; }
+  .content-shell { width: 178mm; }
+  .proposal-page { width: 210mm; height: 297mm; min-height: 297mm; margin: 0; padding: 16mm 0 14mm; box-shadow: none; page-break-after: always; break-after: page; overflow: hidden; }
+  .proposal-page:last-child { page-break-after: auto; }
+  .page-marker { display: flex; }
+  .proposal-footer { display: flex; width: 178mm; bottom: 7mm; }
+  .proposal-footer .brand { display: block; width: 22mm; }
+  .hero-page { padding-top: 11mm; }
+  .cover-header { min-height: 14mm; padding-bottom: 5mm; }
+  .cover-header .brand { width: 39mm; }
+  .cover-header .print-button { display: none; }
+  .hero-grid { width: 178mm; min-height: 230mm; grid-template-columns: 1.2fr .8fr; gap: 8mm; }
+  .hero-copy h1 { font-size: 18mm; }
+  .hero-visual { min-height: 110mm; }
+  .hero-seal { width: 92mm; }
+  .hero-intro { font-size: 3.5mm; }
+  .hero-bottom { width: 178mm; bottom: 14mm; }
+  .hero-page .proposal-footer { display: none; }
+  .section-heading { margin-bottom: 8mm; }
+  .section-heading h2 { font-size: 12mm; }
+  .split-heading { gap: 16mm; }
+  .split-heading > p { font-size: 3mm; }
+  .moment-statement { padding: 7mm 0; }
+  .moment-statement p { font-size: 5mm; }
+  .presence-grid { margin-top: 6mm; }
+  .presence-grid article { min-height: 41mm; padding: 5mm; }
+  .objective-band { margin-top: 6mm; padding: 6mm; }
+  .org-chart { gap: 4mm; grid-template-columns: minmax(0, 2.2fr) minmax(52mm, .8fr); }
+  .patrimonial-lane, .operational-lane { padding: 4mm; }
+  .tree-top { width: 58%; margin-top: 3mm; }
+  .tree-mid { width: 49%; }
+  .org-node { min-height: 26mm; padding: 3mm; }
+  .tree-children .org-node { min-height: 25mm; }
+  .operation-path { margin-top: 6mm; }
+  .operation-path .org-node.operational { min-height: 31mm; }
+  .architecture-disclaimer { margin-top: 4mm; padding: 4mm; }
+  .entity-card { min-height: 123mm; padding: 7mm; }
+  .entity-card h3 { font-size: 8mm; margin-top: 7mm; }
+  .entity-role { bottom: 7mm; left: 7mm; right: 7mm; }
+  .tax-note { margin-top: 5mm; padding: 5mm; }
+  .track-card { min-height: 130mm; padding: 7mm; }
+  .month-timeline { margin-top: 7mm; }
+  .month-timeline article { padding: 0 4mm 6mm; }
+  .deliverables-panel { margin-top: 8mm; padding: 7mm; }
+  .scope-price { min-height: 67mm; padding: 6mm; }
+  .total-panel { margin-top: 4mm; }
+  .total-panel > div { padding: 6mm; }
+  .implementation-grid { gap: 5mm; }
+  .steps-list div { min-height: 10mm; }
+  .final-cta { margin-top: 5mm; padding: 6mm; }
+  .final-cta .print-button { display: none; }
+  .final-cta .primary-button { pointer-events: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Premium proposal QA pass — visual law / private banking document system
+   -------------------------------------------------------------------------- */
+
+:root {
+  --lime-dark: #5a7a00;
+  --secondary: #6b7280;
+  --orange-text: #7a4300;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.55;
+}
+
+.proposal-page {
+  padding-top: 80px;
+  padding-bottom: 104px;
+}
+
+.page-content {
+  min-height: calc(100vh - 184px);
+}
+
+.proposal-footer {
+  bottom: 24px;
+  min-height: 32px;
+  color: var(--secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.proposal-footer strong {
+  color: var(--secondary);
+}
+
+:is(h1, h2, h3) {
+  word-spacing: normal;
+  text-wrap: balance;
+}
+
+.hero-copy h1,
+.section-heading h2 {
+  font-size: clamp(44px, 4vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  font-weight: 700;
+}
+
+.section-heading {
+  margin-bottom: 40px;
+}
+
+.eyebrow,
+.track-label,
+.lane-label,
+.scope-price > span,
+.total-panel span,
+.deadline-card span,
+.entity-card-head p,
+.exclusions span,
+.included-note span,
+.tax-note span {
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: .12em;
+}
+
+.eyebrow,
+.statement-number,
+.presence-index,
+.lane-label span,
+.entity-card-head span,
+.month-timeline article > span,
+.steps-list span,
+.included-note span,
+.tax-note span,
+.exclusions span {
+  color: var(--lime-dark);
+}
+
+.split-heading > p,
+.architecture-heading > p,
+.investment-heading > p,
+.hero-intro,
+.moment-statement p,
+.entity-summary,
+.track-card > p {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.split-heading > p,
+.architecture-heading > p,
+.investment-heading > p,
+.hero-intro,
+.entity-summary,
+.track-card > p,
+.scope-price > p,
+.scope-guardrails > p,
+.tax-note p,
+.included-note p,
+.exclusions p,
+.month-timeline p,
+.responsibility-split p {
+  color: var(--secondary);
+}
+
+.page-marker small,
+.cover-header span,
+.cover-header strong,
+.hero-promise,
+.hero-bottom,
+.diagram-legend,
+.node-badge,
+.org-node > p,
+.org-node > small,
+.operation-note p,
+.architecture-disclaimer p,
+.entity-role span,
+.entity-role strong,
+.guardrail p,
+.document-flow span,
+.responsibility-split p,
+.month-timeline p,
+.scope-price > p,
+.payment-note p,
+.included-note p,
+.deadline-card small,
+.steps-list p,
+.scope-guardrails > p,
+.guardrail-grid span,
+.exclusions p,
+.final-cta p {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.print-button,
+.primary-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.check {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+}
+
+.compact-list li,
+.entity-card li,
+.track-card li,
+.scope-price li,
+.deliverables-panel li {
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.entity-card ul,
+.track-card ul,
+.scope-price ul,
+.deliverables-panel ul {
+  gap: 8px;
+}
+
+.presence-grid article,
+.objective-band,
+.patrimonial-lane,
+.operational-lane,
+.entity-card,
+.track-card,
+.deliverables-panel,
+.scope-price,
+.scope-guardrails,
+.deadline-card,
+.final-cta {
+  padding: 32px;
+}
+
+/* Page 02 — complete objective block and preserve the footer safety zone. */
+.moment-page .section-heading {
+  margin-bottom: 32px;
+}
+
+.moment-statement {
+  grid-template-columns: 72px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+}
+
+.moment-statement p {
+  letter-spacing: -.01em;
+}
+
+.presence-grid {
+  margin-top: 24px;
+}
+
+.presence-grid article {
+  min-height: 160px;
+}
+
+.presence-grid p {
+  margin: 24px 0 8px;
+  color: var(--secondary);
+  font-size: 11px;
+}
+
+.presence-grid h3 {
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  font-weight: 700;
+}
+
+.presence-grid small {
+  color: var(--secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.objective-band {
+  margin-top: 24px;
+  gap: 32px;
+}
+
+.objective-band h3 {
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.objective-band .eyebrow,
+.architecture-disclaimer strong,
+.foundation-card .entity-card-head span,
+.final-cta .eyebrow {
+  color: var(--lime);
+}
+
+/* Page 03 — aligned connectors and equal base nodes. */
+.architecture-heading {
+  align-items: end;
+}
+
+.org-chart {
+  gap: 24px;
+}
+
+.patrimonial-lane,
+.operational-lane {
+  padding: 24px;
+}
+
+.lane-label {
+  color: var(--secondary);
+}
+
+.tree-top,
+.tree-mid {
+  margin-top: 16px;
+}
+
+.tree-mid {
+  margin-top: 0;
+}
+
+.org-node {
+  min-height: 120px;
+  padding: 16px;
+}
+
+.org-node > p {
+  margin-top: 12px;
+  color: var(--secondary);
+}
+
+.org-node > small {
+  color: var(--secondary);
+}
+
+.org-node h3 {
+  font-size: 15px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+
+.tree-connector.branch {
+  height: 40px;
+  width: 68%;
+}
+
+.tree-children {
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.tree-children .org-node {
+  min-height: 136px;
+  height: 100%;
+}
+
+.tree-children .future {
+  border-width: 1px;
+  border-style: dashed;
+}
+
+.operational .node-icon,
+.operational .node-badge {
+  color: var(--orange-text);
+}
+
+.operation-note p {
+  color: #5f4b34;
+}
+
+.architecture-disclaimer {
+  margin-top: 16px;
+  padding: 16px 24px;
+}
+
+/* Page 04 — denser entity cards with a protected role row. */
+.entities-page .section-heading {
+  margin-bottom: 32px;
+}
+
+.entity-card {
+  min-height: 480px;
+  padding: 24px 24px 72px;
+}
+
+.entity-card h3,
+.track-card h3 {
+  margin: 24px 0 12px;
+  font-size: clamp(26px, 2.2vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  font-weight: 700;
+}
+
+.entity-summary {
+  margin-bottom: 16px;
+}
+
+.entity-role {
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  padding-top: 16px;
+}
+
+.tax-note {
+  margin-top: 16px;
+  padding: 16px 24px;
+}
+
+/* Page 05 — document trail closes within the useful area. */
+.operation-page .section-heading {
+  margin-bottom: 32px;
+}
+
+.track-card {
+  min-height: 480px;
+  padding: 24px;
+}
+
+.track-card > p {
+  margin-bottom: 16px;
+}
+
+.track-label {
+  color: var(--secondary);
+}
+
+.document-flow {
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.document-flow span {
+  min-height: 48px;
+  padding: 8px;
+  color: var(--ink);
+}
+
+.responsibility-split {
+  gap: 8px;
+}
+
+.responsibility-split div,
+.guardrail {
+  padding: 16px;
+}
+
+/* Page 06 — balanced deliverables. */
+.month-timeline {
+  margin-top: 32px;
+}
+
+.month-timeline article {
+  padding: 0 16px 24px;
+}
+
+.month-timeline h3 {
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+
+.deliverables-panel {
+  margin-top: 32px;
+  gap: 48px;
+}
+
+.deliverables-panel h3,
+.scope-guardrails h3 {
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  font-weight: 700;
+}
+
+.deliverables-panel ul {
+  align-items: start;
+}
+
+/* Page 07 — a single numeric rhythm and isolated fine print. */
+.investment-page .section-heading {
+  margin-bottom: 32px;
+}
+
+.scope-price {
+  min-height: 264px;
+}
+
+.scope-price > strong,
+.total-panel > div > strong {
+  margin: 16px 0 24px;
+  font-size: clamp(36px, 3.2vw, 42px);
+  line-height: 1;
+  letter-spacing: -.02em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.total-panel {
+  margin-top: 16px;
+}
+
+.total-panel > div {
+  padding: 24px 32px;
+}
+
+.total-panel .installment strong {
+  margin: 8px 0 0;
+  font-size: clamp(24px, 2.2vw, 30px);
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+
+.payment-note {
+  gap: 32px;
+  padding: 16px 0;
+}
+
+.payment-note p {
+  color: var(--secondary);
+}
+
+.included-note {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* Page 08 — compact closing sequence and CTA. */
+.implementation-page .section-heading {
+  margin-bottom: 32px;
+}
+
+.deadline-card {
+  padding: 24px;
+}
+
+.steps-list div {
+  min-height: 40px;
+}
+
+.steps-list p {
+  font-weight: 600;
+}
+
+.scope-guardrails {
+  padding: 24px;
+}
+
+.guardrail-grid span {
+  min-height: 40px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  color: var(--secondary);
+}
+
+.exclusions {
+  margin-top: 16px;
+  padding: 16px 0;
+}
+
+.final-cta {
+  margin-top: 16px;
+  padding: 20px 24px;
+}
+
+.final-cta h2 {
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  font-weight: 700;
+}
+
+.final-cta p {
+  color: #c1c7d0;
+}
+
+/* Prevent split cards in browser PDF engines. */
+.presence-grid article,
+.objective-band,
+.patrimonial-lane,
+.operational-lane,
+.org-node,
+.architecture-disclaimer,
+.entity-card,
+.tax-note,
+.track-card,
+.deliverables-panel,
+.scope-price,
+.total-panel,
+.payment-note,
+.included-note,
+.deadline-card,
+.steps-list div,
+.scope-guardrails,
+.exclusions,
+.final-cta {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@media (max-width: 1024px) {
+  .content-shell,
+  .proposal-footer {
+    width: min(100% - 48px, 760px);
+  }
+
+  .proposal-document {
+    padding: 0;
+  }
+
+  .proposal-page {
+    width: 100%;
+    min-height: auto;
+    margin: 0;
+    padding: 72px 0 104px;
+    box-shadow: none;
+  }
+
+  .page-content {
+    min-height: 0;
+  }
+
+  .hero-grid {
+    min-height: 760px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hero-visual {
+    min-height: 420px;
+  }
+
+  .split-heading,
+  .investment-heading {
+    gap: 48px;
+  }
+
+  .org-chart {
+    grid-template-columns: 1fr;
+  }
+
+  .operation-path {
+    margin-top: 24px;
+  }
+
+  .operation-path .org-node {
+    width: min(100%, 520px);
+  }
+
+  .operation-note {
+    margin-top: 24px;
+  }
+
+  .entity-card,
+  .track-card {
+    min-height: 0;
+  }
+
+  .entity-role {
+    position: static;
+    margin-top: 24px;
+  }
+
+  .month-timeline {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 32px;
+  }
+
+  .month-timeline::before {
+    display: none;
+  }
+
+  .month-timeline article:nth-child(2) {
+    border-right: 0;
+  }
+
+  .investment-grid,
+  .total-panel {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: clamp(14px, 3.8vw, 16px);
+  }
+
+  .content-shell,
+  .proposal-footer {
+    width: calc(100% - 32px);
+  }
+
+  .proposal-page {
+    padding: 64px 0 96px;
+  }
+
+  .proposal-footer {
+    min-height: 44px;
+    bottom: 16px;
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+
+  .proposal-footer > span {
+    text-align: center;
+  }
+
+  .proposal-footer .brand {
+    width: 64px;
+  }
+
+  .page-marker {
+    right: 0;
+  }
+
+  .page-marker small {
+    display: none;
+  }
+
+  .hero-copy h1,
+  .section-heading h2 {
+    font-size: clamp(30px, 7vw, 52px);
+  }
+
+  .hero-page {
+    padding-top: 24px;
+  }
+
+  .cover-header {
+    align-items: center;
+  }
+
+  .cover-header .brand {
+    width: 128px;
+  }
+
+  .cover-header > div:last-child {
+    max-width: 150px;
+  }
+
+  .hero-grid {
+    min-height: auto;
+    padding: 64px 0 150px;
+  }
+
+  .hero-seal {
+    width: min(100%, 300px);
+  }
+
+  .note-one {
+    left: 88px;
+    top: 24px;
+  }
+
+  .note-two {
+    right: -8px;
+    top: 132px;
+  }
+
+  .note-three {
+    bottom: 32px;
+  }
+
+  .hero-bottom {
+    bottom: 32px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .section-heading,
+  .architecture-heading,
+  .split-heading,
+  .investment-heading,
+  .objective-band,
+  .entity-comparison,
+  .two-track,
+  .month-timeline,
+  .deliverables-panel,
+  .investment-grid,
+  .total-panel,
+  .implementation-grid,
+  .responsibility-split,
+  .payment-note,
+  .guardrail-grid,
+  .tax-note,
+  .included-note,
+  .exclusions {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading,
+  .architecture-heading {
+    align-items: start;
+    gap: 24px;
+  }
+
+  .section-heading {
+    margin-bottom: 32px;
+  }
+
+  .presence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .presence-grid article,
+  .objective-band,
+  .entity-card,
+  .track-card,
+  .deliverables-panel,
+  .scope-price,
+  .scope-guardrails,
+  .deadline-card {
+    padding: 20px;
+  }
+
+  .objective-band {
+    gap: 24px;
+  }
+
+  .compact-list,
+  .deliverables-panel ul,
+  .scope-price ul {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-heading {
+    flex-direction: column;
+  }
+
+  .diagram-legend {
+    flex-wrap: wrap;
+  }
+
+  .tree-top,
+  .tree-mid {
+    width: 100%;
+  }
+
+  .tree-connector.branch {
+    width: 1px;
+    height: 24px;
+    margin: 0 auto;
+    border: 0;
+    border-left: 1px solid var(--ink);
+  }
+
+  .tree-connector.branch::before,
+  .tree-connector.branch span,
+  .tree-connector.branch i,
+  .tree-connector.branch b,
+  .tree-connector.branch em {
+    display: none;
+  }
+
+  .tree-children {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-left: 16px;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .tree-children::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8px;
+    border-left: 1px solid var(--ink);
+  }
+
+  .tree-children .org-node {
+    min-height: 112px;
+    margin: 0;
+  }
+
+  .tree-children .org-node::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -17px;
+    width: 16px;
+    border-top: 1px solid var(--ink);
+  }
+
+  .tree-children .future::before {
+    border-top-style: dashed;
+    border-color: #7d8794;
+  }
+
+  .architecture-disclaimer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .document-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .document-flow i {
+    min-height: 24px;
+    transform: rotate(90deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .document-flow b {
+    display: none;
+  }
+
+  .month-timeline article {
+    border-right: 0;
+  }
+
+  .total-panel > div:first-child {
+    border-right: 0;
+    border-bottom: 1px solid #363c48;
+  }
+
+  .total-panel .installment strong {
+    white-space: normal;
+  }
+
+  .payment-note,
+  .included-note,
+  .exclusions {
+    gap: 8px;
+  }
+
+  .deadline-card {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .final-cta {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .final-cta > div:last-child {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .final-cta .primary-button,
+  .final-cta .print-button {
+    width: 100%;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    background: white;
+    font-size: 4mm;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .proposal-document {
+    padding: 0;
+  }
+
+  .content-shell {
+    width: 178mm;
+  }
+
+  .proposal-page {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 14mm 0 24mm;
+    box-shadow: none;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .proposal-page:last-child {
+    page-break-after: auto;
+  }
+
+  .page-content {
+    min-height: 0;
+  }
+
+  .proposal-footer {
+    display: flex;
+    width: 178mm;
+    min-height: 7mm;
+    bottom: 7mm;
+    font-size: 3.2mm;
+    line-height: 1.4;
+  }
+
+  .proposal-footer .brand {
+    display: block;
+    width: 22mm;
+  }
+
+  .hero-page {
+    padding-top: 11mm;
+    padding-bottom: 20mm;
+  }
+
+  .cover-header {
+    min-height: 14mm;
+    padding-bottom: 5mm;
+  }
+
+  .cover-header .brand {
+    width: 39mm;
+  }
+
+  .cover-header .print-button,
+  .final-cta .print-button {
+    display: none;
+  }
+
+  .hero-grid {
+    width: 178mm;
+    min-height: 230mm;
+    padding: 0;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 8mm;
+  }
+
+  .hero-copy h1,
+  .section-heading h2 {
+    font-size: 12.7mm;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+  }
+
+  .hero-visual {
+    min-height: 110mm;
+  }
+
+  .hero-seal {
+    width: 92mm;
+  }
+
+  .hero-intro {
+    font-size: 3.7mm;
+  }
+
+  .hero-bottom {
+    width: 178mm;
+    bottom: 14mm;
+  }
+
+  .hero-page .proposal-footer {
+    display: none;
+  }
+
+  .section-heading,
+  .moment-page .section-heading,
+  .entities-page .section-heading,
+  .operation-page .section-heading,
+  .investment-page .section-heading,
+  .implementation-page .section-heading {
+    margin-bottom: 7mm;
+  }
+
+  .split-heading,
+  .investment-heading {
+    grid-template-columns: 1.3fr .7fr;
+    gap: 14mm;
+  }
+
+  .split-heading > p,
+  .architecture-heading > p,
+  .investment-heading > p,
+  .moment-statement p,
+  .entity-summary,
+  .track-card > p {
+    font-size: 4mm;
+  }
+
+  .moment-statement {
+    grid-template-columns: 18mm 1fr;
+    gap: 5mm;
+    padding: 5mm 0;
+  }
+
+  .presence-grid {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 5mm;
+  }
+
+  .presence-grid article {
+    min-height: 36mm;
+    padding: 5mm;
+  }
+
+  .presence-grid p {
+    margin: 4mm 0 1mm;
+  }
+
+  .presence-grid h3 {
+    font-size: 5mm;
+  }
+
+  .objective-band {
+    grid-template-columns: 1.2fr .8fr;
+    gap: 7mm;
+    margin-top: 5mm;
+    padding: 5mm 6mm;
+  }
+
+  .objective-band h3 {
+    font-size: 5mm;
+  }
+
+  .org-chart {
+    grid-template-columns: minmax(0, 2.2fr) minmax(52mm, .8fr);
+    gap: 4mm;
+  }
+
+  .patrimonial-lane,
+  .operational-lane {
+    padding: 4mm;
+  }
+
+  .tree-top {
+    width: 58%;
+    margin-top: 3mm;
+  }
+
+  .tree-mid {
+    width: 49%;
+  }
+
+  .org-node {
+    min-height: 26mm;
+    padding: 3mm;
+  }
+
+  .tree-children {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+    margin: 2mm 0 0;
+    padding: 0;
+  }
+
+  .tree-children::before,
+  .tree-children .org-node::before {
+    display: none;
+  }
+
+  .tree-children .org-node {
+    min-height: 27mm;
+  }
+
+  .tree-connector.branch {
+    display: block;
+    width: 68%;
+    height: 9mm;
+    margin: 0 auto;
+    border: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .tree-connector.branch::before,
+  .tree-connector.branch span,
+  .tree-connector.branch i,
+  .tree-connector.branch b,
+  .tree-connector.branch em {
+    display: block;
+  }
+
+  .operation-path {
+    margin-top: 5mm;
+  }
+
+  .operation-path .org-node {
+    width: 90%;
+  }
+
+  .architecture-disclaimer {
+    margin-top: 4mm;
+    padding: 4mm;
+  }
+
+  .entity-comparison,
+  .two-track,
+  .investment-grid,
+  .total-panel,
+  .implementation-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .entity-card {
+    min-height: 112mm;
+    padding: 5mm 6mm 17mm;
+  }
+
+  .entity-card h3,
+  .track-card h3 {
+    margin: 5mm 0 2.5mm;
+    font-size: 7mm;
+  }
+
+  .entity-role {
+    position: absolute;
+    right: 6mm;
+    bottom: 5mm;
+    left: 6mm;
+    margin: 0;
+    padding-top: 3mm;
+  }
+
+  .tax-note {
+    grid-template-columns: 38mm 1fr;
+    margin-top: 4mm;
+    padding: 4mm 5mm;
+  }
+
+  .track-card {
+    min-height: 115mm;
+    padding: 5mm;
+  }
+
+  .document-flow {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    margin: 3mm 0;
+  }
+
+  .document-flow i {
+    min-height: 0;
+    transform: none;
+    display: block;
+  }
+
+  .document-flow b {
+    display: block;
+  }
+
+  .document-flow span {
+    min-height: 10mm;
+    padding: 2mm;
+  }
+
+  .responsibility-split,
+  .payment-note,
+  .guardrail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .month-timeline {
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 0;
+    margin-top: 7mm;
+  }
+
+  .month-timeline::before {
+    display: block;
+  }
+
+  .month-timeline article,
+  .month-timeline article:nth-child(2) {
+    padding: 0 4mm 6mm;
+    border-right: 1px solid #d8dfe7;
+  }
+
+  .month-timeline article:last-child {
+    border-right: 0;
+  }
+
+  .deliverables-panel {
+    grid-template-columns: .75fr 1.25fr;
+    gap: 10mm;
+    margin-top: 7mm;
+    padding: 6mm;
+  }
+
+  .deliverables-panel ul,
+  .scope-price ul {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scope-price {
+    min-height: 61mm;
+    padding: 5mm 6mm;
+  }
+
+  .scope-price > strong,
+  .total-panel > div > strong {
+    font-size: 10mm;
+    margin: 3mm 0 4mm;
+  }
+
+  .total-panel {
+    margin-top: 4mm;
+  }
+
+  .total-panel > div {
+    padding: 5mm 6mm;
+  }
+
+  .total-panel > div:first-child {
+    border-right: 1px solid #363c48;
+    border-bottom: 0;
+  }
+
+  .total-panel .installment strong {
+    font-size: 6mm;
+    white-space: nowrap;
+  }
+
+  .payment-note {
+    gap: 6mm;
+    padding: 3mm 0;
+  }
+
+  .included-note {
+    grid-template-columns: 38mm 1fr;
+    gap: 4mm;
+    margin-top: 3mm;
+    padding-bottom: 4mm;
+  }
+
+  .deadline-card {
+    min-width: 50mm;
+    width: auto;
+    padding: 4mm;
+  }
+
+  .implementation-grid {
+    gap: 5mm;
+  }
+
+  .steps-list div {
+    min-height: 8mm;
+  }
+
+  .scope-guardrails {
+    padding: 5mm;
+  }
+
+  .guardrail-grid span {
+    min-height: 8mm;
+    padding: 2mm;
+  }
+
+  .exclusions {
+    grid-template-columns: 36mm 1fr;
+    gap: 4mm;
+    margin-top: 3mm;
+    padding: 3mm 0;
+  }
+
+  .final-cta {
+    align-items: center;
+    flex-direction: row;
+    gap: 5mm;
+    margin-top: 3mm;
+    padding: 4mm 5mm;
+  }
+
+  .final-cta h2 {
+    font-size: 5.5mm;
+  }
+
+  .final-cta > div:last-child {
+    width: auto;
+    flex-direction: row;
+  }
+
+  .final-cta .primary-button {
+    width: auto;
+    pointer-events: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Editorial document mode — the HTML behaves as an A4 proposal viewer.
+   -------------------------------------------------------------------------- */
+
+body {
+  background: #dce1e7;
+}
+
+.proposal-document {
+  padding: 72px 0 56px;
+}
+
+.document-toolbar {
+  width: min(210mm, calc(100% - 32px));
+  min-height: 48px;
+  margin: -56px auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.document-toolbar .print-button {
+  min-width: 74px;
+  min-height: 44px;
+  border: 1px solid #aeb6c1;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .78);
+  color: var(--ink);
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+}
+
+.proposal-page {
+  width: min(210mm, calc(100% - 32px));
+  height: 297mm;
+  min-height: 297mm;
+  margin: 0 auto 32px;
+  padding: 20mm 18mm 24mm;
+  box-shadow: 0 18px 50px rgba(31, 41, 55, .16);
+}
+
+.proposal-page:last-child {
+  margin-bottom: 0;
+}
+
+.content-shell,
+.proposal-footer {
+  width: 100%;
+}
+
+.page-content {
+  min-height: 0;
+}
+
+.proposal-footer {
+  width: calc(100% - 36mm);
+  bottom: 8mm;
+  min-height: 7mm;
+  font-size: 10px;
+  letter-spacing: .1em;
+}
+
+.proposal-footer .brand {
+  width: 23mm;
+}
+
+.page-marker {
+  right: 0;
+}
+
+.print-button,
+.primary-button {
+  border-radius: 2px;
+}
+
+.section-heading {
+  margin-bottom: 8mm;
+  padding-top: 5mm;
+  border-top: 1px solid #cfd6de;
+}
+
+.section-heading h2 {
+  max-width: 138mm;
+  font-size: 40px;
+  line-height: 1.04;
+}
+
+.split-heading,
+.investment-heading {
+  grid-template-columns: 1.25fr .75fr;
+  gap: 12mm;
+}
+
+.split-heading > p,
+.architecture-heading > p,
+.investment-heading > p,
+.hero-intro,
+.moment-statement p,
+.entity-summary,
+.track-card > p {
+  font-size: 14px;
+}
+
+.presence-grid article,
+.objective-band,
+.patrimonial-lane,
+.operational-lane,
+.entity-card,
+.track-card,
+.deliverables-panel,
+.scope-price,
+.scope-guardrails,
+.deadline-card,
+.final-cta {
+  border-radius: 0;
+}
+
+.org-node,
+.operation-note,
+.architecture-disclaimer,
+.guardrail,
+.responsibility-split div {
+  border-radius: 2px;
+}
+
+/* Cover: editorial front page instead of a landing-page hero. */
+.hero-page {
+  padding: 14mm 18mm 20mm;
+}
+
+.hero-page::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 9mm;
+  background: var(--ink);
+}
+
+.hero-page::after {
+  display: none;
+}
+
+.cover-header {
+  min-height: 18mm;
+  padding-bottom: 5mm;
+  border-bottom-color: #cfd6de;
+}
+
+.cover-header .brand {
+  width: 40mm;
+}
+
+.cover-header > div:last-child {
+  max-width: 76mm;
+}
+
+.cover-header span {
+  font-size: 9px;
+}
+
+.cover-header strong {
+  font-size: 11px;
+}
+
+.hero-grid {
+  width: 100%;
+  min-height: 230mm;
+  display: block;
+  padding-top: 28mm;
+  position: relative;
+}
+
+.hero-copy {
+  width: 100%;
+}
+
+.hero-copy .eyebrow {
+  margin-bottom: 7mm;
+}
+
+.hero-copy h1 {
+  max-width: 150mm;
+  font-size: 48px;
+  line-height: 1.02;
+  letter-spacing: -.02em;
+}
+
+.hero-copy h1 span {
+  color: #68717d;
+}
+
+.hero-intro {
+  width: 126mm;
+  margin-top: 9mm;
+  font-size: 15px;
+}
+
+.hero-promise {
+  width: 112mm;
+  margin-top: 12mm;
+  padding: 1mm 0 1mm 5mm;
+  gap: 1mm;
+  font-size: 12px;
+}
+
+.hero-visual {
+  position: absolute;
+  right: 0;
+  bottom: 25mm;
+  width: 58mm;
+  min-height: 58mm;
+}
+
+.hero-seal {
+  width: 53mm;
+  background: transparent;
+  border: 1px solid #d9dfe6;
+}
+
+.orbit-one {
+  inset: 10mm;
+}
+
+.orbit-two,
+.seal-note {
+  display: none;
+}
+
+.seal-core {
+  width: 27mm;
+  height: 27mm;
+  box-shadow: 0 8px 24px rgba(25, 35, 50, .08);
+}
+
+.seal-core .brand.mark-only {
+  width: 11mm;
+}
+
+.hero-caption {
+  right: 0;
+  bottom: -13mm;
+  width: 58mm;
+  font-size: 9px;
+}
+
+.hero-caption strong {
+  font-size: 10px;
+}
+
+.hero-bottom {
+  width: calc(100% - 36mm);
+  left: 18mm;
+  bottom: 12mm;
+  transform: none;
+  font-size: 9px;
+}
+
+/* Interior pages: tighter pitch-book rhythm. */
+.moment-page .section-heading,
+.entities-page .section-heading,
+.operation-page .section-heading,
+.investment-page .section-heading,
+.implementation-page .section-heading {
+  margin-bottom: 8mm;
+}
+
+.moment-statement {
+  grid-template-columns: 16mm 1fr;
+  gap: 5mm;
+  padding: 5mm 0;
+}
+
+.presence-grid {
+  margin-top: 6mm;
+}
+
+.presence-grid article {
+  min-height: 39mm;
+  padding: 5mm;
+}
+
+.presence-grid p {
+  margin: 5mm 0 1.5mm;
+}
+
+.presence-grid h3 {
+  font-size: 19px;
+}
+
+.objective-band {
+  margin-top: 6mm;
+  padding: 6mm;
+  gap: 8mm;
+}
+
+.objective-band h3 {
+  font-size: 20px;
+}
+
+.architecture-heading {
+  align-items: flex-end;
+}
+
+.architecture-page .section-heading,
+.operation-page .section-heading {
+  margin-bottom: 6mm;
+}
+
+.architecture-page .section-heading h2,
+.operation-page .section-heading h2 {
+  font-size: 36px;
+}
+
+.org-chart {
+  grid-template-columns: minmax(0, 2.15fr) minmax(51mm, .85fr);
+  gap: 4mm;
+}
+
+.patrimonial-lane,
+.operational-lane {
+  padding: 4mm;
+}
+
+.tree-top {
+  width: 58%;
+  margin-top: 4mm;
+}
+
+.tree-mid {
+  width: 50%;
+}
+
+.org-node {
+  min-height: 27mm;
+  padding: 3mm;
+  box-shadow: none;
+}
+
+.architecture-page .node-badge {
+  padding: 4px 6px;
+  font-size: 9px;
+  line-height: 1.15;
+}
+
+.architecture-page .org-node > p {
+  margin-top: 9px;
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.architecture-page .org-node h3 {
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.architecture-page .org-node > small,
+.architecture-page .operation-note p {
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.tree-children {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3mm;
+}
+
+.tree-children .org-node {
+  min-height: 27mm;
+  min-width: 0;
+}
+
+.tree-children .node-topline {
+  align-items: flex-start;
+}
+
+.tree-children .node-badge {
+  max-width: calc(100% - 30px);
+  white-space: normal;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.operation-path {
+  margin-top: 6mm;
+}
+
+.operation-path .org-node.person {
+  min-height: 25mm;
+}
+
+.operation-path .org-node.operational {
+  min-height: 34mm;
+}
+
+.architecture-disclaimer {
+  margin-top: 4mm;
+  padding: 4mm 5mm;
+}
+
+.entity-comparison,
+.two-track {
+  gap: 5mm;
+}
+
+.entity-card {
+  min-height: 116mm;
+  padding: 6mm 6mm 17mm;
+}
+
+.entity-card h3,
+.track-card h3 {
+  margin: 6mm 0 3mm;
+  font-size: 27px;
+}
+
+.entity-role {
+  right: 6mm;
+  bottom: 5mm;
+  left: 6mm;
+}
+
+.tax-note {
+  margin-top: 5mm;
+  padding: 4mm 5mm;
+}
+
+.track-card {
+  min-height: 119mm;
+  padding: 6mm;
+}
+
+.document-flow {
+  margin: 4mm 0;
+}
+
+.document-flow span {
+  min-height: 11mm;
+}
+
+.month-timeline {
+  margin-top: 8mm;
+}
+
+.month-timeline article {
+  padding: 0 4mm 6mm;
+}
+
+.deliverables-panel {
+  margin-top: 8mm;
+  padding: 7mm;
+  gap: 10mm;
+}
+
+.scope-price {
+  min-height: 66mm;
+  padding: 6mm;
+}
+
+.total-panel {
+  margin-top: 4mm;
+}
+
+.total-panel > div {
+  padding: 5mm 6mm;
+}
+
+.payment-note {
+  padding: 4mm 0;
+}
+
+.included-note {
+  margin-top: 4mm;
+  padding-bottom: 4mm;
+}
+
+.implementation-grid {
+  gap: 5mm;
+}
+
+.steps-list div {
+  min-height: 9mm;
+}
+
+.scope-guardrails {
+  padding: 6mm;
+}
+
+.exclusions {
+  margin-top: 4mm;
+  padding: 4mm 0;
+}
+
+.final-cta {
+  margin-top: 4mm;
+  padding: 5mm 6mm;
+}
+
+.final-cta h2 {
+  font-size: 22px;
+}
+
+@media (max-width: 1024px) {
+  .proposal-document {
+    padding: 64px 0 40px;
+  }
+
+  .document-toolbar {
+    width: calc(100% - 32px);
+    margin-top: -52px;
+  }
+
+  .proposal-page {
+    width: calc(100% - 32px);
+    height: auto;
+    min-height: auto;
+    margin-bottom: 20px;
+    padding: 72px 48px 104px;
+  }
+
+  .proposal-footer {
+    width: calc(100% - 96px);
+    bottom: 24px;
+  }
+
+  .hero-page {
+    min-height: 1040px;
+    padding: 48px 48px 88px;
+  }
+
+  .hero-page::before {
+    width: 14px;
+  }
+
+  .hero-grid {
+    min-height: 850px;
+    padding-top: 112px;
+  }
+
+  .hero-intro,
+  .hero-promise {
+    width: min(100%, 600px);
+  }
+
+  .hero-visual {
+    right: 0;
+    bottom: 112px;
+    width: 220px;
+    min-height: 220px;
+  }
+
+  .hero-seal {
+    width: 200px;
+  }
+
+  .hero-bottom {
+    width: calc(100% - 96px);
+    left: 48px;
+    bottom: 40px;
+  }
+
+  .org-chart {
+    grid-template-columns: 1fr;
+  }
+
+  .entity-card,
+  .track-card {
+    min-height: 0;
+  }
+
+  .entity-role {
+    position: static;
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .proposal-document {
+    padding-top: 56px;
+  }
+
+  .document-toolbar,
+  .proposal-page {
+    width: calc(100% - 16px);
+  }
+
+  .document-toolbar {
+    margin-top: -52px;
+  }
+
+  .proposal-page {
+    padding: 64px 20px 96px;
+  }
+
+  .proposal-footer {
+    width: calc(100% - 40px);
+    bottom: 18px;
+  }
+
+  .hero-page {
+    min-height: 920px;
+    padding: 28px 20px 80px;
+  }
+
+  .hero-page::before {
+    width: 8px;
+  }
+
+  .cover-header .brand {
+    width: 126px;
+  }
+
+  .cover-header > div:last-child {
+    max-width: 150px;
+  }
+
+  .hero-grid {
+    min-height: 760px;
+    padding: 88px 0 0;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(34px, 10.6vw, 46px);
+  }
+
+  .hero-intro {
+    margin-top: 28px;
+  }
+
+  .hero-promise {
+    margin-top: 36px;
+  }
+
+  .hero-visual {
+    right: 0;
+    bottom: 82px;
+    width: 150px;
+    min-height: 150px;
+  }
+
+  .hero-seal {
+    width: 142px;
+  }
+
+  .seal-core {
+    width: 72px;
+    height: 72px;
+  }
+
+  .hero-caption {
+    display: none;
+  }
+
+  .hero-bottom {
+    width: calc(100% - 40px);
+    left: 20px;
+    bottom: 24px;
+  }
+
+  .section-heading {
+    padding-top: 20px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(32px, 9vw, 42px);
+  }
+
+  .tree-top,
+  .tree-mid {
+    width: 100%;
+  }
+
+  .entity-card,
+  .track-card,
+  .deliverables-panel,
+  .scope-price,
+  .scope-guardrails,
+  .deadline-card {
+    padding: 20px;
+  }
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    background: white;
+  }
+
+  .proposal-document {
+    padding: 0;
+  }
+
+  .document-toolbar {
+    display: none;
+  }
+
+  .proposal-page {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 20mm 18mm 24mm;
+    box-shadow: none;
+  }
+
+  .hero-page {
+    min-height: 297mm;
+    padding: 14mm 18mm 20mm;
+  }
+
+  .proposal-footer {
+    width: calc(100% - 36mm);
+    bottom: 8mm;
+  }
+
+  .hero-grid {
+    min-height: 230mm;
+    padding-top: 28mm;
+  }
+
+  .hero-visual {
+    right: 0;
+    bottom: 25mm;
+    width: 58mm;
+    min-height: 58mm;
+  }
+
+  .hero-seal {
+    width: 53mm;
+  }
+
+  .hero-bottom {
+    width: calc(100% - 36mm);
+    left: 18mm;
+    bottom: 12mm;
+  }
+
+  .org-chart {
+    grid-template-columns: minmax(0, 2.15fr) minmax(51mm, .85fr);
+  }
+
+  .entity-card,
+  .track-card {
+    min-height: 116mm;
+  }
+
+  .entity-role {
+    position: absolute;
+    margin: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Onebridge brand direction — air, imagery, asymmetry and quiet confidence.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --brand-mist: #edf3f8;
+  --brand-mist-soft: #f6f8fa;
+  --brand-ink: #191b24;
+  --brand-lime: #d8f436;
+}
+
+body {
+  background: #e9eef3;
+}
+
+.proposal-page {
+  box-shadow: 0 24px 70px rgba(36, 46, 60, .10);
+}
+
+.moment-page,
+.entities-page,
+.timeline-page,
+.implementation-page {
+  background: var(--brand-mist);
+}
+
+.architecture-page,
+.operation-page,
+.investment-page,
+.hero-page {
+  background: #fff;
+}
+
+.section-heading,
+.moment-page .section-heading,
+.entities-page .section-heading,
+.operation-page .section-heading,
+.investment-page .section-heading,
+.implementation-page .section-heading,
+.architecture-page .section-heading {
+  margin-bottom: 11mm;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.section-heading h2,
+.architecture-page .section-heading h2,
+.operation-page .section-heading h2 {
+  max-width: 122mm;
+  font-size: 34px;
+  line-height: 1.08;
+  letter-spacing: -.018em;
+  font-weight: 650;
+}
+
+.eyebrow {
+  margin-bottom: 3mm;
+  font-size: 9px;
+  letter-spacing: .15em;
+}
+
+.page-marker {
+  top: -1mm;
+  color: #a7b0bb;
+}
+
+.page-marker span {
+  color: #6f7885;
+}
+
+.page-marker i {
+  width: 12mm;
+  background: #d5dce4;
+}
+
+.page-marker small {
+  color: #8b95a2;
+  font-size: 8px;
+  letter-spacing: .16em;
+}
+
+.proposal-footer {
+  border-top: 1px solid rgba(156, 167, 180, .28);
+  padding-top: 4mm;
+  color: #8a94a1;
+}
+
+.proposal-footer .brand {
+  opacity: .85;
+}
+
+/* Cover — website-style centered promise followed by one strong visual. */
+.hero-page {
+  padding: 11mm 18mm 20mm;
+}
+
+.hero-page::before,
+.hero-page::after {
+  display: none;
+}
+
+.cover-header {
+  min-height: 13mm;
+  padding-bottom: 4mm;
+  border-bottom: 0;
+  align-items: flex-start;
+}
+
+.cover-header .brand {
+  width: 31mm;
+}
+
+.cover-header span {
+  color: #8d96a2;
+  font-size: 8px;
+}
+
+.cover-header strong {
+  color: #6c7582;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.hero-grid {
+  min-height: 237mm;
+  padding-top: 16mm;
+  position: relative;
+}
+
+.hero-copy {
+  position: static;
+  width: 100%;
+  text-align: center;
+}
+
+.hero-copy .eyebrow {
+  margin-bottom: 4mm;
+}
+
+.hero-copy h1 {
+  max-width: 124mm;
+  margin: 0 auto;
+  font-size: 36px;
+  line-height: 1.08;
+  letter-spacing: -.018em;
+  font-weight: 650;
+}
+
+.hero-copy h1 span {
+  display: block;
+  color: inherit;
+}
+
+.hero-intro {
+  width: auto;
+  max-width: 114mm;
+  margin: 5mm auto 0;
+  color: #6c7582;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.hero-visual {
+  position: absolute;
+  right: 0;
+  bottom: 28mm;
+  width: 100%;
+  min-height: 91mm;
+  overflow: visible;
+}
+
+.hero-seal {
+  width: 100%;
+  height: 91mm;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background:
+    linear-gradient(110deg, rgba(16, 21, 31, .18), transparent 38%),
+    linear-gradient(160deg, #dfe8ef, #f4f7f9 48%, #c8d5df);
+  box-shadow: 0 18px 45px rgba(26, 35, 47, .12);
+}
+
+.hero-seal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 61%, rgba(255, 255, 255, .42) 61% 61.4%, transparent 61.4%),
+    linear-gradient(0deg, transparent 0 36%, rgba(255, 255, 255, .38) 36% 36.5%, transparent 36.5%);
+}
+
+.orbit-one {
+  inset: auto 20mm 10mm auto;
+  width: 48mm;
+  height: 48mm;
+  border-color: rgba(255, 255, 255, .58);
+}
+
+.orbit-two {
+  display: block;
+  inset: auto 29mm 19mm auto;
+  width: 30mm;
+  height: 30mm;
+  border-color: rgba(255, 255, 255, .68);
+}
+
+.seal-core {
+  position: absolute;
+  right: 29mm;
+  bottom: 19mm;
+  width: 30mm;
+  height: 30mm;
+  border: 1px solid rgba(255, 255, 255, .68);
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 12px 32px rgba(24, 33, 45, .15);
+}
+
+.seal-core .brand.mark-only {
+  width: 11mm;
+}
+
+.seal-note {
+  display: block;
+  z-index: 4;
+  padding: 2.5mm 4mm;
+  border: 0;
+  border-radius: 2px;
+  color: #3d4652;
+  font-size: 8px;
+  box-shadow: 0 8px 24px rgba(27, 36, 48, .12);
+}
+
+.note-one {
+  top: 12mm;
+  left: 22mm;
+}
+
+.note-two {
+  top: 34mm;
+  right: 11mm;
+}
+
+.note-three {
+  top: 15mm;
+  bottom: auto;
+  left: 76mm;
+}
+
+.hero-caption {
+  right: 4mm;
+  bottom: 4mm;
+  width: auto;
+  padding: 3mm 4mm;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .90);
+  color: #747e8b;
+  font-size: 8px;
+  box-shadow: 0 8px 22px rgba(28, 37, 49, .10);
+}
+
+.hero-caption strong {
+  font-size: 9px;
+}
+
+.hero-promise {
+  position: absolute;
+  z-index: 6;
+  left: 11mm;
+  bottom: 17mm;
+  width: 74mm;
+  margin: 0;
+  padding: 4mm 5mm;
+  border: 0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .94);
+  color: #6d7683;
+  text-align: left;
+  box-shadow: 0 12px 30px rgba(24, 33, 45, .14);
+}
+
+.hero-promise::before {
+  content: "";
+  position: absolute;
+  top: 4mm;
+  bottom: 4mm;
+  left: 0;
+  width: 2px;
+  background: var(--brand-lime);
+}
+
+.hero-promise strong {
+  color: var(--brand-ink);
+}
+
+.hero-bottom {
+  width: calc(100% - 36mm);
+  left: 18mm;
+  bottom: 8mm;
+  padding-top: 3mm;
+  border-top-color: #dce2e8;
+  color: #929ba7;
+  font-size: 8px;
+}
+
+/* Page 02 — pale field, three quiet tiles and the signature dark band. */
+.moment-page .section-heading {
+  padding-top: 17mm;
+}
+
+.moment-page .section-heading h2 {
+  max-width: 92mm;
+}
+
+.moment-statement {
+  padding: 6mm 0;
+  border-color: rgba(156, 168, 181, .30);
+}
+
+.moment-statement p {
+  max-width: 142mm;
+  color: #4f5966;
+  font-size: 13px;
+}
+
+.presence-grid {
+  gap: 4mm;
+  margin-top: 8mm;
+  border: 0;
+  background: transparent;
+}
+
+.presence-grid article {
+  min-height: 42mm;
+  padding: 6mm;
+  border: 1px solid rgba(170, 181, 193, .22);
+  background: rgba(255, 255, 255, .76);
+}
+
+.presence-grid article:nth-child(2) {
+  transform: translateY(4mm);
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(33, 43, 56, .08);
+}
+
+.objective-band {
+  margin-top: 11mm;
+  padding: 6mm 7mm;
+  border-radius: 5px;
+  box-shadow: 0 16px 34px rgba(21, 25, 35, .18);
+}
+
+/* Page 03 — the organogram is the hero visual, not a stack of equal cards. */
+.architecture-page .section-heading {
+  display: grid;
+  justify-items: center;
+  margin-bottom: 6mm;
+  padding-top: 4mm;
+  text-align: center;
+}
+
+.architecture-page .section-heading h2 {
+  max-width: 104mm;
+}
+
+.architecture-page .diagram-legend {
+  justify-content: center;
+  padding-top: 1mm;
+}
+
+.org-chart {
+  padding: 4mm;
+  gap: 5mm;
+  border-radius: 5px;
+  background: var(--brand-mist);
+}
+
+.patrimonial-lane,
+.operational-lane {
+  border: 0;
+  background: transparent;
+}
+
+.org-node {
+  border-color: rgba(171, 181, 193, .34);
+  box-shadow: 0 10px 25px rgba(28, 38, 51, .06);
+}
+
+.org-node.foundation {
+  transform: translateY(-2mm);
+  box-shadow: 0 16px 34px rgba(17, 21, 31, .18);
+}
+
+.tree-children .org-node {
+  background: rgba(255, 255, 255, .82);
+}
+
+.tree-children .future {
+  background: rgba(255, 255, 255, .35);
+}
+
+.architecture-disclaimer {
+  margin-top: 3mm;
+  padding: 3mm 4mm;
+  border-radius: 5px;
+  box-shadow: 0 14px 30px rgba(19, 24, 34, .14);
+}
+
+/* Page 04 — asymmetric editorial cards, like the website's case studies. */
+.entities-page .section-heading {
+  padding-top: 13mm;
+}
+
+.entity-comparison {
+  grid-template-columns: .92fr 1.08fr;
+  gap: 6mm;
+  align-items: start;
+}
+
+.entity-card {
+  border: 0;
+  border-radius: 4px;
+}
+
+.foundation-card {
+  transform: translateY(9mm);
+  box-shadow: 0 18px 40px rgba(21, 25, 35, .18);
+}
+
+.holding-card {
+  box-shadow: 0 15px 36px rgba(33, 43, 56, .08);
+}
+
+.tax-note {
+  margin-top: 14mm;
+  border: 0;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .74);
+}
+
+/* Page 05 — one dark pillar and one spacious documentary canvas. */
+.operation-page .section-heading {
+  padding-top: 8mm;
+}
+
+.two-track {
+  grid-template-columns: .84fr 1.16fr;
+  gap: 6mm;
+  align-items: stretch;
+}
+
+.track-card {
+  border: 0;
+  border-radius: 4px;
+}
+
+.e2-track {
+  transform: translateY(6mm);
+  box-shadow: 0 18px 40px rgba(21, 25, 35, .18);
+}
+
+.brazil-track {
+  background: var(--brand-mist);
+}
+
+.document-flow span,
+.responsibility-split div {
+  border: 0;
+  box-shadow: 0 8px 20px rgba(37, 48, 62, .05);
+}
+
+/* Page 06 — airy timeline with an elevated deliverables card. */
+.timeline-page .section-heading {
+  padding-top: 14mm;
+}
+
+.month-timeline article {
+  border-color: rgba(156, 168, 181, .32);
+}
+
+.deliverables-panel {
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 16px 38px rgba(34, 44, 57, .08);
+}
+
+/* Page 07 — pricing culminates in the website's dark signature band. */
+.investment-page .section-heading {
+  padding-top: 10mm;
+}
+
+.scope-price {
+  border: 0;
+  border-radius: 4px;
+  background: var(--brand-mist-soft);
+}
+
+.scope-price:nth-child(2) {
+  background: #fff;
+  border: 1px solid #e0e6ec;
+}
+
+.total-panel {
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 17px 38px rgba(21, 25, 35, .18);
+}
+
+/* Page 08 — quiet close with the dark approval band floating above the footer. */
+.implementation-page .section-heading {
+  padding-top: 9mm;
+}
+
+.scope-guardrails {
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 14px 34px rgba(33, 43, 56, .07);
+}
+
+.guardrail-grid span {
+  background: var(--brand-mist-soft);
+}
+
+.final-cta {
+  border-radius: 5px;
+  box-shadow: 0 17px 38px rgba(21, 25, 35, .18);
+}
+
+@media (max-width: 1024px) {
+  .hero-grid {
+    min-height: 850px;
+    padding-top: 72px;
+  }
+
+  .hero-visual {
+    right: 0;
+    bottom: 112px;
+    width: 100%;
+    min-height: 360px;
+  }
+
+  .hero-seal {
+    width: 100%;
+    height: 360px;
+  }
+
+  .hero-promise {
+    left: 42px;
+    bottom: 60px;
+    width: min(360px, calc(100% - 84px));
+  }
+
+  .entity-comparison,
+  .two-track {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .foundation-card,
+  .e2-track {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-grid {
+    min-height: 760px;
+    padding-top: 72px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(31px, 9.4vw, 40px);
+  }
+
+  .hero-visual {
+    bottom: 88px;
+    min-height: 300px;
+  }
+
+  .hero-seal {
+    height: 300px;
+  }
+
+  .seal-core {
+    right: 22px;
+    bottom: 68px;
+    width: 82px;
+    height: 82px;
+  }
+
+  .orbit-one {
+    right: 12px;
+    bottom: 56px;
+    width: 106px;
+    height: 106px;
+  }
+
+  .orbit-two {
+    right: 24px;
+    bottom: 68px;
+    width: 82px;
+    height: 82px;
+  }
+
+  .hero-promise {
+    left: 20px;
+    bottom: 24px;
+    width: calc(100% - 40px);
+  }
+
+  .note-one {
+    top: 24px;
+    left: 18px;
+  }
+
+  .note-two {
+    top: 118px;
+    right: 14px;
+  }
+
+  .note-three {
+    top: auto;
+    bottom: 92px;
+    left: 44px;
+  }
+
+  .hero-caption {
+    display: none;
+  }
+
+  .section-heading,
+  .architecture-page .section-heading {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .section-heading h2,
+  .architecture-page .section-heading h2,
+  .operation-page .section-heading h2 {
+    font-size: clamp(30px, 8.6vw, 38px);
+  }
+
+  .presence-grid article:nth-child(2) {
+    transform: none;
+  }
+
+  .entity-comparison,
+  .two-track {
+    grid-template-columns: 1fr;
+  }
+
+  .foundation-card,
+  .e2-track {
+    transform: none;
+  }
+}
+
+@media print {
+  .hero-grid {
+    min-height: 237mm;
+    padding-top: 16mm;
+  }
+
+  .hero-visual {
+    right: 0;
+    bottom: 28mm;
+    width: 100%;
+    min-height: 91mm;
+  }
+
+  .hero-seal {
+    width: 100%;
+    height: 91mm;
+  }
+
+  .hero-promise {
+    left: 11mm;
+    bottom: 17mm;
+    width: 74mm;
+  }
+
+  .entity-comparison {
+    grid-template-columns: .92fr 1.08fr;
+  }
+
+  .two-track {
+    grid-template-columns: .84fr 1.16fr;
+  }
+
+  .foundation-card {
+    transform: translateY(9mm);
+  }
+
+  .e2-track {
+    transform: translateY(6mm);
+  }
+}
+
+/* Cover correction — brand signature, not a reproduction of the website. */
+.hero-seal {
+  border: 1px solid #dfe6ec;
+  background:
+    linear-gradient(90deg, var(--brand-mist) 0 67%, var(--brand-ink) 67% 100%);
+  box-shadow: 0 18px 42px rgba(29, 39, 52, .08);
+}
+
+.hero-seal::before {
+  content: "";
+  position: absolute;
+  inset: 9mm 18mm 9mm 12mm;
+  z-index: 1;
+  border-top: 1px solid rgba(94, 108, 123, .18);
+  border-bottom: 1px solid rgba(94, 108, 123, .18);
+  background:
+    linear-gradient(90deg, transparent 0 43%, rgba(94, 108, 123, .14) 43% 43.2%, transparent 43.2%),
+    linear-gradient(0deg, transparent 0 54%, rgba(94, 108, 123, .14) 54% 54.3%, transparent 54.3%);
+}
+
+.hero-seal::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 16mm;
+  top: 14mm;
+  width: 56mm;
+  height: 56mm;
+  background: url("/proposal-assets/familia-silva/onebridge-logomark.png") center / contain no-repeat;
+  opacity: .035;
+}
+
+.orbit-one {
+  z-index: 2;
+  right: 18mm;
+  bottom: 10mm;
+  width: 54mm;
+  height: 54mm;
+  border-color: rgba(216, 244, 54, .44);
+}
+
+.orbit-two {
+  z-index: 2;
+  right: 27mm;
+  bottom: 19mm;
+  width: 36mm;
+  height: 36mm;
+  border-color: rgba(255, 255, 255, .30);
+}
+
+.seal-core {
+  z-index: 3;
+  right: 27mm;
+  bottom: 19mm;
+  width: 36mm;
+  height: 36mm;
+  border-color: rgba(255, 255, 255, .20);
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .18);
+}
+
+.seal-note {
+  z-index: 4;
+  padding: 0 0 0 3mm;
+  border: 0;
+  border-left: 2px solid var(--brand-lime);
+  border-radius: 0;
+  background: transparent;
+  color: #4b5663;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+
+.note-one {
+  top: 17mm;
+  left: 17mm;
+}
+
+.note-two {
+  top: 17mm;
+  right: 14mm;
+  color: #fff;
+}
+
+.note-three {
+  top: 38mm;
+  bottom: auto;
+  left: 69mm;
+}
+
+.hero-promise {
+  left: 9mm;
+  bottom: 9mm;
+  width: 78mm;
+  padding: 5mm 6mm;
+  background: var(--brand-ink);
+  color: #aeb6c1;
+  box-shadow: 0 14px 30px rgba(20, 25, 35, .18);
+}
+
+.hero-promise strong {
+  color: #fff;
+}
+
+.hero-caption {
+  right: 5mm;
+  bottom: 5mm;
+  padding: 0;
+  background: transparent;
+  color: #929ba7;
+  box-shadow: none;
+}
+
+.hero-caption strong {
+  color: #fff;
+}
+
+.hero-caption i {
+  background: var(--brand-lime);
+}
+
+@media (max-width: 640px) {
+  .hero-seal {
+    background: linear-gradient(180deg, var(--brand-mist) 0 64%, var(--brand-ink) 64% 100%);
+  }
+
+  .hero-seal::before {
+    inset: 18px;
+  }
+
+  .hero-seal::after {
+    left: 28px;
+    top: 36px;
+    width: 150px;
+    height: 150px;
+  }
+
+  .note-one {
+    top: 28px;
+    left: 24px;
+  }
+
+  .note-two {
+    top: auto;
+    right: 22px;
+    bottom: 96px;
+  }
+
+  .note-three {
+    top: 116px;
+    bottom: auto;
+    left: 42px;
+  }
+
+  .hero-promise {
+    left: 20px;
+    bottom: 24px;
+    width: calc(100% - 40px);
+  }
+}
+
+@media print {
+  .hero-promise {
+    left: 9mm;
+    bottom: 9mm;
+    width: 78mm;
+  }
+}
+
+/* Proposal refinement — editorial cover and explicit accounting/tax scope. */
+.hero-page::before,
+.hero-page::after {
+  display: none;
+}
+
+.hero-page .hero-grid {
+  position: relative;
+  display: block;
+  min-height: 237mm;
+  padding-top: 17mm;
+}
+
+.hero-page .hero-copy {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: center;
+}
+
+.hero-page .hero-copy h1 {
+  max-width: 124mm;
+}
+
+.cover-editorial {
+  position: absolute;
+  right: 0;
+  bottom: 28mm;
+  left: 0;
+  height: 82mm;
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--brand-ink);
+  box-shadow: 0 18px 42px rgba(25, 31, 42, .12);
+}
+
+.cover-editorial::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42mm;
+  height: 2px;
+  background: var(--brand-lime);
+}
+
+.cover-editorial-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 11mm 12mm;
+}
+
+.cover-editorial-copy > span {
+  margin-bottom: 6mm;
+  color: var(--brand-lime);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.cover-editorial-copy strong {
+  max-width: 92mm;
+  color: #fff;
+  font-size: 26px;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  font-weight: 620;
+}
+
+.cover-editorial-copy p {
+  max-width: 91mm;
+  margin-top: 5mm;
+  color: #aeb6c1;
+  font-size: 9.5px;
+  line-height: 1.55;
+}
+
+.cover-editorial-mark {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 3mm;
+  border-left: 1px solid rgba(255, 255, 255, .11);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .025), transparent 62%);
+  color: #fff;
+  font-size: 7px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.cover-editorial-mark::before,
+.cover-editorial-mark::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, .09);
+}
+
+.cover-editorial-mark::before {
+  top: 10mm;
+  bottom: 10mm;
+  left: 50%;
+  width: 1px;
+}
+
+.cover-editorial-mark::after {
+  right: 8mm;
+  bottom: 15mm;
+  left: 8mm;
+  height: 1px;
+}
+
+.cover-editorial-mark .brand.mark-only {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: 27mm;
+  margin: 0 18mm 6mm;
+}
+
+.cover-editorial-mark .brand.mark-only img {
+  filter: brightness(0) invert(1);
+  opacity: .94;
+}
+
+.cover-editorial-mark span,
+.cover-editorial-mark i {
+  position: relative;
+  z-index: 1;
+}
+
+.cover-editorial-mark i {
+  width: 10mm;
+  height: 1px;
+  background: var(--brand-lime);
+}
+
+.timeline-page .section-heading {
+  margin-bottom: 7mm;
+}
+
+.fiscal-scope-note {
+  display: grid;
+  grid-template-columns: 34mm 1fr;
+  align-items: center;
+  gap: 7mm;
+  padding: 4mm 6mm;
+  border-radius: 2px;
+  background: var(--brand-ink);
+}
+
+.fiscal-scope-note span {
+  color: var(--brand-lime);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.fiscal-scope-note p {
+  color: #c4cad2;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.fiscal-deliverables-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 5mm;
+  border-top: 1px solid #d8e0e7;
+  border-left: 1px solid #d8e0e7;
+}
+
+.fiscal-deliverables-grid article {
+  min-height: 24mm;
+  display: grid;
+  grid-template-columns: 8mm 1fr;
+  gap: 3mm;
+  padding: 4mm 5mm;
+  border-right: 1px solid #d8e0e7;
+  border-bottom: 1px solid #d8e0e7;
+  background: rgba(255, 255, 255, .76);
+}
+
+.fiscal-deliverables-grid article > span {
+  padding-top: 1px;
+  color: #5f7800;
+  font-family: var(--font-geist-mono);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.fiscal-deliverables-grid h3 {
+  margin: 0 0 1.5mm;
+  color: var(--brand-ink);
+  font-size: 10.5px;
+  line-height: 1.22;
+}
+
+.fiscal-deliverables-grid p {
+  margin: 0;
+  color: #687382;
+  font-size: 8.2px;
+  line-height: 1.42;
+}
+
+.fiscal-rhythm {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  align-items: center;
+  gap: 8mm;
+  margin-top: 5mm;
+  padding: 5mm 6mm;
+  border-radius: 2px;
+  background: #edf3f8;
+}
+
+.fiscal-rhythm > div span {
+  display: block;
+  margin-bottom: 2mm;
+  color: #5f7800;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.fiscal-rhythm > div strong {
+  display: block;
+  color: var(--brand-ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.fiscal-rhythm ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5mm 4mm;
+}
+
+.fiscal-rhythm li {
+  font-size: 8.5px;
+  line-height: 1.3;
+}
+
+.fiscal-price ul {
+  margin-top: 4mm;
+}
+
+.fiscal-price li {
+  font-size: 9px;
+}
+
+@media (max-width: 640px) {
+  .hero-page .hero-grid {
+    min-height: auto;
+    padding-top: 56px;
+  }
+
+  .cover-editorial {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    height: auto;
+    grid-template-columns: 1fr;
+    margin-top: 64px;
+  }
+
+  .cover-editorial-copy {
+    padding: 34px 26px;
+  }
+
+  .cover-editorial-copy strong {
+    font-size: 25px;
+  }
+
+  .cover-editorial-mark {
+    min-height: 210px;
+    border-top: 1px solid rgba(255, 255, 255, .11);
+    border-left: 0;
+  }
+
+  .fiscal-scope-note,
+  .fiscal-rhythm {
+    grid-template-columns: 1fr;
+  }
+
+  .fiscal-deliverables-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fiscal-rhythm ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .hero-page .hero-grid {
+    min-height: 237mm;
+    padding-top: 17mm;
+  }
+
+  .cover-editorial {
+    bottom: 28mm;
+    height: 82mm;
+  }
+
+  .operation-page .section-heading {
+    padding-top: 0;
+    margin-bottom: 0;
+  }
+
+  .operation-page .track-card {
+    padding: 5.5mm;
+  }
+
+  .operation-page .e2-track {
+    transform: translateY(1mm);
+  }
+}
+
+@media (min-width: 641px) {
+  .operation-page .section-heading {
+    padding-top: 0;
+    margin-bottom: 0;
+  }
+
+  .operation-page .track-card {
+    padding: 5.5mm;
+  }
+
+  .operation-page .e2-track {
+    transform: translateY(1mm);
+  }
+}
+
+/* Final mobile pass — preserve the editorial hierarchy without clipping. */
+@media (max-width: 640px) {
+  .hero-page {
+    padding: 24px 18px 32px;
+  }
+
+  .hero-page .hero-grid,
+  .hero-page .hero-bottom {
+    width: 100%;
+  }
+
+  .cover-editorial-copy {
+    min-width: 0;
+    padding: 32px 22px;
+  }
+
+  .cover-editorial-copy strong,
+  .cover-editorial-copy p {
+    max-width: 100%;
+  }
+
+  .cover-editorial-copy strong {
+    font-size: 23px;
+    text-wrap: balance;
+  }
+
+  .section-heading,
+  .section-heading.split-heading,
+  .section-heading.architecture-heading,
+  .section-heading.investment-heading,
+  .architecture-page .section-heading,
+  .operation-page .section-heading,
+  .implementation-page .section-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .section-heading > div,
+  .section-heading > p,
+  .section-heading .diagram-legend,
+  .section-heading .deadline-card {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .section-heading > p {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .diagram-legend {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .tree-children {
+    position: relative;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-left: 18px;
+  }
+
+  .tree-children::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5px;
+    border-left: 1px solid #95a2af;
+  }
+
+  .tree-children .org-node {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tree-connector.branch {
+    display: none;
+  }
+
+  .deadline-card {
+    min-width: 0;
+    padding: 22px;
+  }
+
+  .proposal-footer > span {
+    display: none;
+  }
+
+  .proposal-footer strong {
+    white-space: nowrap;
+  }
+
+  .fiscal-rhythm ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+  </style>
+</head>
+<body>
+<main class="proposal-document"><div class="document-toolbar" aria-label="Ferramentas do documento"><a class="print-button compact" href="/proposal-assets/familia-silva-8f4d2a.pdf" download aria-label="Baixar proposta em PDF"><span>PDF</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14"></path></svg></a></div><section id="visao" class="proposal-page hero-page"><div class="cover-header content-shell"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><div class="cover-meta"><span>Documento confidencial</span><strong>Preparado exclusivamente para a Família Silva</strong></div></div><div class="hero-grid content-shell"><div class="hero-copy"><p class="eyebrow">Proposta estratégica · Família Silva</p><h1>Arquitetura patrimonial,<span>societária e fiscal</span>Brasil–Estados Unidos</h1><p class="hero-intro">Governança sucessória, organização das participações internacionais e preparação para a futura residência fiscal americana de Marcelo.</p></div><div class="cover-editorial" aria-label="Síntese da proposta"><div class="cover-editorial-copy"><span>Arquitetura internacional</span><strong>Sucessão no topo.<br/>Patrimônio organizado.<br/>Transição fiscal preparada.</strong><p>A empresa operacional relacionada ao E-2 permanece em estrutura própria nesta fase.</p></div><div class="cover-editorial-mark" aria-hidden="true"><div class="brand mark-only" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logomark.png" alt=""/></div><span>Brasil</span><i></i><span>Estados Unidos</span></div></div></div><div class="hero-bottom content-shell"><span>Proposta comercial · Família Silva</span><span>Agosto de 2026</span><span>Prazo estimado: 2–3 meses</span></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>01 / 08</strong></div></section><section id="momento" class="proposal-page moment-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>02</span><i></i><small>O momento</small></div><div class="section-heading split-heading"><div><p class="eyebrow">Por que começar agora</p><h2>A residência fiscal não é o começo do planejamento.</h2></div><p>É o marco para o qual precisamos estar preparados. Antes da mudança, é possível avaliar alternativas e organizar obrigações com antecedência.</p></div><div class="moment-statement"><span class="statement-number">01</span><p>Marcelo ainda não é residente fiscal nos Estados Unidos. Essa condição permite avaliar e implementar decisões societárias, patrimoniais e contábeis antes que a mudança amplie suas obrigações tributárias e informacionais americanas.</p></div><div class="presence-grid"><article><span class="presence-index">A</span><p>Patrimônio nos EUA</p><h3>Duas Vacation Homes</h3><small>Cada imóvel atualmente detido por sua própria LLC na Flórida.</small></article><article><span class="presence-index">B</span><p>Operação nos EUA</p><h3>Empresa operacional</h3><small>Veículo que sustentará a estratégia empresarial relacionada ao E-2.</small></article><article><span class="presence-index">C</span><p>Planejamento no Brasil</p><h3>Estrutura sucessória</h3><small>Planejamento elaborado por Rodrigo e integrado à camada americana.</small></article></div><div class="objective-band"><div><p class="eyebrow">Objetivo central</p><h3>Construir a camada americana em coordenação com o que a família já estruturou no Brasil.</h3></div><ul class="compact-list"><li><span class="check" aria-hidden="true">✓</span><span>Governança e sucessão familiar</span></li><li><span class="check" aria-hidden="true">✓</span><span>Organização das participações</span></li><li><span class="check" aria-hidden="true">✓</span><span>Preparação fiscal da transição</span></li><li><span class="check" aria-hidden="true">✓</span><span>Protocolo para novos ativos</span></li></ul></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>02 / 08</strong></div></section><section id="arquitetura" class="proposal-page architecture-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>03</span><i></i><small>Arquitetura-alvo</small></div><div class="section-heading architecture-heading"><div><p class="eyebrow">O desenho da estrutura</p><h2>Uma estrutura no topo.<br/>Funções separadas na base.</h2></div><div class="diagram-legend"><span><i class="solid-line"></i> Relação prevista</span><span><i class="dashed-line"></i> Integração futura</span></div></div><div class="org-chart" aria-label="Organograma societário proposto"><div class="patrimonial-lane"><div class="lane-label"><span>01</span> Núcleo patrimonial e sucessório</div><div class="tree-top"><article class="org-node foundation"><div class="node-topline"><span class="node-icon" aria-hidden="true">F</span><span class="node-badge">Constituição neste projeto</span></div><p>Governança · Continuidade · Sucessão</p><h3>Wyoming Statutory Foundation</h3><small>Entidade no topo da arquitetura familiar</small></article></div><div class="tree-connector vertical solid" aria-hidden="true"><span></span></div><div class="tree-mid"><article class="org-node holding"><div class="node-topline"><span class="node-icon" aria-hidden="true">H</span><span class="node-badge">Constituição neste projeto</span></div><p>Participações · Administração</p><h3>Wyoming Holding LLC</h3><small>100% detida pela Foundation</small></article></div><div class="tree-connector branch solid" aria-hidden="true"><span></span><i></i><b></b><em></em></div><div class="tree-children"><article class="org-node asset"><div class="node-topline"><span class="node-icon" aria-hidden="true">⌂</span><span class="node-badge">Análise individual</span></div><p>Ativo imobiliário</p><h3>Florida LLC 01</h3><small>Vacation Home 01</small></article><article class="org-node asset"><div class="node-topline"><span class="node-icon" aria-hidden="true">⌂</span><span class="node-badge">Análise individual</span></div><p>Ativo imobiliário</p><h3>Florida LLC 02</h3><small>Vacation Home 02</small></article><article class="org-node future"><div class="node-topline"><span class="node-icon" aria-hidden="true">BR</span><span class="node-badge">Integração futura</span></div><p>Participação internacional</p><h3>Holding Brasileira</h3><small>Ingresso societário após validação</small></article></div></div><div class="operational-lane"><div class="lane-label"><span>02</span> Núcleo operacional</div><div class="operation-path"><article class="org-node person"><div class="node-topline"><span class="node-icon" aria-hidden="true">M</span></div><p>Investidor do tratado</p><h3>Marcelo</h3><small>Nacionalidade italiana</small></article><div class="operation-link" aria-hidden="true"><i></i></div><article class="org-node operational"><div class="node-topline"><span class="node-icon" aria-hidden="true">E2</span><span class="node-badge">Estrutura própria</span></div><p>Operação empresarial</p><h3>Empresa Operacional</h3><small>Base da estratégia relacionada ao E-2</small></article></div><div class="operation-note"><span aria-hidden="true">!</span><p><strong>Separada nesta fase.</strong> Alterações relevantes de titularidade, controle ou governança dependerão de validação imigratória prévia.</p></div></div></div><div class="architecture-disclaimer"><strong>Arquitetura-alvo, não transferência automática.</strong><p>Cada empresa, imóvel ou participação será analisado individualmente antes de qualquer movimentação.</p></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>03 / 08</strong></div></section><section id="entidades" class="proposal-page entities-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>04</span><i></i><small>Foundation e Holding</small></div><div class="section-heading split-heading"><div><p class="eyebrow">As duas entidades</p><h2>Continuidade familiar.<br/>Organização patrimonial.</h2></div><p>Dois veículos, duas funções complementares e uma governança desenhada para os objetivos da Família Silva.</p></div><div class="entity-comparison"><article class="entity-card foundation-card"><div class="entity-card-head"><span>01</span><p>Governança no topo</p></div><h3>Wyoming Statutory<br/>Foundation</h3><p class="entity-summary">Estrutura de direito privado voltada à continuidade e à sucessão familiar.</p><ul><li><span class="check" aria-hidden="true">✓</span><span>Constituição em Wyoming</span></li><li><span class="check" aria-hidden="true">✓</span><span>Registered Agent e taxas iniciais do primeiro ano</span></li><li><span class="check" aria-hidden="true">✓</span><span>Fundador, administradores, protetor e beneficiários</span></li><li><span class="check" aria-hidden="true">✓</span><span>Regras de administração e supervisão</span></li><li><span class="check" aria-hidden="true">✓</span><span>Incapacidade, falecimento e continuidade</span></li><li><span class="check" aria-hidden="true">✓</span><span>Documentação de governança personalizada</span></li></ul><div class="entity-role"><span>Função principal</span><strong>Governar e suceder</strong></div></article><article class="entity-card holding-card"><div class="entity-card-head"><span>02</span><p>Organização abaixo</p></div><h3>Wyoming<br/>Holding LLC</h3><p class="entity-summary">Veículo central para organizar e administrar as participações societárias.</p><ul><li><span class="check" aria-hidden="true">✓</span><span>Constituição em Wyoming</span></li><li><span class="check" aria-hidden="true">✓</span><span>Foundation como única sócia</span></li><li><span class="check" aria-hidden="true">✓</span><span>Operating Agreement</span></li><li><span class="check" aria-hidden="true">✓</span><span>Regras de administração das participações</span></li><li><span class="check" aria-hidden="true">✓</span><span>Preparação para receber as LLCs imobiliárias</span></li><li><span class="check" aria-hidden="true">✓</span><span>Preparação para futuro ingresso no Brasil</span></li></ul><div class="entity-role"><span>Função principal</span><strong>Organizar e participar</strong></div></article></div><div class="tax-note"><span>Nota tributária</span><p>A Foundation não é apresentada como entidade beneficente, fundação isenta ou veículo com tratamento fiscal predeterminado. Sua classificação tributária federal e seus efeitos para a família serão analisados durante o acompanhamento.</p></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>04 / 08</strong></div></section><section id="operacao" class="proposal-page operation-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>05</span><i></i><small>Operação e Brasil</small></div><div class="section-heading split-heading"><div><p class="eyebrow">Preservar e conectar</p><h2>A operação permanece separada enquanto a ponte documental é construída.</h2></div><p>A empresa operacional e a integração da Holding com o Brasil avançam em trilhas próprias, coordenadas entre si.</p></div><div class="two-track"><article class="track-card e2-track"><div class="track-label"><span>E-2</span> Trilha operacional</div><h3>Operating Agreement<br/>da empresa operacional</h3><p>A Onebridge revisará e customizará o documento societário da LLC utilizada na operação relacionada ao E-2.</p><ul><li><span class="check" aria-hidden="true">✓</span><span>Titularidade, administração e controle atuais</span></li><li><span class="check" aria-hidden="true">✓</span><span>Aportes, distribuições e admissão de membros</span></li><li><span class="check" aria-hidden="true">✓</span><span>Restrições à transferência de participação</span></li><li><span class="check" aria-hidden="true">✓</span><span>Competências de administração</span></li><li><span class="check" aria-hidden="true">✓</span><span>Incapacidade, falecimento e alterações futuras</span></li></ul><div class="guardrail"><strong>Limite de segurança</strong><p>Alterações relevantes dependerão de validação prévia pelo advogado de imigração do caso.</p></div></article><article class="track-card brazil-track"><div class="track-label"><span>BR</span> Trilha documental</div><h3>Regularização da Holding<br/>para utilização no Brasil</h3><p>Um pacote coordenado para tornar a entidade estrangeira identificável e apta aos atos societários previstos no Brasil.</p><div class="document-flow"><span>Notarização</span><i>→</i><span>Apostilamento</span><i>→</i><span>Tradução juramentada</span><b></b><span>Cadastro aplicável</span><i>→</i><span>CNPJ</span><i>→</i><span>Registros correlatos</span></div><div class="responsibility-split"><div><strong>Onebridge</strong><p>Entidades americanas, dossiê internacional e procedimentos cadastrais incluídos.</p></div><div><strong>Rodrigo</strong><p>Atos societários brasileiros e implementação perante a Junta Comercial.</p></div></div></article></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>05 / 08</strong></div></section><section id="acompanhamento" class="proposal-page timeline-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>06</span><i></i><small>Acompanhamento</small></div><div class="section-heading split-heading"><div><p class="eyebrow">Preparação contábil e fiscal</p><h2>Quatro meses para medir, preparar e decidir.</h2></div><p>Marcelo não será tratado como residente fiscal americano desde o primeiro dia. O trabalho compara o cenário atual com o futuro e organiza a transição.</p></div><div class="fiscal-scope-note"><span>Escopo técnico</span><p>O acompanhamento não presume residência fiscal americana. Ele documenta o cenário atual, projeta a transição e organiza as decisões que precisam ocorrer antes e depois da mudança.</p></div><div class="fiscal-deliverables-grid"><article><span>01</span><div><h3>Mapa patrimonial e societário consolidado</h3><p>Empresas no Brasil e nos EUA, participações, ativos, titularidades e fluxos relevantes.</p></div></article><article><span>02</span><div><h3>Matriz de residência fiscal</h3><p>Histórico de presença, projeção do Substantial Presence Test e janela provável de transição.</p></div></article><article><span>03</span><div><h3>Simulação tributária Brasil–EUA</h3><p>Comparação de aluguéis, dividendos, distribuições, investimentos, despesas e remessas.</p></div></article><article><span>04</span><div><h3>Matriz de enquadramento e reporte</h3><p>Foundation, Holding, LLCs imobiliárias e empresa operacional analisadas por função e obrigação.</p></div></article><article><span>05</span><div><h3>Plano contábil de transição</h3><p>Segregação pessoal e empresarial, documentos, conciliações e rotina de fechamento.</p></div></article><article><span>06</span><div><h3>Mapa de fluxos Brasil–EUA</h3><p>Origem, destino, natureza, suporte documental e pontos de atenção intercompany.</p></div></article><article><span>07</span><div><h3>Calendário de compliance</h3><p>Prazos, responsáveis e documentos para obrigações federais, estaduais e informacionais.</p></div></article><article><span>08</span><div><h3>Dossiê executivo final</h3><p>Recomendações, pendências e protocolo de decisão para a integração futura de cada ativo.</p></div></article></div><div class="fiscal-rhythm"><div><span>Durante os quatro meses</span><strong>Acompanhamento recorrente, não apenas um relatório final.</strong></div><ul><li><span class="check" aria-hidden="true">✓</span><span>1 reunião executiva por mês</span></li><li><span class="check" aria-hidden="true">✓</span><span>1 relatório mensal de evolução</span></li><li><span class="check" aria-hidden="true">✓</span><span>Matriz de decisões atualizada</span></li><li><span class="check" aria-hidden="true">✓</span><span>Coordenação Brasil–EUA</span></li></ul></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>06 / 08</strong></div></section><section id="investimento" class="proposal-page investment-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>07</span><i></i><small>Investimento</small></div><div class="section-heading investment-heading"><div><p class="eyebrow">Investimento</p><h2>Um projeto integrado.<br/>Uma condição simples.</h2></div><p>A estruturação societária, a regularização documental e o acompanhamento consultivo avançam durante os quatro meses do contrato.</p></div><div class="investment-grid"><article class="scope-price"><span>Estrutura sucessória, societária e documental</span><strong><small>US$</small> 15.190</strong><ul><li><span class="check" aria-hidden="true">✓</span><span>Wyoming Statutory Foundation</span></li><li><span class="check" aria-hidden="true">✓</span><span>Wyoming Holding LLC</span></li><li><span class="check" aria-hidden="true">✓</span><span>Operating Agreement operacional</span></li><li><span class="check" aria-hidden="true">✓</span><span>Pacote documental Brasil</span></li><li><span class="check" aria-hidden="true">✓</span><span>Cadastro e CNPJ da Holding</span></li></ul></article><article class="scope-price fiscal-price"><span>Acompanhamento contábil e fiscal · 4 meses</span><strong><small>US$</small> 12.000</strong><ul><li><span class="check" aria-hidden="true">✓</span><span>4 reuniões e 4 relatórios mensais</span></li><li><span class="check" aria-hidden="true">✓</span><span>Matriz de residência e simulação tributária</span></li><li><span class="check" aria-hidden="true">✓</span><span>Plano contábil e mapa de compliance</span></li><li><span class="check" aria-hidden="true">✓</span><span>Dossiê final de transição</span></li></ul></article></div><div class="total-panel"><div><span>Investimento total</span><strong><small>US$</small> 27.190</strong></div><div class="installment"><span>Condição de pagamento</span><strong>4 × US$ 6.797,50</strong><small>Parcelas mensais e consecutivas</small></div></div><div class="payment-note"><p>A primeira parcela vence na aprovação da proposta e no início do projeto. As três parcelas seguintes vencem a cada 30 dias.</p><p>As parcelas correspondem à execução integrada do projeto e não estão vinculadas à conclusão de entregas ou etapas isoladas.</p></div><div class="included-note"><span>Transparência de custos</span><p>Registered Agent e taxas iniciais do primeiro ano da Foundation estão incluídos. Custos recorrentes posteriores, taxas extraordinárias, serviços de terceiros e transferências de ativos serão apresentados previamente para aprovação.</p></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>07 / 08</strong></div></section><section id="implementacao" class="proposal-page implementation-page"><div class="content-shell page-content"><div class="page-marker" aria-hidden="true"><span>08</span><i></i><small>Implementação</small></div><div class="section-heading split-heading"><div><p class="eyebrow">O caminho a partir daqui</p><h2>Uma implantação coordenada, ativo por ativo.</h2></div><div class="deadline-card"><span>Prazo estimado</span><strong>2–3 meses</strong><small>Estrutura societária e documental</small></div></div><div class="implementation-grid"><div class="steps-list"><div><span>01</span><p>Aprovação da proposta</p></div><div><span>02</span><p>Abertura do data room</p></div><div><span>03</span><p>Kickoff com Onebridge, Rodrigo e família</p></div><div><span>04</span><p>Diagnóstico e validação da arquitetura</p></div><div><span>05</span><p>Constituição e documentação</p></div><div><span>06</span><p>Regularização da Holding no Brasil</p></div><div><span>07</span><p>Entrega do plano de transição</p></div></div><div class="scope-guardrails"><h3>A constituição não representa transferência automática.</h3><p>Cada integração futura será precedida de análise e orçamento próprios.</p><div class="guardrail-grid"><span>Impactos tributários</span><span>Reflexos sucessórios</span><span>Contratos e financiamentos</span><span>Processo E-2</span><span>Custos de transferência</span><span>Obrigações declaratórias</span></div></div></div><div class="exclusions"><span>Fora deste escopo</span><p>Pedido de visto E-2 · garantia de resultado · transferência de LLCs, imóveis ou participações · declarações fiscais não previstas · contabilidade histórica · avaliações patrimoniais · pareceres formais de terceiros · tributos e custos decorrentes de transferências.</p></div><div class="final-cta"><div><p class="eyebrow">Próximo passo</p><h2>Vamos iniciar a organização da estrutura da Família Silva.</h2><p>A aprovação abre o data room e agenda a reunião conjunta de kickoff.</p></div><div><a class="primary-button lime" href="mailto:hello@onebridgestalwart.com?subject=Aprovação%20da%20proposta%20Família%20Silva">Aprovar proposta <span>→</span></a><a class="print-button" href="/proposal-assets/familia-silva-8f4d2a.pdf" download><span>Baixar proposta em PDF</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14"></path></svg></a></div></div></div><div class="proposal-footer"><div class="brand" aria-label="Onebridge Stalwart"><img src="/proposal-assets/familia-silva/onebridge-logo.png" alt="Onebridge Stalwart"/></div><span>Proposta comercial confidencial · Família Silva</span><strong>08 / 08</strong></div></section></main>
+</body>
+</html>
