@@ -11,37 +11,37 @@ const confidentialProposalHeaders = [
   },
 ];
 
-const proposalPath = "/propostas/familia-silva-8f4d2a";
 const canonicalProposalHost = "app.onebridgestalwart.com";
 const deploymentHost = "franklin-ruddy.vercel.app";
 
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // The proposal is shared with the client under the Onebridge domain, so the
-      // deployment hostname sends visitors to the canonical URL. Scoped to this one
-      // path and host: every other route on the deployment hostname, and the whole
-      // of app.onebridgestalwart.com, is untouched.
+      // Proposals are shared with clients under the Onebridge domain, so the
+      // deployment hostname sends visitors to the canonical URL. Scoped to the
+      // proposal pages on that host: every other route on the deployment
+      // hostname, and the whole of app.onebridgestalwart.com, is untouched.
+      // Single segment on purpose — the Open Graph card below it is served
+      // directly, so scrapers never follow a redirect to reach the image.
       {
-        source: proposalPath,
+        source: "/propostas/:slug",
         has: [{ type: "host", value: deploymentHost }],
-        destination: `https://${canonicalProposalHost}${proposalPath}`,
+        destination: `https://${canonicalProposalHost}/propostas/:slug`,
         permanent: true,
       },
     ];
   },
   async headers() {
+    // Every confidential proposal page, its generated Open Graph card and its
+    // document assets stay out of search engines. Social scrapers ignore
+    // X-Robots-Tag, so link previews keep working.
     return [
       {
-        source: "/propostas/familia-silva-8f4d2a",
+        source: "/propostas/:path*",
         headers: confidentialProposalHeaders,
       },
       {
-        source: "/proposal-assets/familia-silva-8f4d2a.html",
-        headers: confidentialProposalHeaders,
-      },
-      {
-        source: "/proposal-assets/familia-silva-8f4d2a.pdf",
+        source: "/proposal-assets/:path*",
         headers: confidentialProposalHeaders,
       },
     ];
