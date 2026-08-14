@@ -1,0 +1,1797 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#0a0f1e">
+  <meta name="description" content="Coordenação, compliance e controle das estruturas da SIT nos Estados Unidos e no México.">
+  <title>International Backoffice &amp; Governance — SIT | Onebridge Stalwart</title>
+  <style>
+    :root {
+      --navy: #0a0f1e;
+      --navy-soft: #141b2d;
+      --ink: #151a24;
+      --slate: #596374;
+      --muted: #7c8695;
+      --mist: #f3f5f6;
+      --mist-deep: #e9edef;
+      --line: #dce1e4;
+      --paper: #ffffff;
+      --lime: #c7dd43;
+      --lime-dark: #91a913;
+      --content: 1180px;
+      --gutter: clamp(1.25rem, 4vw, 3.5rem);
+      --section-space: clamp(5rem, 10vw, 9rem);
+      --shadow: 0 18px 48px rgba(10, 15, 30, 0.055);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      min-width: 0;
+      overflow-x: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 1000;
+      top: 0.75rem;
+      left: 0.75rem;
+      padding: 0.65rem 0.9rem;
+      transform: translateY(-180%);
+      border-radius: 4px;
+      background: var(--paper);
+      color: var(--navy);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .reading-progress {
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: var(--lime);
+      pointer-events: none;
+    }
+
+    .shell {
+      width: min(calc(100% - (var(--gutter) * 2)), var(--content));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      border-bottom: 1px solid rgba(220, 225, 228, 0.88);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .header-inner {
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-lockup {
+      display: inline-grid;
+      flex: 0 0 auto;
+      gap: 0;
+      color: var(--navy);
+      font-size: 0.66rem;
+      font-weight: 750;
+      letter-spacing: 0.23em;
+      line-height: 1.18;
+      text-decoration: none;
+    }
+
+    .brand-lockup span:last-child {
+      color: var(--muted);
+      font-weight: 560;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: clamp(1rem, 2.5vw, 2rem);
+    }
+
+    .header-nav a {
+      color: var(--slate);
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 180ms ease;
+    }
+
+    .header-nav a:hover,
+    .header-nav a:focus-visible {
+      color: var(--navy);
+    }
+
+    .print-button {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.62rem 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--paper);
+      color: var(--navy);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+
+    .print-button::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--lime-dark);
+      content: "";
+    }
+
+    .print-button:hover,
+    .print-button:focus-visible {
+      border-color: #b9c18b;
+      background: #fbfcec;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: calc(100svh - 72px);
+      align-items: stretch;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    .hero::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(50% + 130px);
+      width: 1px;
+      background: var(--line);
+      content: "";
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.82fr);
+      gap: clamp(3rem, 8vw, 7.5rem);
+      align-items: center;
+      padding-block: clamp(4.5rem, 9vw, 8rem) clamp(3rem, 6vw, 5rem);
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 730px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1.4rem;
+      color: var(--lime-dark);
+      font-size: 0.7rem;
+      font-weight: 760;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 28px;
+      height: 2px;
+      background: currentColor;
+      content: "";
+    }
+
+    .hero-client {
+      margin: 0 0 1.35rem;
+      color: var(--slate);
+      font-size: 0.75rem;
+      font-weight: 680;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p {
+      text-wrap: pretty;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(3.15rem, 7.2vw, 6.8rem);
+      font-weight: 560;
+      letter-spacing: -0.062em;
+      line-height: 0.93;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--slate);
+      font-weight: 360;
+    }
+
+    .hero-subtitle {
+      max-width: 690px;
+      margin: 2rem 0 0;
+      color: var(--slate);
+      font-size: clamp(1.03rem, 1.7vw, 1.28rem);
+      line-height: 1.55;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      align-items: center;
+      margin-top: 2.8rem;
+      padding-top: 1.35rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .hero-meta span + span::before {
+      margin-right: 1.5rem;
+      color: var(--lime-dark);
+      content: "•";
+    }
+
+    .control-panel {
+      position: relative;
+      isolation: isolate;
+      min-height: 560px;
+      overflow: hidden;
+      padding: clamp(2rem, 4vw, 3.5rem);
+      border-radius: 2px;
+      background: var(--navy);
+      color: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .control-panel::before,
+    .control-panel::after {
+      position: absolute;
+      z-index: -1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .control-panel::before {
+      top: -160px;
+      right: -230px;
+      width: 570px;
+      height: 570px;
+    }
+
+    .control-panel::after {
+      right: -100px;
+      bottom: -210px;
+      width: 430px;
+      height: 430px;
+    }
+
+    .panel-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.65rem;
+      font-weight: 680;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .status-dot::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 0 4px rgba(199, 221, 67, 0.1);
+      content: "";
+    }
+
+    .control-copy {
+      display: flex;
+      min-height: 330px;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: 3rem;
+    }
+
+    .control-copy span {
+      color: var(--lime);
+      font-size: 0.68rem;
+      font-weight: 750;
+      letter-spacing: 0.19em;
+      text-transform: uppercase;
+    }
+
+    .control-copy strong {
+      display: block;
+      max-width: 400px;
+      margin-top: 1.15rem;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 470;
+      letter-spacing: -0.045em;
+      line-height: 1.03;
+    }
+
+    .control-copy p {
+      max-width: 350px;
+      margin: 1.35rem 0 0;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.95rem;
+    }
+
+    .country-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .country-row div {
+      padding-top: 1.3rem;
+    }
+
+    .country-row div + div {
+      padding-left: 1.3rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .country-row small,
+    .country-row strong {
+      display: block;
+    }
+
+    .country-row small {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .country-row strong {
+      margin-top: 0.25rem;
+      font-size: 0.92rem;
+      font-weight: 550;
+    }
+
+    .section {
+      position: relative;
+      padding-block: var(--section-space);
+    }
+
+    .section.mist {
+      background: var(--mist);
+    }
+
+    .section.dark {
+      background: var(--navy);
+      color: var(--paper);
+    }
+
+    .section-number {
+      display: inline-block;
+      margin-bottom: 1.1rem;
+      color: var(--muted);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.55fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: end;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+
+    .section-header.single {
+      display: block;
+      max-width: 900px;
+    }
+
+    .section-header h2,
+    .statement h2,
+    .closing h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(2.35rem, 5.2vw, 5rem);
+      font-weight: 470;
+      letter-spacing: -0.052em;
+      line-height: 1.02;
+    }
+
+    .section-header > p {
+      margin: 0;
+      color: var(--slate);
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+    }
+
+    .problem-grid,
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .problem-card,
+    .pillar-card {
+      min-height: 255px;
+      padding: clamp(1.45rem, 2.7vw, 2.25rem);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      transition: transform 220ms ease, box-shadow 220ms ease;
+    }
+
+    .problem-card:hover,
+    .pillar-card:hover {
+      position: relative;
+      z-index: 2;
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-index {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: clamp(2.3rem, 5vw, 4.7rem);
+      color: var(--lime-dark);
+      font-size: 0.7rem;
+      font-weight: 750;
+      letter-spacing: 0.16em;
+    }
+
+    .card-index::after {
+      width: 24px;
+      height: 1px;
+      background: var(--line);
+      content: "";
+    }
+
+    .problem-card h3,
+    .pillar-card h3 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 1.12rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .problem-card p,
+    .pillar-card p {
+      margin: 0.7rem 0 0;
+      color: var(--slate);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .statement {
+      display: grid;
+      grid-template-columns: minmax(140px, 0.35fr) minmax(0, 1.65fr);
+      gap: clamp(2rem, 6vw, 6rem);
+      margin-top: clamp(4rem, 8vw, 7.5rem);
+      padding: clamp(2.25rem, 5vw, 4.5rem);
+      background: var(--navy);
+      color: var(--paper);
+    }
+
+    .statement-label {
+      padding-top: 0.45rem;
+      color: var(--lime);
+      font-size: 0.68rem;
+      font-weight: 760;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .statement h2 {
+      color: var(--paper);
+      font-size: clamp(2rem, 4vw, 4rem);
+    }
+
+    .statement p {
+      max-width: 760px;
+      margin: 1.3rem 0 0;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: clamp(1rem, 1.6vw, 1.18rem);
+    }
+
+    .statement strong {
+      color: var(--paper);
+      font-weight: 560;
+    }
+
+    .pillar-grid {
+      border: 0;
+      gap: 1rem;
+    }
+
+    .pillar-card {
+      position: relative;
+      min-height: 310px;
+      border: 1px solid var(--line);
+    }
+
+    .pillar-card::after {
+      position: absolute;
+      right: 2rem;
+      bottom: 2rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--lime);
+      content: "";
+    }
+
+    .scope-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+      gap: clamp(1.5rem, 4vw, 3rem);
+      margin-top: clamp(4rem, 8vw, 7.5rem);
+    }
+
+    .scope-list,
+    .responsibility-rule {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .block-label {
+      display: block;
+      margin-bottom: 2rem;
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 750;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .check-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      position: relative;
+      padding: 1rem 1rem 1rem 1.35rem;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 0.92rem;
+    }
+
+    .check-list li::before {
+      position: absolute;
+      top: 1.55rem;
+      left: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--lime-dark);
+      content: "";
+    }
+
+    .responsibility-rule {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--paper);
+    }
+
+    .responsibility-rule .block-label {
+      color: var(--lime);
+    }
+
+    .responsibility-rule h3 {
+      margin: 0;
+      font-size: clamp(1.65rem, 3vw, 2.45rem);
+      font-weight: 480;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+    }
+
+    .responsibility-rule p {
+      margin: 1.4rem 0 0;
+      color: rgba(255, 255, 255, 0.67);
+      font-size: 0.95rem;
+    }
+
+    .governance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .governance-column {
+      padding: clamp(2rem, 4vw, 3.8rem);
+    }
+
+    .governance-column + .governance-column {
+      border-left: 1px solid var(--line);
+      background: #fafbfb;
+    }
+
+    .governance-column h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin: 0 0 2rem;
+      color: var(--navy);
+      font-size: 0.75rem;
+      font-weight: 760;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .governance-column h3::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lime-dark);
+      content: "";
+    }
+
+    .governance-column.sit h3::before {
+      border: 1px solid var(--slate);
+      background: transparent;
+    }
+
+    .governance-column ul,
+    .exclusion-card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .governance-column li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 0.8rem;
+      padding-block: 0.9rem;
+      border-top: 1px solid var(--line);
+      color: var(--slate);
+      font-size: 0.94rem;
+    }
+
+    .governance-column li span {
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .boundary {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.4fr) minmax(0, 1.6fr);
+      gap: 2rem;
+      align-items: start;
+      margin-top: 1.25rem;
+      padding: clamp(1.6rem, 3.5vw, 2.8rem);
+      border-left: 4px solid var(--lime-dark);
+      background: var(--navy);
+      color: var(--paper);
+    }
+
+    .boundary strong {
+      color: var(--lime);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .boundary p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 1rem;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      counter-reset: steps;
+    }
+
+    .timeline article {
+      position: relative;
+      min-height: 285px;
+      padding: 2rem clamp(1.35rem, 3vw, 2.75rem) 2.5rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .timeline article + article {
+      border-left: 1px solid var(--line);
+    }
+
+    .timeline article::before {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      margin-bottom: clamp(2.5rem, 5vw, 4rem);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--lime-dark);
+      content: counter(steps, decimal-leading-zero);
+      counter-increment: steps;
+      font-size: 0.66rem;
+      font-weight: 760;
+      letter-spacing: 0.06em;
+    }
+
+    .timeline article:not(:last-child)::after {
+      position: absolute;
+      z-index: 2;
+      top: 41px;
+      right: -7px;
+      width: 13px;
+      height: 13px;
+      border-top: 1px solid var(--muted);
+      border-right: 1px solid var(--muted);
+      transform: rotate(45deg);
+      background: var(--paper);
+      content: "";
+    }
+
+    .timeline h3 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 1.18rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .timeline p {
+      margin: 0.7rem 0 0;
+      color: var(--slate);
+      font-size: 0.91rem;
+    }
+
+    .control-milestone {
+      display: grid;
+      grid-template-columns: 0.5fr 1.5fr;
+      gap: clamp(2rem, 6vw, 5rem);
+      margin-top: 2rem;
+      padding: clamp(2rem, 5vw, 4rem);
+      background: #edf1d4;
+    }
+
+    .control-milestone .block-label {
+      margin: 0;
+      color: #61700c;
+    }
+
+    .control-milestone h3 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(1.8rem, 3.6vw, 3.25rem);
+      font-weight: 500;
+      letter-spacing: -0.045em;
+      line-height: 1.06;
+    }
+
+    .control-milestone p {
+      margin: 1rem 0 0;
+      color: #515b45;
+      font-size: 0.95rem;
+    }
+
+    .limits-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+      gap: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .exclusion-card,
+    .evolution-panel {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .exclusion-card li {
+      position: relative;
+      padding: 0.92rem 0 0.92rem 1.4rem;
+      border-top: 1px solid var(--line);
+      color: var(--slate);
+      font-size: 0.92rem;
+    }
+
+    .exclusion-card li::before {
+      position: absolute;
+      top: 1.55rem;
+      left: 0;
+      width: 8px;
+      height: 1px;
+      background: var(--muted);
+      content: "";
+    }
+
+    .evolution-panel {
+      display: flex;
+      flex-direction: column;
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--paper);
+    }
+
+    .evolution-panel .block-label {
+      color: var(--lime);
+    }
+
+    .evolution-panel h3 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.45rem);
+      font-weight: 460;
+      letter-spacing: -0.048em;
+      line-height: 1.04;
+    }
+
+    .evolution-item {
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .evolution-item strong {
+      color: var(--paper);
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .evolution-item p {
+      margin: 0.5rem 0 0;
+      color: rgba(255, 255, 255, 0.63);
+      font-size: 0.92rem;
+    }
+
+    .principle {
+      margin-top: auto;
+      padding-top: 2.5rem;
+      color: var(--lime);
+      font-size: 0.75rem;
+      font-weight: 720;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .dark .section-number,
+    .dark .section-header > p {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .dark .section-header h2 {
+      color: var(--paper);
+    }
+
+    .investment-intro {
+      max-width: 780px;
+      margin: -2rem 0 3rem;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 1.05rem;
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .price-card {
+      min-height: 390px;
+      padding: clamp(2rem, 4vw, 3.5rem);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: var(--navy-soft);
+    }
+
+    .price-card.featured {
+      border-color: rgba(199, 221, 67, 0.58);
+      background: var(--paper);
+      color: var(--navy);
+    }
+
+    .price-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: rgba(255, 255, 255, 0.53);
+      font-size: 0.68rem;
+      font-weight: 730;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    .featured .price-label {
+      color: var(--lime-dark);
+    }
+
+    .price-label::after {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+      content: "";
+    }
+
+    .price {
+      display: block;
+      margin-top: clamp(3rem, 7vw, 6rem);
+      color: var(--paper);
+      font-size: clamp(3.3rem, 7.5vw, 6.9rem);
+      font-weight: 460;
+      letter-spacing: -0.065em;
+      line-height: 0.94;
+      white-space: nowrap;
+    }
+
+    .featured .price {
+      color: var(--navy);
+    }
+
+    .price-card p {
+      max-width: 430px;
+      margin: 1.5rem 0 0;
+      padding-top: 1.3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 0.92rem;
+    }
+
+    .featured p {
+      border-color: var(--line);
+      color: var(--slate);
+    }
+
+    .conditions {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .condition {
+      padding: 1.8rem;
+    }
+
+    .condition + .condition {
+      border-left: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .condition span {
+      display: block;
+      color: var(--lime);
+      font-size: 0.64rem;
+      font-weight: 730;
+      letter-spacing: 0.12em;
+    }
+
+    .condition p {
+      margin: 0.8rem 0 0;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .closing {
+      position: relative;
+      overflow: hidden;
+      padding-block: clamp(6rem, 13vw, 11rem) 3rem;
+      background: var(--paper);
+    }
+
+    .closing::after {
+      position: absolute;
+      z-index: 0;
+      right: -280px;
+      bottom: -400px;
+      width: 760px;
+      height: 760px;
+      border: 1px solid var(--mist-deep);
+      border-radius: 50%;
+      box-shadow: 0 0 0 100px rgba(243, 245, 246, 0.5), 0 0 0 101px var(--mist-deep);
+      content: "";
+    }
+
+    .closing-content,
+    .proposal-footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .closing-content {
+      max-width: 960px;
+    }
+
+    .closing h2 {
+      font-size: clamp(3rem, 7vw, 6.75rem);
+    }
+
+    .closing-copy {
+      max-width: 760px;
+      margin: 2rem 0 0;
+      color: var(--slate);
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+    }
+
+    .closing-rule {
+      width: 90px;
+      height: 4px;
+      margin-top: 3.5rem;
+      background: var(--lime);
+    }
+
+    .proposal-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-top: clamp(7rem, 14vw, 12rem);
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 620;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .footer-mark {
+      display: grid;
+      gap: 0.2rem;
+      color: var(--navy);
+      font-weight: 760;
+      letter-spacing: 0.2em;
+      line-height: 1.1;
+    }
+
+    .footer-mark span:last-child {
+      color: var(--muted);
+      font-weight: 520;
+    }
+
+    @media (max-width: 1050px) {
+      .header-nav a {
+        display: none;
+      }
+
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr) minmax(310px, 0.72fr);
+        gap: 2.5rem;
+      }
+
+      .hero::before {
+        display: none;
+      }
+
+      .control-panel {
+        min-height: 500px;
+      }
+
+      .problem-grid,
+      .pillar-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .conditions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .condition:nth-child(3) {
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        border-left: 0;
+      }
+
+      .condition:nth-child(4) {
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .header-inner {
+        min-height: 64px;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-inner,
+      .section-header,
+      .scope-layout,
+      .limits-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        padding-top: 4.5rem;
+      }
+
+      .hero-copy {
+        max-width: 640px;
+      }
+
+      .control-panel {
+        min-height: 460px;
+      }
+
+      .section-header {
+        align-items: start;
+      }
+
+      .statement,
+      .boundary,
+      .control-milestone {
+        grid-template-columns: 1fr;
+      }
+
+      .statement-label {
+        padding-top: 0;
+      }
+
+      .governance-grid,
+      .price-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .governance-column + .governance-column {
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline article {
+        display: grid;
+        min-height: 0;
+        grid-template-columns: 48px 1fr;
+        column-gap: 1.35rem;
+        padding-block: 1.7rem;
+        border-right: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .timeline article + article {
+        border-top: 0;
+      }
+
+      .timeline article::before {
+        grid-row: 1 / span 2;
+        margin: 0;
+      }
+
+      .timeline article::after {
+        display: none;
+      }
+
+      .timeline h3 {
+        align-self: end;
+      }
+
+      .timeline p {
+        grid-column: 2;
+      }
+
+      .price-card {
+        min-height: 340px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      :root {
+        --gutter: 1.15rem;
+        --section-space: 4.5rem;
+      }
+
+      .site-header .print-button {
+        min-height: 36px;
+        padding-inline: 0.7rem;
+        font-size: 0.65rem;
+      }
+
+      .brand-lockup {
+        font-size: 0.58rem;
+      }
+
+      h1 {
+        font-size: clamp(2.85rem, 15vw, 4.5rem);
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .hero-meta {
+        display: grid;
+        gap: 0.4rem;
+      }
+
+      .hero-meta span + span::before {
+        display: none;
+      }
+
+      .control-panel {
+        min-height: 420px;
+        padding: 1.6rem;
+      }
+
+      .control-copy {
+        min-height: 275px;
+        padding-block: 2.25rem;
+      }
+
+      .panel-topline > span:last-child {
+        display: none;
+      }
+
+      .problem-grid,
+      .pillar-grid,
+      .check-list,
+      .conditions {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-card,
+      .pillar-card {
+        min-height: 0;
+      }
+
+      .card-index {
+        margin-bottom: 2rem;
+      }
+
+      .condition + .condition,
+      .condition:nth-child(3) {
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        border-left: 0;
+      }
+
+      .timeline article {
+        grid-template-columns: 42px 1fr;
+        column-gap: 1rem;
+        padding-inline: 1.2rem;
+      }
+
+      .timeline article::before {
+        width: 36px;
+        height: 36px;
+      }
+
+      .price-card {
+        min-height: 320px;
+      }
+
+      .price {
+        font-size: clamp(3.2rem, 17vw, 5rem);
+      }
+
+      .proposal-footer {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .proposal-footer > span:last-child {
+        letter-spacing: 0.05em;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @page {
+      size: A4;
+      margin: 12mm;
+    }
+
+    @media print {
+      :root {
+        --section-space: 16mm;
+      }
+
+      html, body {
+        background: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        font-size: 10pt;
+      }
+
+      .site-header,
+      .reading-progress,
+      .skip-link {
+        display: none !important;
+      }
+
+      .hero {
+        min-height: 245mm;
+        break-after: page;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 10mm;
+        padding-block: 20mm;
+      }
+
+      h1 {
+        font-size: 48pt;
+      }
+
+      .control-panel {
+        min-height: 145mm;
+      }
+
+      .section {
+        break-before: auto;
+      }
+
+      .section-header,
+      .statement,
+      .scope-layout,
+      .governance-grid,
+      .timeline,
+      .control-milestone,
+      .limits-layout,
+      .price-grid,
+      .conditions,
+      .closing-content {
+        break-inside: avoid;
+      }
+
+      .problem-card,
+      .pillar-card,
+      .price-card,
+      .timeline article,
+      .governance-column,
+      .exclusion-card,
+      .evolution-panel {
+        break-inside: avoid;
+        box-shadow: none !important;
+      }
+
+      .problem-card:hover,
+      .pillar-card:hover {
+        transform: none;
+      }
+
+      .closing {
+        min-height: 245mm;
+        break-before: page;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="header-inner shell">
+      <a class="brand-lockup" href="#inicio" aria-label="Onebridge Stalwart — voltar ao início">
+        <span>ONEBRIDGE</span>
+        <span>STALWART</span>
+      </a>
+      <nav class="header-nav" aria-label="Navegação da proposta">
+        <a href="#contexto">Contexto</a>
+        <a href="#escopo">Escopo</a>
+        <a href="#governanca">Governança</a>
+        <a href="#investimento">Investimento</a>
+        <button class="print-button" type="button">Imprimir / salvar PDF</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div class="hero-inner shell">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow">Proposta preliminar · Agosto de 2026</p>
+          <p class="hero-client">SIT · Soluções Integradas de Trade Marketing</p>
+          <h1>International <span>Backoffice &amp; Governance</span></h1>
+          <p class="hero-subtitle">Coordenação, compliance e controle das estruturas da SIT nos Estados Unidos e no México — sem atuação na operação comercial, logística ou produtiva.</p>
+          <div class="hero-meta">
+            <span>Backoffice internacional</span>
+            <span>Governança</span>
+            <span>Reporte executivo</span>
+          </div>
+        </div>
+
+        <aside class="control-panel" data-reveal aria-label="Síntese da proposta">
+          <div class="panel-topline">
+            <span class="status-dot">Estrutura coordenada</span>
+            <span>Confidencial</span>
+          </div>
+          <div class="control-copy">
+            <span>Uma camada única de controle</span>
+            <strong>Estados Unidos + México</strong>
+            <p>Uma mesa executiva para conectar obrigações, prestadores, contratos, prazos e decisões.</p>
+          </div>
+          <div class="country-row">
+            <div><small>Jurisdição 01</small><strong>Estados Unidos</strong></div>
+            <div><small>Jurisdição 02</small><strong>México</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="contexto">
+      <div class="shell">
+        <header class="section-header single" data-reveal>
+          <span class="section-number">01 · Contexto</span>
+          <h2>A SIT não precisa de mais um prestador.<br>Precisa de uma camada que conecte todos.</h2>
+          <p style="max-width: 760px; margin-top: 1.8rem;">A internacionalização reúne empresas, países, contadores, contratos, prestadores e responsáveis. Sem uma mesa única de acompanhamento, a gestão se torna fragmentada e reativa.</p>
+        </header>
+
+        <div class="problem-grid" data-reveal>
+          <article class="problem-card">
+            <div class="card-index">01</div>
+            <h3>Informação dispersa</h3>
+            <p>Documentos, contratos e históricos distribuídos entre equipes e prestadores.</p>
+          </article>
+          <article class="problem-card">
+            <div class="card-index">02</div>
+            <h3>Prazos desconectados</h3>
+            <p>Obrigações locais sem calendário único de controle e responsabilidade.</p>
+          </article>
+          <article class="problem-card">
+            <div class="card-index">03</div>
+            <h3>Interfaces fragmentadas</h3>
+            <p>Comunicação paralela com contadores, advogados, gestores e parceiros.</p>
+          </article>
+          <article class="problem-card">
+            <div class="card-index">04</div>
+            <h3>Baixa visibilidade</h3>
+            <p>Pouca clareza sobre pendências, riscos, decisões e próximos passos.</p>
+          </article>
+        </div>
+
+        <div class="statement" data-reveal>
+          <div class="statement-label">A proposta</div>
+          <div>
+            <h2>Criar uma mesa única de coordenação internacional.</h2>
+            <p>Organizar obrigações, contratos, prestadores, prazos e decisões — mantendo a SIT no comando da operação.</p>
+            <p>Resultado prático: <strong>menos dispersão, mais previsibilidade e uma trilha clara de responsabilidades.</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section mist" id="escopo">
+      <div class="shell">
+        <header class="section-header" data-reveal>
+          <div>
+            <span class="section-number">02 · Arquitetura e escopo</span>
+            <h2>Quatro pilares para manter a estrutura sob controle</h2>
+          </div>
+          <p>Uma camada de coordenação para conectar as estruturas dos Estados Unidos e do México e transformar obrigações, documentos e decisões em rotina executiva.</p>
+        </header>
+
+        <div class="pillar-grid" data-reveal>
+          <article class="pillar-card">
+            <div class="card-index">01</div>
+            <h3>Compliance &amp; Tax Coordination</h3>
+            <p>Calendário de obrigações, coordenação contábil e alinhamento tributário entre jurisdições.</p>
+          </article>
+          <article class="pillar-card">
+            <div class="card-index">02</div>
+            <h3>Contracts &amp; Provider Management</h3>
+            <p>Contratos, prazos, responsabilidades e entregas de terceiros.</p>
+          </article>
+          <article class="pillar-card">
+            <div class="card-index">03</div>
+            <h3>International Governance</h3>
+            <p>Responsáveis, fluxos de comunicação, níveis de decisão e escalonamento de riscos.</p>
+          </article>
+          <article class="pillar-card">
+            <div class="card-index">04</div>
+            <h3>Executive Control</h3>
+            <p>Visão consolidada de pendências, riscos, decisões necessárias e próximos passos.</p>
+          </article>
+        </div>
+
+        <div class="scope-layout" data-reveal>
+          <div class="scope-list">
+            <span class="block-label">Escopo inicial</span>
+            <ul class="check-list">
+              <li>Compliance contábil, fiscal e societário</li>
+              <li>Coordenação tributária internacional</li>
+              <li>Gestão administrativa de contratos</li>
+              <li>Coordenação de prestadores</li>
+              <li>Implantação administrativa no México</li>
+              <li>Reporte executivo à liderança</li>
+            </ul>
+          </div>
+          <aside class="responsibility-rule">
+            <span class="block-label">Regra de responsabilidade</span>
+            <h3>Coordenação não substitui habilitação profissional.</h3>
+            <p>Atividades reservadas a contadores, advogados ou profissionais licenciados serão executadas por esses especialistas, sob coordenação da Onebridge.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="governanca">
+      <div class="shell">
+        <header class="section-header" data-reveal>
+          <div>
+            <span class="section-number">03 · Governança e limites</span>
+            <h2>Coordenação ativa, sem entrar na operação</h2>
+          </div>
+          <p>A Onebridge acompanha, cobra, organiza e reporta. A execução permanece com a SIT, seus gestores e prestadores contratados.</p>
+        </header>
+
+        <div class="governance-grid" data-reveal>
+          <article class="governance-column">
+            <h3>A Onebridge assume</h3>
+            <ul>
+              <li><span>01</span>Calendário de obrigações, prazos e pendências.</li>
+              <li><span>02</span>Coordenação de contadores e prestadores.</li>
+              <li><span>03</span>Acompanhamento administrativo dos contratos.</li>
+              <li><span>04</span>Cobrança de entregas, ajustes e correções.</li>
+              <li><span>05</span>Consolidação de riscos, decisões e próximos passos.</li>
+            </ul>
+          </article>
+          <article class="governance-column sit">
+            <h3>A SIT mantém</h3>
+            <ul>
+              <li><span>01</span>Decisões empresariais e direcionamento estratégico.</li>
+              <li><span>02</span>Operação de trade marketing, vendas e relacionamento com clientes.</li>
+              <li><span>03</span>Logística, distribuição e cadeia de suprimentos.</li>
+              <li><span>04</span>Gestão direta de funcionários e gestores locais.</li>
+              <li><span>05</span>Movimentação financeira, despesas e assinatura de contratos.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="boundary" data-reveal>
+          <strong>Fronteira do escopo</strong>
+          <p>A Onebridge não substituirá o gestor local, não comandará a equipe e não executará logística, distribuição, vendas, trade marketing ou operação diária.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section mist" id="implantacao">
+      <div class="shell">
+        <header class="section-header" data-reveal>
+          <div>
+            <span class="section-number">04 · Modelo de implantação</span>
+            <h2>Implantação em três movimentos</h2>
+          </div>
+          <p>Do diagnóstico à gestão recorrente, cada etapa organiza uma nova camada de visibilidade e controle.</p>
+        </header>
+
+        <div class="timeline" data-reveal>
+          <article>
+            <h3>Onboarding &amp; Diagnóstico</h3>
+            <p>Levantamento das empresas, documentos, acessos, contratos, prestadores, responsáveis e pendências existentes.</p>
+          </article>
+          <article>
+            <h3>Organização Inicial</h3>
+            <p>Criação do repositório documental, calendário de obrigações, matriz de responsabilidades e fluxo de comunicação.</p>
+          </article>
+          <article>
+            <h3>Gestão Recorrente</h3>
+            <p>Acompanhamento mensal, interface contínua com terceiros, controle ativo de pendências e reporte executivo.</p>
+          </article>
+        </div>
+
+        <div class="control-milestone" data-reveal>
+          <span class="block-label">Marco de controle</span>
+          <div>
+            <h3>Revisão conjunta após os primeiros 90 dias.</h3>
+            <p>O escopo é ajustado apenas se volume ou complexidade ultrapassarem as premissas iniciais. Sem surpresa e sem cobrança retroativa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="limites">
+      <div class="shell">
+        <header class="section-header" data-reveal>
+          <div>
+            <span class="section-number">05 · Limites financeiros e evolução</span>
+            <h2>O que fica fora da mensalidade</h2>
+          </div>
+          <p>Custos variáveis e projetos excepcionais são tratados separadamente, sempre com aprovação prévia.</p>
+        </header>
+
+        <div class="limits-layout" data-reveal>
+          <article class="exclusion-card">
+            <span class="block-label">Fora da mensalidade</span>
+            <ul>
+              <li>Viagens, passagens, hospedagem, diárias e deslocamentos.</li>
+              <li>Taxas governamentais, registros, licenças e custos oficiais.</li>
+              <li>Honorários extraordinários de contadores, advogados ou terceiros.</li>
+              <li>Fiscalizações, litígios, auditorias e reorganizações societárias.</li>
+              <li>Execução logística, comercial, trabalhista ou operacional.</li>
+              <li>Novas empresas, novas jurisdições ou projetos não recorrentes.</li>
+            </ul>
+          </article>
+
+          <aside class="evolution-panel">
+            <span class="block-label">Evolução do escopo</span>
+            <h3>O escopo cresce junto com a operação.</h3>
+            <div class="evolution-item">
+              <strong>Brasil</strong>
+              <p>Incorporação após conclusão das alterações societárias e documentais previstas.</p>
+            </div>
+            <div class="evolution-item">
+              <strong>Crescimento</strong>
+              <p>Novas estruturas, países ou aumento relevante de complexidade formalizados por aditivo.</p>
+            </div>
+            <div class="principle">Aprovação prévia · previsibilidade · rastreabilidade</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="investimento">
+      <div class="shell">
+        <header class="section-header" data-reveal>
+          <div>
+            <span class="section-number">06 · Investimento</span>
+            <h2>Estrutura inicial para aprovação dos sócios</h2>
+          </div>
+          <p>Valores preliminares para posicionar o projeto como coordenação internacional — e não como simples backoffice documental.</p>
+        </header>
+
+        <div class="price-grid" data-reveal>
+          <article class="price-card">
+            <div class="price-label">Implantação inicial</div>
+            <strong class="price">US$ 6.000</strong>
+            <p>Diagnóstico, organização documental, calendário, matriz de responsabilidades e modelo de reporte.</p>
+          </article>
+          <article class="price-card featured">
+            <div class="price-label">Mensalidade</div>
+            <strong class="price">US$ 5.900</strong>
+            <p>Coordenação recorrente da Onebridge e dos profissionais envolvidos no escopo.</p>
+          </article>
+        </div>
+
+        <div class="conditions" data-reveal aria-label="Condições propostas">
+          <div class="condition"><span>01 · PRAZO</span><p>Prazo inicial de <strong>12 meses</strong>.</p></div>
+          <div class="condition"><span>02 · REVISÃO</span><p>Revisão do escopo após <strong>90 dias</strong>.</p></div>
+          <div class="condition"><span>03 · CUSTOS</span><p>Prestadores locais, taxas e viagens cobrados separadamente.</p></div>
+          <div class="condition"><span>04 · EVOLUÇÃO</span><p>Inclusão do Brasil e novas estruturas mediante aditivo.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="resultado">
+      <div class="shell">
+        <div class="closing-content" data-reveal>
+          <p class="eyebrow">Resultado esperado</p>
+          <h2>A SIT permanece no comando da operação.</h2>
+          <p class="closing-copy">A Onebridge garante que a estrutura administrativa, contábil, tributária e contratual funcione de forma coordenada, previsível e rastreável.</p>
+          <div class="closing-rule" aria-hidden="true"></div>
+        </div>
+
+        <footer class="proposal-footer">
+          <div class="footer-mark" aria-label="Onebridge Stalwart">
+            <span>ONEBRIDGE</span>
+            <span>STALWART</span>
+          </div>
+          <span>Onebridge Stalwart LLC · Orlando, FL · Confidencial</span>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const progress = document.querySelector(".reading-progress");
+      const printButton = document.querySelector(".print-button");
+      let frame = 0;
+
+      const updateProgress = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
+        progress.style.transform = `scaleX(${ratio})`;
+        frame = 0;
+      };
+
+      window.addEventListener("scroll", () => {
+        if (!frame) frame = window.requestAnimationFrame(updateProgress);
+      }, { passive: true });
+      window.addEventListener("resize", updateProgress, { passive: true });
+      updateProgress();
+
+      printButton.addEventListener("click", () => window.print());
+
+    })();
+  </script>
+</body>
+</html>

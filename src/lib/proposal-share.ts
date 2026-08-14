@@ -65,6 +65,18 @@ export const proposalPages: readonly ProposalPage[] = [
     jurisdiction: "ESTADOS UNIDOS",
     documentPath: "/proposal-assets/familia-silva-8f4d2a.html",
     documentTitle: "Proposta comercial da Família Silva"
+  },
+  {
+    slug: "sit-international-backoffice",
+    clientName: "SIT",
+    title: `International Backoffice & Governance — SIT | ${brand.organizationName}`,
+    description:
+      "Coordenação, compliance e controle das estruturas da SIT nos Estados Unidos e no México.",
+    eyebrow: "PROPOSTA PRELIMINAR",
+    subtitle: "International Backoffice & Governance",
+    jurisdiction: "ESTADOS UNIDOS + MÉXICO",
+    documentPath: "/proposal-assets/sit-international-backoffice.html",
+    documentTitle: "Proposta International Backoffice & Governance da SIT"
   }
 ];
 
